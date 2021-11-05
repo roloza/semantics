@@ -32,3 +32,14 @@ php artisan db:seed --class=UserSeeder
 ```
 php artisan storage:link
 ```
+
+### MongoDb
+```
+sudo apt install pecl
+sudo apt install php-dev php-pear
+sudo pecl install mongodb
+
+sudo echo "extension=mongodb.so" > /etc/php/8.0/cli/php.ini
+ou
+sudo nano /etc/php/8.0/cli/php.ini AND add "extension=mongodb.so"
+```

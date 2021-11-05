@@ -2,31 +2,22 @@
 
 namespace App\Custom;
 
-
-
-use App\Models\Job;
-use App\Models\Url;
-use App\Models\SeoLink;
+use Spatie\Url\Url;
+use App\Models\SeoAuditStructure;
 use Psr\Http\Message\UriInterface;
 use Illuminate\Support\Facades\Log;
-use LanguageDetector\LanguageDetector;
 use App\Custom\Tools\HtmlParser\HtmlParser;
 use App\Custom\Tools\HtmlScrapper\HtmlScrapper;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
-use App\Custom\Tools\HtmlScrapper\FiltersStructure;
 
-class CustomCrawler extends CrawlObserver
+class TestCrawler extends CrawlObserver
 {
 
-    protected $uuid;
-    private $count;
-    private $maximumCrawlCount;
+    private $urlId;
 
-    public function __construct($uuid, $maximumCrawlCount)
+    public function __construct($urlId)
     {
-        $this->uuid = $uuid;
-        $this->count = 0;
-        $this->maximumCrawlCount = (int)$maximumCrawlCount;
+        $this->urlId = $urlId;
     }
 
     public function willCrawl(UriInterface $url): void
@@ -51,34 +42,34 @@ class CustomCrawler extends CrawlObserver
             return;
         }
 
+        $htmlParser = new HtmlScrapper((string)$response->getBody(), $url);
+        $fullContent = $htmlParser->getFullContentText();
+        $contentLight = $htmlParser->getLightContentText();
+
+        dd($fullContent, "\n############################\n", $contentLight, "#######", 'fullContent: ' . strlen($fullContent), 'contentLight : ' . strlen($contentLight));
+        $structure = $htmlParser->run();
+
         $htmlParser = new HtmlParser((string)$response->getBody(), $url);
 
         $content = $htmlParser->getFullContentText();
-        // $contentLight = $htmlParser->getLightContentText();
+        $contentLight = $htmlParser->getLightContentText();
 
-        $detector = new \LanguageDetector\LanguageDetector();
-        $language = $detector->evaluate($content)->getLanguage();
-        if ($language->getCode() !== 'fr') {
-            Log::error('Langue non traitée : ' . $language->getCode());
-            return;
-        }
-        $htmlParser = new HtmlScrapper((string)$response->getBody(), $url);
-        $structure = $htmlParser->run();
 
-        try {
-            Url::insertOrIgnore([
-                'uuid' => $this->uuid,
-                'url' => (string)$url,
-                'title' => $htmlParser->title(),
-                'content' => $content,
-            ]);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
-            return;
+        dd($content, $contentLight);
+
+        $uuid = '1234';
+
+        $doc = array_merge(['url_id' => $this->urlId], $structure);
+
+
+        try  {
+            SeoAuditStructure::where('uuid', $uuid)
+                    ->where('url_id', $this->urlId)
+                    ->update($doc, ['upsert' => true]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
         }
 
-            $this->count++;
-            Job::where('uuid', $this->uuid)->update(['percentage' => 50, 'message' => '[' . $this->count . '/' . $this->maximumCrawlCount . '] ' . (string)$url]);
     }
 
     public function crawlFailed(\Psr\Http\Message\UriInterface $url, \GuzzleHttp\Exception\RequestException $requestException, ?\Psr\Http\Message\UriInterface $foundOnUrl = null): void
@@ -88,4 +79,14 @@ class CustomCrawler extends CrawlObserver
         Log::debug($requestException->getMessage());
         // TODO: Implement crawlFailed() method.
     }
+
+        /**
+     * Called when the crawl has ended.
+     */
+    public function finishedCrawling(): void
+    {
+        Log::debug('[finishedCrawling]');
+    }
+
+
 }
