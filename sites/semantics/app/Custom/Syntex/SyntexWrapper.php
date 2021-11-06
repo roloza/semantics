@@ -53,18 +53,13 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/res-descripteur.txt', 'r');
         $csv->setDelimiter("\t");
         $csv->setHeaderOffset(0);
-        $header_offset = $csv->getHeaderOffset(); //returns 0
-        $header = $csv->getHeader();
 
-        $data = [];
-        $max = 500;
-        $records = $csv->getRecords();
-        foreach ($records as $offset => $record) {
+        foreach ($csv->getRecords() as $offset => $record) {
             $formes = explode(';', $record['forme']);
             $lemme = utf8_encode($record['lemme']);
             $cat = utf8_encode($record['cat']);
             $category = CatGrammatical::where('sigle', $cat)->first();
-            $data[] = [
+            $data = [
                 'uuid' => $this->uuid,
                 'doc_id' => (int)$record['iddoc'],
                 'score' => (int)$record['score'] * 100,
@@ -80,21 +75,7 @@ class SyntexWrapper
                 'freq_pond' => (float)$record['freq pond'],
                 'longueur' => preg_match_all('/\pL+/u',$lemme, $matches)
             ];
-            if(sizeof($data) > $max) {
-                try {
-                    Log::debug('SyntexDescripteur::upsert - ' . sizeof($data));
-                    SyntexDescripteur::upsert($data, ['job_id', 'doc_id', 'lemme']);
-                } catch (\Exception $exception) {
-                    Log::error($exception->getMessage());
-                }
-                $data = [];
-            }
-        }
-        try {
-            Log::debug('SyntexDescripteur::upsert - ' . sizeof($data));
-            SyntexDescripteur::upsert($data, ['job_id', 'doc_id', 'lemme']);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
+            SyntexDescripteur::insertUpdate($data);
         }
     }
 
@@ -103,16 +84,12 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/rt_liste.txt', 'r');
         $csv->setDelimiter("\t");
 
-        $data = [];
-        $max = 500;
-
-        $records = $csv->getRecords();
-        foreach ($records as $offset => $record) {
+        foreach ($csv->getRecords() as $offset => $record) {
             $formes = explode(';', $record[3]);
             $lemme = utf8_encode($record[2]);
             $cat = utf8_encode($record[1]);
             $category = CatGrammatical::where('sigle', $cat)->first();
-            $data[] = [
+            $data = [
                 'uuid' => $this->uuid,
                 'num' => (int)$record[0],
                 'cat' => $cat,
@@ -125,23 +102,7 @@ class SyntexWrapper
                 'nincl' => (int)$record[14],
                 'longueur' => preg_match_all('/\pL+/u',$lemme, $matches)
             ];
-            if(sizeof($data) > $max) {
-
-                try {
-                    Log::debug('SyntexRtListe::upsert - ' . sizeof($data));
-                    SyntexRtListe::upsert($data, ['job_id', 'num']);
-                } catch (\Exception $exception) {
-                    Log::error($exception->getMessage());
-                }
-                $data = [];
-
-            }
-        }
-        try {
-            Log::debug('SyntexRtListe::upsert - ' . sizeof($data));
-            SyntexRtListe::upsert($data, ['job_id', 'num']);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
+            SyntexRtListe::insertUpdate($data);
         }
     }
 
@@ -150,15 +111,11 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_liste.txt', 'r');
         $csv->setDelimiter("\t");
 
-        $data = [];
-        $max = 500;
-
-        $records = $csv->getRecords();
-        foreach ($records as $offset => $record) {
+        foreach ($csv->getRecords() as $offset => $record) {
             $lemme = trim(str_replace('(v)', '', utf8_encode($record[2])));
             $cat = utf8_encode($record[1]);
             $category = CatGrammatical::where('sigle', $cat)->first();
-            $data[] = [
+            $data = [
                 'uuid' => $this->uuid,
                 'num' => (int)$record[0],
                 'cat' => $cat,
@@ -172,22 +129,7 @@ class SyntexWrapper
                 'nbdoc_num' => (int)$record[7],
                 'nbdec_num' => (int)$record[8],
             ];
-            if(sizeof($data) > $max) {
-                try {
-                    Log::debug('SyntexAuditListe::upsert - ' . sizeof($data));
-                    SyntexAuditListe::upsert($data, ['job_id', 'num']);
-                } catch (\Exception $exception) {
-                    Log::error($exception->getMessage());
-                }
-                $data = [];
-
-            }
-        }
-        try {
-            Log::debug('SyntexAuditListe::upsert - ' . sizeof($data));
-            SyntexAuditListe::upsert($data, ['job_id', 'num']);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
+            SyntexAuditListe::insertUpdate($data);
         }
     }
 
@@ -196,32 +138,13 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_incl.txt', 'r');
         $csv->setDelimiter("\t");
 
-        $data = [];
-        $max = 500;
-
-        $records = $csv->getRecords();
-        foreach ($records as $offset => $record) {
-            $data[] = [
+        foreach ( $csv->getRecords() as $offset => $record) {
+            $data = [
                 'uuid' => $this->uuid,
                 'num_1' => (int)$record[0],
                 'num_2' => (int)$record[1],
             ];
-            if(sizeof($data) > $max) {
-                try {
-                    Log::debug('SyntexAuditIncl::upsert - ' . sizeof($data));
-                    SyntexAuditIncl::upsert($data, ['job_id', 'num']);
-                } catch (\Exception $exception) {
-                    Log::error($exception->getMessage());
-                }
-                $data = [];
-
-            }
-        }
-        try {
-            Log::debug('SyntexAuditIncl::upsert - ' . sizeof($data));
-            SyntexAuditIncl::upsert($data, ['job_id', 'num']);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
+            SyntexAuditIncl::insertUpdate($data);
         }
     }
 
@@ -230,14 +153,10 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_desc.txt', 'r');
         $csv->setDelimiter("\t");
 
-        $data = [];
-        $max = 500;
-
-        $records = $csv->getRecords();
-        foreach ($records as $offset => $record) {
+        foreach ($csv->getRecords() as $offset => $record) {
             $formes = explode(';', $record[6]);
             $forme = utf8_encode(current($formes));
-            $data[] = [
+            $data = [
                 'uuid' => $this->uuid,
                 'doc_id' => (int)$record[1],
                 'num' => (int)$record[2],
@@ -247,22 +166,7 @@ class SyntexWrapper
                 'forme' => $forme,
                 'longueur' => preg_match_all('/\pL+/u',$forme, $matches),
             ];
-            if(sizeof($data) > $max) {
-                try {
-                    Log::debug('SyntexAuditDesc::upsert - ' . sizeof($data));
-                    SyntexAuditDesc::upsert($data, ['job_id', 'num']);
-                } catch (\Exception $exception) {
-                    Log::error($exception->getMessage());
-                }
-                $data = [];
-
-            }
-        }
-        try {
-            Log::debug('SyntexAuditDesc::upsert - ' . sizeof($data));
-            SyntexAuditDesc::upsert($data, ['job_id', 'num']);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
+            SyntexAuditDesc::insertUpdate($data);
         }
     }
 
@@ -271,13 +175,10 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_url.txt', 'r');
         $csv->setDelimiter("\t");
 
-        $records = $csv->getRecords();
-        foreach ($records as $offset => $record) {
+        foreach ($csv->getRecords() as $offset => $record) {
             Url::where('uuid', $this->uuid)
                 ->where('url', 'LIKE', '%' . $record[2])
                 ->update(['doc_id' => $record[1]]);
         }
     }
-
-
 }

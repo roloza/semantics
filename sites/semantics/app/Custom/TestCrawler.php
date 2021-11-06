@@ -46,21 +46,13 @@ class TestCrawler extends CrawlObserver
         $fullContent = $htmlParser->getFullContentText();
         $contentLight = $htmlParser->getLightContentText();
 
-        dd($fullContent, "\n############################\n", $contentLight, "#######", 'fullContent: ' . strlen($fullContent), 'contentLight : ' . strlen($contentLight));
         $structure = $htmlParser->run();
-
-        $htmlParser = new HtmlParser((string)$response->getBody(), $url);
-
-        $content = $htmlParser->getFullContentText();
-        $contentLight = $htmlParser->getLightContentText();
-
-
-        dd($content, $contentLight);
 
         $uuid = '1234';
 
         $doc = array_merge(['url_id' => $this->urlId], $structure);
 
+        dd($doc);
 
         try  {
             SeoAuditStructure::where('uuid', $uuid)

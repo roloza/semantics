@@ -3,6 +3,7 @@
 namespace App\Custom\Tools\HtmlScrapper;
 
 use GuzzleHttp\Psr7\Uri;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
 
 class HtmlScrapper extends HtmlScrapperFilters {
@@ -374,7 +375,13 @@ class HtmlScrapper extends HtmlScrapperFilters {
         foreach ($links as $link) {
             // Generate the proper uri using the Symfony's link class
             $linkObj = new \Symfony\Component\DomCrawler\Link($link, $this->uri);
-            $linkObjSpatie = \Spatie\Url\Url::fromString($linkObj->getUri());
+            $linkObjSpatie = null;
+            try {
+                $linkObjSpatie = \Spatie\Url\Url::fromString($linkObj->getUri());
+            } catch(\Exception $e) {
+               Log::error($e->getMessage());
+               continue;
+            }
 
             // Check if the anchor is maybe only an image.
             $image = [];

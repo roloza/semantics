@@ -42,7 +42,8 @@ class TestParser extends Command
     {
         $urls = [
             // 'https://www.lemonde.fr/international/article/2021/10/27/licences-de-peche-post-brexit-premieres-mesures-de-retorsion-francaises-contre-le-royaume-uni_6100136_3210.html',
-            'https://www.recette-pateacrepe.fr'
+            // 'https://www.recette-pateacrepe.fr',
+            'https://www.minimachines.net/actu/gpd-xp-android-102895'
         ];
 
         foreach($urls as $k => $url) {

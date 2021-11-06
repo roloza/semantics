@@ -15,20 +15,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
-class PageCrawler implements ShouldQueue
+class SiteCrawler implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private string $url;
+    private string $totalCrawlLimit;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $url)
+    public function __construct(string $url, int $totalCrawlLimit)
     {
         $this->url = $url;
+        $this->totalCrawlLimit = $totalCrawlLimit;
     }
 
     /**
@@ -41,11 +43,11 @@ class PageCrawler implements ShouldQueue
         $uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $uuid);
 
-        Job::create(['uuid' => $uuid, 'url' => $this->url, 'user_id' => 1, 'type_id' => 1, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        Job::create(['uuid' => $uuid, 'user_id' => 1, 'type_id' => 2, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
 
         Crawler::create()
             ->setCrawlObserver(new CustomCrawler($uuid, 1))
-            ->setTotalCrawlLimit(1)
+            ->setTotalCrawlLimit($this->totalCrawlLimit)
             ->startCrawling($this->url);
 
         Job::where('uuid', $uuid)->update(['percentage' => 60, 'message' => 'Analyse linguistique en cours']);

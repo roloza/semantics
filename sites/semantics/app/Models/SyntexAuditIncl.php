@@ -2,19 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class SyntexAuditIncl extends Model
 {
     use HasFactory;
 
-    protected $table = 'syntex_audit_incls';
+
+    protected $collection = 'syntex_audit_incls';
+    protected $connection = 'mongodb';
+    protected $primaryKey = 'uuid';
 
     protected $fillable = [
-        'job_id',
+        'uuid',
         'num_1',
-        'numb_2'
+        'num_2'
     ];
 
+    public static function insertUpdate($data)
+    {
+        try  {
+            return Self::
+                where('uuid', $data['uuid'])
+                ->where('num_1', $data['num_1'])
+                ->where('num_2', $data['num_2'])
+                ->update($data, ['upsert' => true]);
+        } catch (\Exception $e) {
+            Log::error('[SyntexAuditIncl] - ' .$e->getMessage());
+        }
+    }
 }

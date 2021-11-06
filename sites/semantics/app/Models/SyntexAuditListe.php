@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\Log;
+use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class SyntexAuditListe extends Model
 {
     use HasFactory;
 
-    protected $table = 'syntex_audit_listes';
+
+    protected $collection = 'syntex_audit_listes';
+    protected $connection = 'mongodb';
+    protected $primaryKey = 'uuid';
 
     protected $fillable = [
-        'job_id',
+        'uuid',
         'num',
         'cat',
         'lemme',
@@ -24,4 +28,16 @@ class SyntexAuditListe extends Model
         'nbdec_num',
         'longueur_num',
     ];
+
+    public static function insertUpdate($data)
+    {
+        try  {
+            return Self::
+                where('uuid', $data['uuid'])
+                ->where('num', $data['num'])
+                ->update($data, ['upsert' => true]);
+        } catch (\Exception $e) {
+            Log::error('[SyntexAuditListe] - ' .$e->getMessage());
+        }
+    }
 }

@@ -6,14 +6,12 @@ namespace App\Custom;
 
 use App\Models\Job;
 use App\Models\Url;
-use App\Models\SeoLink;
+use App\Models\SeoAuditStructure;
 use Psr\Http\Message\UriInterface;
 use Illuminate\Support\Facades\Log;
 use LanguageDetector\LanguageDetector;
-use App\Custom\Tools\HtmlParser\HtmlParser;
 use App\Custom\Tools\HtmlScrapper\HtmlScrapper;
 use Spatie\Crawler\CrawlObservers\CrawlObserver;
-use App\Custom\Tools\HtmlScrapper\FiltersStructure;
 
 class CustomCrawler extends CrawlObserver
 {
@@ -51,34 +49,30 @@ class CustomCrawler extends CrawlObserver
             return;
         }
 
-        $htmlParser = new HtmlParser((string)$response->getBody(), $url);
+        $htmlParser = new HtmlScrapper((string)$response->getBody(), $url);
 
-        $content = $htmlParser->getFullContentText();
-        // $contentLight = $htmlParser->getLightContentText();
+        // $content = $htmlParser->getFullContentText();
+        $content = $htmlParser->getLightContentText();
 
-        $detector = new \LanguageDetector\LanguageDetector();
+        $detector = new LanguageDetector();
         $language = $detector->evaluate($content)->getLanguage();
         if ($language->getCode() !== 'fr') {
             Log::error('Langue non traitée : ' . $language->getCode());
             return;
         }
-        $htmlParser = new HtmlScrapper((string)$response->getBody(), $url);
-        $structure = $htmlParser->run();
 
-        try {
-            Url::insertOrIgnore([
-                'uuid' => $this->uuid,
-                'url' => (string)$url,
-                'title' => $htmlParser->title(),
-                'content' => $content,
-            ]);
-        } catch (\Exception $exception) {
-            Log::error($exception->getMessage());
-            return;
-        }
+        $urlId = Url::insertGetId([
+            'uuid' => $this->uuid,
+            'url' => (string)$url,
+            'title' => $htmlParser->title(),
+            'content' => $content,
+        ]);
 
-            $this->count++;
-            Job::where('uuid', $this->uuid)->update(['percentage' => 50, 'message' => '[' . $this->count . '/' . $this->maximumCrawlCount . '] ' . (string)$url]);
+        // Insertion structure HTML de la page
+        SeoAuditStructure::insertUpdate(array_merge(['uuid' => $this->uuid, 'url_id' => $urlId], $htmlParser->run()));
+
+        $this->count++;
+        Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 50, 'message' => '[' . $this->count . '/' . $this->maximumCrawlCount . '] ' . (string)$url]);
     }
 
     public function crawlFailed(\Psr\Http\Message\UriInterface $url, \GuzzleHttp\Exception\RequestException $requestException, ?\Psr\Http\Message\UriInterface $foundOnUrl = null): void
