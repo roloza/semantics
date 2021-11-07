@@ -19,7 +19,7 @@ class Job extends Model
 
     protected $fillable = [
         'uuid',
-        'url',
+        'name',
         'user_id',
         'type_id',
         'status_id',

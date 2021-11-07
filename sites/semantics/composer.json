@@ -16,6 +16,7 @@
         "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.5",
         "league/csv": "^9.7",
+        "livewire/livewire": "^2.7",
         "spatie/crawler": "^7.0",
         "spatie/url": "^2.0"
     },

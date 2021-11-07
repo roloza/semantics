@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Accueil
+Route::get('/', \App\Http\Controllers\PageController::class . '@accueil')->name('accueil');
+
+// Analyse
+Route::get('/analyses', \App\Http\Controllers\PageController::class . '@analyseList')->name('analyse.list');

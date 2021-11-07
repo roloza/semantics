@@ -53,7 +53,7 @@ class WebCrawler implements ShouldQueue
         $this->uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $this->uuid);
 
-        Job::create(['uuid' => $this->uuid, 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        Job::create(['uuid' => $this->uuid, 'name' => $this->keyword, 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
 
         if ($this->isNews) {
             $webCrawler = new GoogleNewsRss($this->keyword);
