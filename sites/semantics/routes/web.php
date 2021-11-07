@@ -18,3 +18,7 @@ Route::get('/', \App\Http\Controllers\PageController::class . '@accueil')->name(
 
 // Analyse
 Route::get('/analyses', \App\Http\Controllers\PageController::class . '@analyseList')->name('analyse.list');
+Route::get('/analyse-page', \App\Http\Controllers\LauncherController::class . '@analyseLauncherPage')->name('analyse.launcher.page');
+Route::get('/analyse-site', \App\Http\Controllers\LauncherController::class . '@analyseLauncherSite')->name('analyse.launcher.site');
+Route::get('/analyse-web', \App\Http\Controllers\LauncherController::class . '@analyseLauncherWeb')->name('analyse.launcher.web');
+Route::get('/analyse-custom', \App\Http\Controllers\LauncherController::class . '@analyseLauncherCustom')->name('analyse.launcher.custom');

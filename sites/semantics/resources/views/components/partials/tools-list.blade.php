@@ -19,7 +19,7 @@
             </div>
 
             <div class="flex justify-center">
-                <a href="{{ route('accueil') }}" class="btn btn-rounded-primary py-3 px-4 block x-auto mt-8">C'est parti !</a>
+                <a href="{{ route('analyse.launcher.page') }}" class="btn btn-rounded-primary py-3 px-4 block x-auto mt-8">C'est parti !</a>
             </div>
         </div>
 

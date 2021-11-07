@@ -41,7 +41,7 @@ class PageCrawler implements ShouldQueue
         $uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $uuid);
 
-        Job::create(['uuid' => $uuid, 'name' => $this->url, 'user_id' => 1, 'type_id' => 1, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        Job::create(['uuid' => $uuid, 'name' => $this->url, 'user_id' => 1, 'type_id' => 1, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['url' => $this->url]]);
 
         Crawler::create()
             ->setCrawlObserver(new CustomCrawler($uuid, 1))

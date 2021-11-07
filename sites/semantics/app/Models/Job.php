@@ -25,6 +25,7 @@ class Job extends Model
         'status_id',
         'percentage',
         'message',
+        'params',
     ];
 
     protected $with = [

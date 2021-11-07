@@ -23,6 +23,12 @@ use App\Models\SyntexDescripteur;
 class SemanticsController extends Controller
 {
 
+    private $type;
+
+    public function __construct ()
+    {
+        $this->type = '';
+    }
     public function index()
     {
         $jobs = Job::orderBy('created_at', 'DESC')->paginate(50);
@@ -31,22 +37,15 @@ class SemanticsController extends Controller
 
     public function store(Request $request)
     {
-
         $typeParam = $request->type ?? 'page';
         $url = $request->url ?? '';
         $keyword = $request->keyword ?? '';
         $totalCrawlLimit = $request->total_crawl_limit ?? 10;
         $isNews = $request->news ? (bool)$request->news : false;
 
-        $type = Type::where('slug', $typeParam)->first();
+        $this->type = Type::where('slug', $typeParam)->first();
 
-
-        $job = Job::where('user_id', 1)->where('url', $url)->where('type_id', $type->id)->first();
-        if ($job !== null) {
-            $this->destroy($job->uuid);
-        }
-
-        switch($type->slug) {
+        switch($this->type->slug) {
             case 'site':
                 $uuid = $this->launchJobSite($url, $totalCrawlLimit);
                 break;
@@ -96,6 +95,14 @@ class SemanticsController extends Controller
 
     private function launchJobPage($url)
     {
+        $job = Job::where('user_id', 1)
+            ->where('params.url', $url)
+            ->where('type_id', $this->type->id)
+            ->first();
+        if ($job !== null) {
+            $this->destroy($job->uuid);
+        }
+
         if (!$url = filter_var($url, FILTER_VALIDATE_URL)) {
             return response()->json([
                 'message' => 'Invalid url'
@@ -106,6 +113,14 @@ class SemanticsController extends Controller
 
     private function launchJobSite($url, $totalCrawlLimit = 10)
     {
+        $job = Job::where('user_id', 1)
+            ->where('params.url', $url)
+            ->where('params.total_crawl_limit', $totalCrawlLimit)
+            ->where('type_id', $this->type->id)
+            ->first();
+        if ($job !== null) {
+            $this->destroy($job->uuid);
+        }
         if (!$url = filter_var($url, FILTER_VALIDATE_URL)) {
             return response()->json([
                 'message' => 'Invalid url'
@@ -116,6 +131,15 @@ class SemanticsController extends Controller
 
     private function launchJobWeb($keyword, $totalCrawlLimit, $isNews)
     {
+        $job = Job::where('user_id', 1)
+            ->where('params.keyword', $keyword)
+            ->where('params.total_crawl_limit', $totalCrawlLimit)
+            ->where('params.is_news', $isNews)
+            ->where('type_id', $this->type->id)
+            ->first();
+            if ($job !== null) {
+                $this->destroy($job->uuid);
+            }
         if ($keyword === '') {
             return response()->json([
                 'message' => 'Invalid keyword'
