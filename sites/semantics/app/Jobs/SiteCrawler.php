@@ -21,16 +21,18 @@ class SiteCrawler implements ShouldQueue
 
     private string $url;
     private string $totalCrawlLimit;
+    private string $typeContent;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $url, int $totalCrawlLimit)
+    public function __construct(string $url, int $totalCrawlLimit, string $typeContent)
     {
         $this->url = $url;
         $this->totalCrawlLimit = $totalCrawlLimit;
+        $this->typeContent = $typeContent;
     }
 
     /**
@@ -42,8 +44,8 @@ class SiteCrawler implements ShouldQueue
     {
         $uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $uuid);
-
-        Job::create(['uuid' => $uuid , 'name' => $this->url, 'user_id' => 1, 'type_id' => 2, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['url' => $this->url, 'total_crawl_limit' => $this->totalCrawlLimit]]);
+        $domain = ucFirst(str_replace("-", ' ' , current(explode(".", str_replace('www.', '', parse_url($this->url, PHP_URL_HOST))))));
+        Job::create(['uuid' => $uuid , 'name' => $domain, 'user_id' => 1, 'type_id' => 2, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['url' => $this->url, 'total_crawl_limit' => $this->totalCrawlLimit, 'type_content' => $this->typeContent]]);
 
         Crawler::create()
             ->setCrawlObserver(new CustomCrawler($uuid, 1))

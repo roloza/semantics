@@ -15,6 +15,7 @@ use App\Models\SyntexAuditIncl;
 use App\Models\SyntexAuditListe;
 use App\Models\SeoAuditStructure;
 use App\Models\SyntexDescripteur;
+use GuzzleHttp\Psr7\Uri;
 
 /**
  * Class PingController
@@ -41,20 +42,21 @@ class SemanticsController extends Controller
         $url = $request->url ?? '';
         $keyword = $request->keyword ?? '';
         $totalCrawlLimit = $request->total_crawl_limit ?? 10;
-        $isNews = $request->news ? (bool)$request->news : false;
+        $isNews = $request->is_news ? (bool)$request->is_news : false;
+        $typeContent = $request->type_content ? $request->type_content : 'all';
 
         $this->type = Type::where('slug', $typeParam)->first();
 
         switch($this->type->slug) {
             case 'site':
-                $uuid = $this->launchJobSite($url, $totalCrawlLimit);
+                $uuid = $this->launchJobSite($url, $totalCrawlLimit, $typeContent);
                 break;
             case 'web':
-                $uuid = $this->launchJobWeb($keyword, $totalCrawlLimit, $isNews);
+                $uuid = $this->launchJobWeb($keyword, $totalCrawlLimit, $isNews, $typeContent);
                 break;
             case 'page':
             default:
-                $uuid = $this->launchJobPage($url);
+                $uuid = $this->launchJobPage($url, $typeContent);
                 break;
         }
 
@@ -93,11 +95,12 @@ class SemanticsController extends Controller
         if ($res !== null) $res->delete();
     }
 
-    private function launchJobPage($url)
+    private function launchJobPage($url, $typeContent)
     {
         $job = Job::where('user_id', 1)
             ->where('params.url', $url)
             ->where('type_id', $this->type->id)
+            ->where('params.type_content',$typeContent)
             ->first();
         if ($job !== null) {
             $this->destroy($job->uuid);
@@ -108,15 +111,16 @@ class SemanticsController extends Controller
                 'message' => 'Invalid url'
             ], 200);
         }
-        return $this->dispatch(new PageCrawler($url));
+        return $this->dispatch(new PageCrawler($url, $typeContent));
     }
 
-    private function launchJobSite($url, $totalCrawlLimit = 10)
+    private function launchJobSite($url, $totalCrawlLimit = 10, $typeContent)
     {
         $job = Job::where('user_id', 1)
             ->where('params.url', $url)
-            ->where('params.total_crawl_limit', $totalCrawlLimit)
+            ->where('params.total_crawl_limit',(string)$totalCrawlLimit)
             ->where('type_id', $this->type->id)
+            ->where('params.type_content', $typeContent)
             ->first();
         if ($job !== null) {
             $this->destroy($job->uuid);
@@ -126,16 +130,17 @@ class SemanticsController extends Controller
                 'message' => 'Invalid url'
             ], 200);
         }
-        return $this->dispatch(new SiteCrawler($url, $totalCrawlLimit));
+        return $this->dispatch(new SiteCrawler($url, $totalCrawlLimit, $typeContent));
     }
 
-    private function launchJobWeb($keyword, $totalCrawlLimit, $isNews)
+    private function launchJobWeb($keyword, $totalCrawlLimit, $isNews, $typeContent)
     {
         $job = Job::where('user_id', 1)
             ->where('params.keyword', $keyword)
-            ->where('params.total_crawl_limit', $totalCrawlLimit)
-            ->where('params.is_news', $isNews)
+            ->where('params.total_crawl_limit', (string)$totalCrawlLimit)
+            ->where('params.is_news', (int)$isNews)
             ->where('type_id', $this->type->id)
+            ->where('params.type_content', $typeContent)
             ->first();
             if ($job !== null) {
                 $this->destroy($job->uuid);
@@ -145,6 +150,6 @@ class SemanticsController extends Controller
                 'message' => 'Invalid keyword'
             ], 200);
         }
-        return $this->dispatch(new WebCrawler($keyword, $totalCrawlLimit, $isNews));
+        return $this->dispatch(new WebCrawler($keyword, $totalCrawlLimit, $isNews, $typeContent));
     }
 }

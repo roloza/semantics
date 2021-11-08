@@ -4,7 +4,7 @@
     <div class="pos intro-y grid grid-cols-12 gap-5 mt-5">
         <div class="col-span-12 xl:col-span-12">
             <div class="intro-y block sm:flex items-center h-10">
-                <h3 class="text-lg font-medium mr-auto">{{ $job->failed_job === null ? $job->status->name : 'Erreur'}}</h3>
+                <h3 class="text-lg font-medium mr-auto">{{ $job->message }}</h3>
                 @if(isset($job->status) && $job->status->id === 3)
                 <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
                     <a href="{{ route('accueil') }}" class="btn box flex items-center text-gray-700 dark:text-gray-300">

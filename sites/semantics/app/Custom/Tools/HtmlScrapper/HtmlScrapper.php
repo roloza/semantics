@@ -566,7 +566,7 @@ class HtmlScrapper extends HtmlScrapperFilters {
 
     public function getLightContentText()
     {
-        return $this->contentToText($this->getLightContent(['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p'], false, false, false), 1500);
+        return $this->contentToText($this->getLightContent(['h1', 'h2', 'h3', 'p'], false, false, false), 1500);
     }
 
     public function contentToText($phrases, $max = 10000) {

@@ -30,17 +30,19 @@ class WebCrawler implements ShouldQueue
     private string $isNews;
     private string $uuid;
     private string $totalCrawlLimit;
+    private string $typeContent;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $keyword, int $totalCrawlLimit, bool $isNews)
+    public function __construct(string $keyword, int $totalCrawlLimit, bool $isNews, string $typeContent)
     {
         $this->keyword = $keyword;
         $this->isNews = $isNews;
         $this->totalCrawlLimit = $totalCrawlLimit;
+        $this->typeContent = $typeContent;
     }
 
     /**
@@ -53,9 +55,9 @@ class WebCrawler implements ShouldQueue
         $this->uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $this->uuid);
 
-        Job::create(['uuid' => $this->uuid, 'name' => $this->keyword, 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['url' => $this->url, 'total_crawl_limit' => $this->totalCrawlLimit, 'is_news' => $this->isNews]]);
+        Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->keyword), 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['keyword' => $this->keyword, 'total_crawl_limit' => $this->totalCrawlLimit, 'is_news' => (int)$this->isNews, 'type_content' => $this->typeContent]]);
 
-        if ($this->isNews) {
+        if ((bool)$this->isNews) {
             $webCrawler = new GoogleNewsRss($this->keyword);
             $this->getByWebCrawler($webCrawler);
         } else {

@@ -2,20 +2,16 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Controllers\CrawlerController;
-use App\Jobs\jobCrawler;
-use App\Models\JobStatus;
-use App\Models\Task;
-use Illuminate\Bus\Dispatcher;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Livewire\Component;
 
 class AnalyseComponent extends Component
 {
-    use DispatchesJobs;
     protected $listeners = ['startAnalyse' => 'startAnalyse', 'jobSuccess' => 'jobSuccess', 'jobError' => 'jobError'];
     public $url;
-    public $type = 'all';
+    public $keyword = '';
+    public $total_crawl_limit;
+    public $is_news = '0';
+    public $type_content = 'all';
     public $state = ['label' => 'Lancer', 'class' => 'btn-primary'];
     public $active = 0;
     public $uuid = '';

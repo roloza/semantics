@@ -17,17 +17,17 @@
                             <div class="flex flex-col sm:flex-row mt-2">
                                 <label for="horizontal-form-1" class="form-label sm:w-20">Type</label>
                                 <div class="form-check mr-2">
-                                     <input id="radio-switch-4" class="form-check-input" type="radio" name="type" value="all"  wire:model.lazy="type">
+                                     <input id="radio-switch-4" class="form-check-input" type="radio" name="type_content" value="all"  wire:model.lazy="type_content">
                                     <label class="form-check-label" for="radio-switch-4">
                                         Tout le contenu
                                         <a href="javascript:;" data-theme="light" class="tooltip" title="L'ensemble du contenu texte présent dans la page sera pris en compte pour l'analyse sémantique."><i data-feather="help-circle" class="w-4 h-4 mr-2"></i></a>
                                     </label>
                                 </div>
                                 <div class="form-check mr-2 mt-2 sm:mt-0">
-                                    <input id="radio-switch-5" class="form-check-input" type="radio" name="type" value="usefull"  wire:model.lazy="type">
+                                    <input id="radio-switch-5" class="form-check-input" type="radio" name="type_content" value="usefull"  wire:model.lazy="type_content">
                                     <label class="form-check-label" for="radio-switch-5">
                                         Contenu utile uniquement
-                                        <a href="javascript:;" data-theme="light" class="tooltip" title="Seules certaines balises HTML importantes seront utilisées pour l'analyse sémantique."><i data-feather="help-circle" class="w-4 h-4 mr-2"></i></a>
+                                        <a href="javascript:;" data-theme="light" class="tooltip" title="Seules certaines balises HTML importantes seront utilisées pour l'analyse sémantique. Permet une analyse plus rapide"><i data-feather="help-circle" class="w-4 h-4 mr-2"></i></a>
                                     </label>
                                 </div>
                             </div>

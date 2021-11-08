@@ -12,8 +12,8 @@
                 <input id="vertical-form-1" type="text" class="form-control form-control-rounded"
                        placeholder="Url à analyser ... ">
                 <div class="flex justify-center">
-                    <button class="btn btn-secondary mt-5">Démarrer l'analyse</button>
-                    <button class="btn btn-secondary ml-5 mt-5"><i data-feather="settings" class="w-4 h-4 mr-2"></i>Mode Avancé</button>
+                    <button class="btn btn-secondary mt-5"><i class="fas fa-search"></i><span class="ml-2">Démarrer l'analyse</span></button>
+                    <a href="{{ route('analyse.launcher.page') }}" class="btn btn-secondary ml-5 mt-5"><i class="fas fa-cog"></i><span class="hidden md:block ml-2">Mode Avancé</span></a>
                 </div>
             </div>
         </div>

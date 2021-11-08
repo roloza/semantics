@@ -42,7 +42,14 @@
                     @foreach($jobs as $k => $job)
                     <tr>
                         <td class="border-b dark:border-dark-5">{{ $job->type->name }}</td>
-                        <td class="border-b dark:border-dark-5">{{ $job->name }}</td>
+                        <td class="border-b dark:border-dark-5">
+                            <div class="font-medium whitespace-nowrap">{{ $job->name }}</div>
+                            <div class="text-gray-600 text-xs whitespace-nowrap">
+                                @foreach($job->params as $name => $param)
+                                    <strong>{{$name}}:</strong> {{$param}}<br>
+                                @endforeach
+                            </div>
+                        </td>
                         <td class="border-b dark:border-dark-5">
                             @if($job->failed_job === null)
                                 <span class="py-1 px-2 rounded-full text-xs bg-theme-9 text-white font-medium">
@@ -57,12 +64,8 @@
 
                         <td class="border-b dark:border-dark-5">
                             @if(isset($job->status) && $job->status->id === 3)
-                                <a href="{{ route('accueil', $job->uuid) }}" class="btn btn-primary mr-1 mb-2 tooltip" title="Consulter">
-                                   +
-                                </a>
-                                <button class="btn btn-danger mr-1 mb-2 tooltip" title="Supprimer" wire:click="deleteJob('{{ $job->uuid }}')">
-                                    -
-                                </button>
+                                <a href="{{ route('accueil', $job->uuid) }}" class="btn btn-primary mr-1 mb-2 tooltip" title="Consulter"><i class="fas fa-eye"></i></a>
+                                <button class="btn btn-danger mr-1 mb-2 tooltip" title="Supprimer" wire:click="deleteJob('{{ $job->uuid }}')"><i class="fas fa-trash"></i></button>
                                 @endif
                         </td>
 

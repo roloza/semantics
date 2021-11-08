@@ -2,9 +2,6 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Task;
-use App\Jobs\jobCrawler;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\SemanticsController;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 
@@ -14,7 +11,7 @@ class AnalysePage extends AnalyseComponent
 
     protected $rules = [
         'url' => 'required|url',
-        'type' => 'required',
+        'type_content' => '',
     ];
 
     public function submit()
@@ -27,6 +24,7 @@ class AnalysePage extends AnalyseComponent
         $request = new \Illuminate\Http\Request();
         $request->replace([
             'url' => $validatedData['url'],
+            'type_content' => $validatedData['type_content'] ?? 'all',
             'type' => 'page'
         ]);
         $response = app(SemanticsController::class)->store($request);

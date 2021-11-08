@@ -19,12 +19,14 @@ class CustomCrawler extends CrawlObserver
     protected $uuid;
     private $count;
     private $maximumCrawlCount;
+    private $typeContent;
 
-    public function __construct($uuid, $maximumCrawlCount)
+    public function __construct($uuid, $maximumCrawlCount, $typeContent = 'full')
     {
         $this->uuid = $uuid;
         $this->count = 0;
         $this->maximumCrawlCount = (int)$maximumCrawlCount;
+        $this->typeContent  = $typeContent;
     }
 
     public function willCrawl(UriInterface $url): void
@@ -51,8 +53,11 @@ class CustomCrawler extends CrawlObserver
 
         $htmlParser = new HtmlScrapper((string)$response->getBody(), $url);
 
-        // $content = $htmlParser->getFullContentText();
-        $content = $htmlParser->getLightContentText();
+        if ($this->typeContent === 'full') {
+            $content = $htmlParser->getFullContentText();
+        } else {
+            $content = $htmlParser->getLightContentText();
+        }
 
         $detector = new LanguageDetector();
         $language = $detector->evaluate($content)->getLanguage();
