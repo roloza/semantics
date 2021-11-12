@@ -40,4 +40,53 @@ class SyntexAuditListe extends Model
             Log::error('[SyntexAuditListe] - ' .$e->getMessage());
         }
     }
+
+    public function scopeGetBestKeywords($query, $uuid)
+    {
+        $query->where('uuid', $uuid);
+        $query->whereIn('cat', ['SN', 'SV']);
+        return $query;
+    }
+
+    public function scopeGetAuditList($query, $uuid)
+    {
+        $query->where('uuid', $uuid);
+        $query->whereIn('cat', ['SN', 'SV', 'N', 'V']);
+        $query->orderBy('score', 'DESC');
+        $query->take(75);
+        return $query;
+    }
+
+    public static function getDataWordCloud($uuid)
+    {
+        $auditList = self::getAuditList($uuid)->get();
+
+        $dataWordCloud = [];
+        foreach ($auditList as $keyword) {
+
+            $data[] = [
+                'name' => $keyword->lemme,
+                'weight' => (int)$keyword->score
+            ];
+
+        }
+        return json_encode($data);
+    }
+
+    public function scopeTableUrlDetail($query, $params)
+    {
+        if (isset($params['uuid']) && $params['uuid'] !== '') {
+            $query->where('uuid', $params['uuid']);
+        }
+        if (isset($params['search']) && $params['search'] !== '') {
+            $query->where('lemme', 'LIKE', "%{$params['search']}%");
+        }
+        if (isset($params['category_name']) && $params['category_name'] !== '') {
+            $query->where('category_name',  $params['category_name']);
+        }
+        if (isset($params['longueur']) && $params['longueur'] !== '') {
+            $query->whereIn('longueur',  $params['longueur']);
+        }
+        return $query;
+    }
 }

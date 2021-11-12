@@ -5,3 +5,22 @@
 .side-nav>ul ul.hide {
     display: none!important;
 }
+
+
+/* Keyword graph component */
+#loader {
+    text-align: center;
+    padding-top: 80px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(127,127,127,.7);
+}
+#loader div {
+    font-size: 1.5rem;
+    margin-top: 50px;
+}
+/* END Keyword graph component */

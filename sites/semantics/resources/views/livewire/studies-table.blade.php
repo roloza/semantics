@@ -51,22 +51,30 @@
                             </div>
                         </td>
                         <td class="border-b dark:border-dark-5">
-                            @if($job->failed_job === null)
-                                <span class="py-1 px-2 rounded-full text-xs bg-theme-9 text-white font-medium">
-                                    {{ isset($job->status->name) ? $job->status->name : 'En attente'}}
-                                </span>
-                            @else
-                                <span class="py-1 px-2 rounded-full text-xs bg-theme-6 text-white font-medium">
-                                    Erreur
-                                </span>
+                            @if(isset($job->status))
+                                @if($job->status->id === 2 )
+                                    <span class="py-1 px-2 rounded-full text-xs bg-theme-1 text-white font-medium">
+                                @endif
+                                @if($job->status->id === 3 )
+                                    <span class="py-1 px-2 rounded-full text-xs bg-theme-9 text-white font-medium">
+                                @endif
+                                @if($job->status->id === 4 )
+                                    <span class="py-1 px-2 rounded-full text-xs bg-theme-6 text-white font-medium">
+                                @endif
+                                {{ isset($job->status->name) ? $job->status->name : 'En attente'}}
+                            </span>
                             @endif
                         </td>
 
                         <td class="border-b dark:border-dark-5">
-                            @if(isset($job->status) && $job->status->id === 3)
-                                <a href="{{ route('accueil', $job->uuid) }}" class="btn btn-primary mr-1 mb-2 tooltip" title="Consulter"><i class="fas fa-eye"></i></a>
-                                <button class="btn btn-danger mr-1 mb-2 tooltip" title="Supprimer" wire:click="deleteJob('{{ $job->uuid }}')"><i class="fas fa-trash"></i></button>
+                            @if(isset($job->status))
+                                @if($job->status->id === 3)
+                                    <a href="{{ route('analyse.' . $job->type->slug . '.show', $job->uuid) }}" class="btn btn-primary mr-1 mb-2 tooltip" title="Consulter"><i class="fas fa-eye"></i></a>
                                 @endif
+                                @if($job->status->id >= 3)
+                                    <button class="btn btn-danger mr-1 mb-2 tooltip" title="Supprimer" wire:click="deleteJob('{{ $job->uuid }}')"><i class="fas fa-trash"></i></button>
+                                @endif
+                            @endif
                         </td>
 
                     </tr>

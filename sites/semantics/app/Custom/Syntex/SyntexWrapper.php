@@ -54,12 +54,15 @@ class SyntexWrapper
         $csv->setDelimiter("\t");
         $csv->setHeaderOffset(0);
 
+        $data = [];
+        $max = 500;
+
         foreach ($csv->getRecords() as $offset => $record) {
             $formes = explode(';', $record['forme']);
             $lemme = utf8_encode($record['lemme']);
             $cat = utf8_encode($record['cat']);
             $category = CatGrammatical::where('sigle', $cat)->first();
-            $data = [
+            $data[] = [
                 'uuid' => $this->uuid,
                 'doc_id' => (int)$record['iddoc'],
                 'score' => (int)$record['score'] * 100,
@@ -75,7 +78,22 @@ class SyntexWrapper
                 'freq_pond' => (float)$record['freq pond'],
                 'longueur' => preg_match_all('/\pL+/u',$lemme, $matches)
             ];
-            SyntexDescripteur::insertUpdate($data);
+
+            if(sizeof($data) > $max) {
+                try {
+                    Log::debug('SyntexDescripteur::massInsert - ' . sizeof($data));
+                    SyntexDescripteur::insert($data);
+                } catch (\Exception $exception) {
+                    Log::error($exception->getMessage());
+                }
+                $data = [];
+            }
+        }
+        try {
+            Log::debug('SyntexDescripteur::last massInsert - ' . sizeof($data));
+            SyntexDescripteur::insert($data);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
         }
     }
 
@@ -84,12 +102,15 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/rt_liste.txt', 'r');
         $csv->setDelimiter("\t");
 
+        $data = [];
+        $max = 500;
+
         foreach ($csv->getRecords() as $offset => $record) {
             $formes = explode(';', $record[3]);
             $lemme = utf8_encode($record[2]);
             $cat = utf8_encode($record[1]);
             $category = CatGrammatical::where('sigle', $cat)->first();
-            $data = [
+            $data[] = [
                 'uuid' => $this->uuid,
                 'num' => (int)$record[0],
                 'cat' => $cat,
@@ -102,7 +123,23 @@ class SyntexWrapper
                 'nincl' => (int)$record[14],
                 'longueur' => preg_match_all('/\pL+/u',$lemme, $matches)
             ];
-            SyntexRtListe::insertUpdate($data);
+
+            if(sizeof($data) > $max) {
+                try {
+                    Log::debug('rtListe::massInsert - ' . sizeof($data));
+                    SyntexRtListe::insert($data);
+                } catch (\Exception $exception) {
+                    Log::error($exception->getMessage());
+                }
+                $data = [];
+            }
+        }
+
+        try {
+            Log::debug('rtListe::last massInsert - ' . sizeof($data));
+            SyntexRtListe::insert($data);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
         }
     }
 
@@ -111,11 +148,14 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_liste.txt', 'r');
         $csv->setDelimiter("\t");
 
+        $data = [];
+        $max = 500;
+
         foreach ($csv->getRecords() as $offset => $record) {
             $lemme = trim(str_replace('(v)', '', utf8_encode($record[2])));
             $cat = utf8_encode($record[1]);
             $category = CatGrammatical::where('sigle', $cat)->first();
-            $data = [
+            $data[] = [
                 'uuid' => $this->uuid,
                 'num' => (int)$record[0],
                 'cat' => $cat,
@@ -129,7 +169,22 @@ class SyntexWrapper
                 'nbdoc_num' => (int)$record[7],
                 'nbdec_num' => (int)$record[8],
             ];
-            SyntexAuditListe::insertUpdate($data);
+            if(sizeof($data) > $max) {
+                try {
+                    Log::debug('auditListe::massInsert - ' . sizeof($data));
+                    SyntexAuditListe::insert($data);
+                } catch (\Exception $exception) {
+                    Log::error($exception->getMessage());
+                }
+                $data = [];
+            }
+        }
+
+        try {
+            Log::debug('auditListe::last massInsert - ' . sizeof($data));
+            SyntexAuditListe::insert($data);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
         }
     }
 
@@ -138,14 +193,28 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_incl.txt', 'r');
         $csv->setDelimiter("\t");
 
+        $data = [];
+        $max = 500;
+
         foreach ( $csv->getRecords() as $offset => $record) {
-            $data = [
+            $data[] = [
                 'uuid' => $this->uuid,
                 'num_1' => (int)$record[0],
                 'num_2' => (int)$record[1],
             ];
-            SyntexAuditIncl::insertUpdate($data);
+            if(sizeof($data) > $max) {
+                try {
+                    Log::debug('auditIncl::massInsert - ' . sizeof($data));
+                    SyntexAuditIncl::insert($data);
+                } catch (\Exception $exception) {
+                    Log::error($exception->getMessage());
+                }
+                $data = [];
+            }
         }
+            Log::debug('auditIncl::last massInsert - ' . sizeof($data));
+            SyntexAuditIncl::insert($data);
+
     }
 
     public function auditDesc()
@@ -153,10 +222,13 @@ class SyntexWrapper
         $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/audit_desc.txt', 'r');
         $csv->setDelimiter("\t");
 
+        $data = [];
+        $max = 500;
+
         foreach ($csv->getRecords() as $offset => $record) {
             $formes = explode(';', $record[6]);
             $forme = utf8_encode(current($formes));
-            $data = [
+            $data[] = [
                 'uuid' => $this->uuid,
                 'doc_id' => (int)$record[1],
                 'num' => (int)$record[2],
@@ -166,7 +238,22 @@ class SyntexWrapper
                 'forme' => $forme,
                 'longueur' => preg_match_all('/\pL+/u',$forme, $matches),
             ];
-            SyntexAuditDesc::insertUpdate($data);
+            if(sizeof($data) > $max) {
+                try {
+                    Log::debug('auditDesc::massInsert - ' . sizeof($data));
+                    SyntexAuditDesc::insert($data);
+                } catch (\Exception $exception) {
+                    Log::error($exception->getMessage());
+                }
+                $data = [];
+            }
+        }
+
+        try {
+            Log::debug('auditDesc::last massInsert - ' . sizeof($data));
+            SyntexAuditDesc::insert($data);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
         }
     }
 

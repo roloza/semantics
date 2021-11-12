@@ -13,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Spatie\Crawler\CrawlProfiles\CrawlInternalUrls;
 
 class SiteCrawler implements ShouldQueue
 {
@@ -50,6 +50,7 @@ class SiteCrawler implements ShouldQueue
         Crawler::create()
             ->setCrawlObserver(new CustomCrawler($uuid, 1))
             ->setTotalCrawlLimit($this->totalCrawlLimit)
+            ->setCrawlProfile(new CrawlInternalUrls($this->url))
             ->startCrawling($this->url);
 
         Job::where('uuid', $uuid)->update(['percentage' => 60, 'message' => 'Analyse linguistique en cours']);

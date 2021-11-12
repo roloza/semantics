@@ -14,6 +14,7 @@
 
     <!-- BEGIN: CSS Assets-->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @yield('style')
     @livewireStyles
     <!-- END: CSS Assets-->
 </head>
@@ -23,7 +24,7 @@
 
     {{-- <x-layout.nav-mobile></x-layout.nav-mobile> --}}
     {{-- <div class="flex"> --}}
-    <div class="md:flex flex-col md:flex-row md:min-h-screen w-full">
+    <div class="flex">
         <x-layout.nav-desktop></x-layout.nav-desktop>
         <div class="content">
             <x-layout.top-bar></x-layout.top-bar>

@@ -20,7 +20,7 @@ class ProgessTask extends Component
         $job = Job::find($this->uuid);
         if ( $job !== null && $job->status->id === 3) {
             $this->emitUp('jobSuccess');
-        } elseif ($job !== null && $job->failed_job !== null) {
+        } elseif ($job !== null && $job->status->id === 4) {
             $this->emitUp('jobError');
         }
         return view('livewire.progess-task', [

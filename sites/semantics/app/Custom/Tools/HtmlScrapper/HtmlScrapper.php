@@ -375,13 +375,6 @@ class HtmlScrapper extends HtmlScrapperFilters {
         foreach ($links as $link) {
             // Generate the proper uri using the Symfony's link class
             $linkObj = new \Symfony\Component\DomCrawler\Link($link, $this->uri);
-            $linkObjSpatie = null;
-            try {
-                $linkObjSpatie = \Spatie\Url\Url::fromString($linkObj->getUri());
-            } catch(\Exception $e) {
-               Log::error($e->getMessage());
-               continue;
-            }
 
             // Check if the anchor is maybe only an image.
             $image = [];
@@ -399,7 +392,7 @@ class HtmlScrapper extends HtmlScrapperFilters {
                 'target' => $link->getAttribute('target') == '' ? null : $link->getAttribute('target'),
                 'rel' => $link->getAttribute('rel') == '' ? null : strtolower($link->getAttribute('rel')),
                 'image' => $image,
-                'type' => ($this->uri->getHost() === $linkObjSpatie->getHost()) ? 'internal' : 'external',
+                // 'type' => ($this->uri->getHost() === $linkObjSpatie->getHost()) ? 'internal' : 'external',
                 'count' => $linksCount[$linkObj->getUri()] ?? 1
             ];
 

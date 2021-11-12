@@ -19,7 +19,7 @@ class AnalysePage extends AnalyseComponent
         $validatedData = $this->validate();
 
         $this->state = ['label' => 'En cours', 'class' => 'btn-dark'];
-        $this->active = 1;
+        $this->active = 2;
 
         $request = new \Illuminate\Http\Request();
         $request->replace([

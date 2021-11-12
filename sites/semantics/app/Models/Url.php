@@ -14,12 +14,12 @@ class Url extends Model
     protected $connection = 'mongodb';
     protected $primaryKey = 'uuid';
 
-    // protected $fillable = [
-    //     'uuid',
-    //     'url',
-    //     'title',
-    //     'content',
-    // ];
+    protected $fillable = [
+        'uuid',
+        'url',
+        'title',
+        'content',
+    ];
 
     public static function insertUpdate($data)
     {
@@ -37,5 +37,11 @@ class Url extends Model
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
+    }
+
+    public function scopeGetStudyUrls($query, $uuid)
+    {
+        $query->where('uuid', $uuid);
+        return $this->query;
     }
 }

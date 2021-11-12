@@ -38,8 +38,6 @@ class StudiesTable extends TableComponent
         $semanticController = new SemanticsController();
         $semanticController->destroy($uuid);
 
-
-
         session()->flash('message', 'Tache supprimée avec succès : ' . $job->type->name . ' - ' . $job->name . '(' . $job->uuid . ')');
     }
 }

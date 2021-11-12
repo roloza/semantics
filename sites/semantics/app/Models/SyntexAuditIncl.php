@@ -33,4 +33,22 @@ class SyntexAuditIncl extends Model
             Log::error('[SyntexAuditIncl] - ' .$e->getMessage());
         }
     }
+
+    public function scopeGetChildNums($query, $uuid, $num)
+    {
+        $query->where('uuid', $uuid);
+        $query->where('num_1', $num);
+        $query->where('num_2', '<>', $num);
+        return $query;
+    }
+
+    public function scopeGetParentNums($query, $uuid, $num)
+    {
+        $query->where('uuid', $uuid);
+        $query->where('num_2', $num);
+        $query->where('num_1', '<>', $num);
+        return $query;
+    }
+
+
 }

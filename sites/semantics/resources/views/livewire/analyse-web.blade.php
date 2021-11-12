@@ -67,19 +67,19 @@
                         <div class="sm:ml-20 sm:pl-5 mt-5">
                             <button class="btn {{ $state['class'] }} mr-1 mb-2" @if($active > 0)disabled @endif>
                                 {{ $state['label'] }}
-                                @if($active === 1)
-                                <svg width="25" viewBox="-2 -2 42 42" xmlns="http://www.w3.org/2000/svg" stroke="white" class="w-4 h-4 ml-2">
-                                    <g fill="none" fill-rule="evenodd">
-                                        <g transform="translate(1 1)" stroke-width="4">
-                                            <circle stroke-opacity=".5" cx="18" cy="18" r="18"></circle>
-                                            <path d="M36 18c0-9.94-8.06-18-18-18">
-                                                <animateTransform attributeName="transform" type="rotate" from="0 18 18" to="360 18 18" dur="1s" repeatCount="indefinite"></animateTransform>
-                                            </path>
-                                        </g>
-                                    </g>
-                                </svg>
+                                @if($active === 2)
+                                    <div class="fa-1x ml-2">
+                                        <i class="fas fa-cog fa-spin"></i>
+                                    </div>
+                                @endif
+                                @if($active === 4)
+                                    <i class="fas fa-exclamation-triangle ml-2"></i>
                                 @endif
                             </button>
+                            @if($active >=3)
+                                <a href="{{ route('analyse.launcher.page') }}" class="btn btn-primary mr-1 mb-2">Nouveau <i class="fas fa-plus ml-2"></i></a>
+                            @endif
+
                         </div>
                     </div>
                 </form>

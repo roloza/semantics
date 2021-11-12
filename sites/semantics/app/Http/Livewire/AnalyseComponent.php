@@ -18,13 +18,13 @@ class AnalyseComponent extends Component
 
     public function jobSuccess()
     {
-        $this->active = 2;
+        $this->active = 3;
         $this->state = ['label' => 'Terminé', 'class' => 'btn-success'];
     }
 
     public function jobError()
     {
-        $this->active = 3;
+        $this->active = 4;
         $this->state = ['label' => 'Erreur', 'class' => 'btn-danger'];
     }
 
