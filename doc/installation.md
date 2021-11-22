@@ -21,6 +21,9 @@ Sudo usermod -a -G www-data roloza
 ### Migrations
 ```
 php artisan migrate:refresh
+php artisan migrate:refresh --seed
+
+php artisan db:seed
 
 php artisan db:seed --class=TypeSeeder
 php artisan db:seed --class=StatusSeeder

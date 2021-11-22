@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\HybridRelations;
-
+// use Jenssegers\Mongodb\Eloquent\Model;
+// use Jenssegers\Mongodb\Eloquent\HybridRelations;
+use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    use HybridRelations;
+    // use HybridRelations;
 
-    protected $collection = 'jobs';
-    protected $connection = 'mongodb';
-    protected $primaryKey = 'uuid';
+    protected $table = 'jobs';
+    // protected $collection = 'jobs';
+    // protected $connection = 'mongodb';
+    // protected $primaryKey = 'uuid';
 
     public $timestamps = true;
 
@@ -25,15 +26,20 @@ class Job extends Model
         'status_id',
         'percentage',
         'message',
-        'params',
     ];
 
     protected $with = [
+        'parameters',
         'failedJob',
         'type',
         'user',
         'status'
     ];
+
+    public function parameters()
+    {
+        return $this->belongsToMany(Parameters::class, 'job_parameter', 'job_id', 'parameter_id');
+    }
 
     public function failedJob()
     {
@@ -62,5 +68,26 @@ class Job extends Model
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
+    }
+
+    public static function hasJob($params, $userId, $typeId)
+    {
+        $query = self::query();
+        $query->where('user_id', $userId);
+        $query->where('type_id', $typeId);
+
+        $jobs = $query->get();
+        foreach($jobs as $job) {
+            $sameJob = true;
+            foreach($job->parameters as $parameter) {
+                if ($params[$parameter->name] !== $parameter->value) {
+                    $sameJob = false;
+                }
+            }
+            if ($sameJob) {
+                return $job;
+            }
+        }
+        return false;
     }
 }

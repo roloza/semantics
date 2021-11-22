@@ -46,7 +46,7 @@
             }
 
             var loadNetworkGraph = function(keyword) {
-                anychart.data.loadJsonFile("{{ route('ajax.networkgraph-data', $uuid) }}?keyword=" + keyword, function (data) {
+                anychart.data.loadJsonFile("{{ route('ajax.networkgraph-data', $job->uuid) }}?keyword=" + keyword, function (data) {
 
                     // create a chart from the loaded data
                     var chart = anychart.graph(data);

@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Support\Facades\Log;
 use Jenssegers\Mongodb\Eloquent\Model;
 
-
-
 class SeoAuditStructure extends Model
 {
 

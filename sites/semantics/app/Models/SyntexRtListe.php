@@ -4,16 +4,19 @@ namespace App\Models;
 
 use App\Custom\Tools\StopWords;
 use Illuminate\Support\Facades\Log;
-use Jenssegers\Mongodb\Eloquent\Model;
+// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class SyntexRtListe extends Model
 {
     use HasFactory;
+    use \Awobaz\Compoships\Compoships;
 
-    protected $collection = 'syntex_rt_listes';
-    protected $connection = 'mongodb';
-    protected $primaryKey = 'uuid';
+    protected $table = 'syntex_rt_listes';
+    // protected $collection = 'syntex_rt_listes';
+    // protected $connection = 'mongodb';
+    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',
@@ -104,7 +107,7 @@ class SyntexRtListe extends Model
                 continue;
             }
             $query = self::query();
-            $query->where('job_id', $uuid);
+            $query->where('uuid', $uuid);
             $query->where('lemme', '<>',  $keyword->lemme);
             $query->where('lemme', 'LIKE', '%' . $item . '%');
             $query->whereIn('longueur', [2, 3]);

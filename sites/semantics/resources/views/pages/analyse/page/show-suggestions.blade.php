@@ -21,17 +21,17 @@
     </div>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
-        <livewire:suggestion-search :uuid="$uuid" :keyword="$keyword"/>
+        <livewire:suggestion-search :job="$job" :keyword="$keyword"/>
     </div>
 
     <div class="col-span-12 lg:col-span-3 xxl:col-span-2">
         <div class="intro-y box p-5 mt-6">
-            <x-analyse.partials.navigation :uuid="$uuid"/>
+            <x-analyse.partials.navigation :job="$job"/>
         </div>
     </div>
 </div>
 
 <div class="col-span-12">
-    <x-analyse.partials.network-graph :keyword="$keyword" :uuid="$uuid" />
+    <x-analyse.partials.network-graph :keyword="$keyword" :job="$job" />
 </div>
 @endsection

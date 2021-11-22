@@ -3,22 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
-use Jenssegers\Mongodb\Eloquent\Model;
+// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Model;
 class Url extends Model
 {
     use HasFactory;
+    use \Awobaz\Compoships\Compoships;
 
-    protected $collection = 'urls';
-    protected $connection = 'mongodb';
-    protected $primaryKey = 'uuid';
+    protected $table = 'urls';
+    // protected $collection = 'urls';
+    // protected $connection = 'mongodb';
+    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',
         'url',
         'title',
         'content',
+        'doc_id'
     ];
 
     public static function insertUpdate($data)
@@ -43,5 +46,12 @@ class Url extends Model
     {
         $query->where('uuid', $uuid);
         return $this->query;
+    }
+
+    public function scopeGetUrl($query, $uuid, $docId)
+    {
+        $query->where('uuid', $uuid);
+        $query->where('doc_id', $docId);
+        return $query;
     }
 }

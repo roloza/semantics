@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\Url;
 use App\Models\Type;
+use App\Jobs\SuggestJob;
 use App\Jobs\WebCrawler;
+use GuzzleHttp\Psr7\Uri;
 use App\Jobs\PageCrawler;
 use App\Jobs\SiteCrawler;
 use Illuminate\Http\Request;
@@ -15,7 +17,6 @@ use App\Models\SyntexAuditIncl;
 use App\Models\SyntexAuditListe;
 use App\Models\SeoAuditStructure;
 use App\Models\SyntexDescripteur;
-use GuzzleHttp\Psr7\Uri;
 
 /**
  * Class PingController
@@ -48,15 +49,22 @@ class SemanticsController extends Controller
         $this->type = Type::where('slug', $typeParam)->first();
 
         switch($this->type->slug) {
+            case 'suggest':
+                $params = ['keyword' => $keyword];
+                $uuid = $this->launchJobSuggest($params);
+                break;
             case 'site':
-                $uuid = $this->launchJobSite($url, $totalCrawlLimit, $typeContent);
+                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent];
+                $uuid = $this->launchJobSite($params);
                 break;
             case 'web':
-                $uuid = $this->launchJobWeb($keyword, $totalCrawlLimit, $isNews, $typeContent);
+                $params = ['keyword' => $keyword, 'totalCrawlLimit' => $totalCrawlLimit, 'isNews' => $isNews, 'typeContent' => $typeContent];
+                $uuid = $this->launchJobWeb($params);
                 break;
             case 'page':
             default:
-                $uuid = $this->launchJobPage($url, $typeContent);
+                $params = ['url' => $url, 'typeContent' => $typeContent];
+                $uuid = $this->launchJobPage($params);
                 break;
         }
 
@@ -70,86 +78,87 @@ class SemanticsController extends Controller
 
     public function destroy($uuid)
     {
-        $res = Job::find($uuid);
-        if ($res !== null) $res->delete();
+        Job::where('uuid', $uuid)->delete();
 
-        $res = SeoAuditStructure::find($uuid);
-        if ($res !== null) $res->delete();
+        SeoAuditStructure::where('uuid', $uuid)->delete();
 
-        $res = SyntexAuditIncl::find($uuid);
-        if ($res !== null) $res->delete();
+        SyntexAuditIncl::where('uuid', $uuid)->delete();
 
-        $res = SyntexAuditListe::find($uuid);
-        if ($res !== null) $res->delete();
+        SyntexAuditListe::where('uuid', $uuid)->delete();
 
-        $res = SyntexDescripteur::find($uuid);
-        if ($res !== null) $res->delete();
+        SyntexDescripteur::where('uuid', $uuid)->delete();
 
-        $res = SyntexRtListe::find($uuid);
-        if ($res !== null) $res->delete();
+        SyntexRtListe::where('uuid', $uuid)->delete();
 
-        $res = Url::find($uuid);
-        if ($res !== null) $res->delete();
+        Url::where('uuid', $uuid)->delete();
 
-        $res = SyntexAuditDesc::find($uuid);
-        if ($res !== null) $res->delete();
+        SyntexAuditDesc::where('uuid', $uuid)->delete();
     }
 
-    private function launchJobPage($url, $typeContent)
+    public function destroySuggest($uuid)
     {
-        $job = Job::where('user_id', 1)
-            ->where('params.url', $url)
-            ->where('type_id', $this->type->id)
-            ->where('params.type_content',$typeContent)
-            ->first();
-        if ($job !== null) {
+        Job::where('uuid', $uuid)->delete();
+        Url::where('uuid', $uuid)->delete();
+        SyntexRtListe::where('uuid', $uuid)->delete();
+        SyntexAuditIncl::where('uuid', $uuid)->delete();
+    }
+
+    private function launchJobPage($params)
+    {
+
+        $job = Job::hasJob($params, 1, $this->type->id);
+        if ($job) {
             $this->destroy($job->uuid);
         }
 
-        if (!$url = filter_var($url, FILTER_VALIDATE_URL)) {
+        if (!filter_var($params['url'], FILTER_VALIDATE_URL)) {
             return response()->json([
                 'message' => 'Invalid url'
             ], 200);
         }
-        return $this->dispatch(new PageCrawler($url, $typeContent));
+
+        return $this->dispatch(new PageCrawler($params));
     }
 
-    private function launchJobSite($url, $totalCrawlLimit = 10, $typeContent)
+    private function launchJobSite($params)
     {
-        $job = Job::where('user_id', 1)
-            ->where('params.url', $url)
-            ->where('params.total_crawl_limit',(string)$totalCrawlLimit)
-            ->where('type_id', $this->type->id)
-            ->where('params.type_content', $typeContent)
-            ->first();
-        if ($job !== null) {
+        $job = Job::hasJob($params, 1, $this->type->id);
+        if ($job) {
             $this->destroy($job->uuid);
         }
-        if (!$url = filter_var($url, FILTER_VALIDATE_URL)) {
+        if (!$url = filter_var($params['url'], FILTER_VALIDATE_URL)) {
             return response()->json([
                 'message' => 'Invalid url'
             ], 200);
         }
-        return $this->dispatch(new SiteCrawler($url, $totalCrawlLimit, $typeContent));
+        return $this->dispatch(new SiteCrawler($params));
     }
 
-    private function launchJobWeb($keyword, $totalCrawlLimit, $isNews, $typeContent)
+    private function launchJobWeb($params)
     {
-        $job = Job::where('user_id', 1)
-            ->where('params.keyword', $keyword)
-            ->where('params.total_crawl_limit', (string)$totalCrawlLimit)
-            ->where('params.is_news', (int)$isNews)
-            ->where('type_id', $this->type->id)
-            ->where('params.type_content', $typeContent)
-            ->first();
-            if ($job !== null) {
-                $this->destroy($job->uuid);
-            }
-        if ($keyword === '') {
+        $job = Job::hasJob($params, 1, $this->type->id);
+        if ($job) {
+            $this->destroy($job->uuid);
+        }
+        if ($params['keyword'] === '') {
             return response()->json([
                 'message' => 'Invalid keyword'
             ], 200);
         }
-        return $this->dispatch(new WebCrawler($keyword, $totalCrawlLimit, $isNews, $typeContent));
+        return $this->dispatch(new WebCrawler($params));
+    }
+
+    private function launchJobSuggest($params)
+    {
+        $job = Job::hasJob($params, 1, $this->type->id);
+        if ($job) {
+            $this->destroySuggest($job->uuid);
+        }
+        if ($params['keyword'] === '') {
+            return response()->json([
+                'message' => 'Invalid keyword'
+            ], 200);
+        }
+        return $this->dispatch(new SuggestJob($params));
     }
 }

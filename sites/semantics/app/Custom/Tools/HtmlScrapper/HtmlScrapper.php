@@ -2,6 +2,7 @@
 
 namespace App\Custom\Tools\HtmlScrapper;
 
+use App\Custom\Tools\StopWords;
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\DomCrawler\Crawler;
@@ -60,7 +61,8 @@ class HtmlScrapper extends HtmlScrapperFilters {
             'headers' => $this->headers(),
             'metaTags' => $this->metaTags(),
             'twitterCard' => $this->twitterCard(),
-            'openGraph' => $this->openGraph()
+            'openGraph' => $this->openGraph(),
+            'text' => $this->text()
         ];
     }
 
@@ -125,6 +127,25 @@ class HtmlScrapper extends HtmlScrapperFilters {
         return $this->filterFirstExtractAttribute('//meta[@name="csrf-token"]', ['content']);
     }
 
+    public function lang()
+    {
+        return $this->filterFirstText('//html/@lang');
+    }
+
+    public function encodage()
+    {
+        $charset = $this->filterFirstText('//meta/@charset');
+        if ($charset === null) {
+            $items = explode(';', $this->filterFirstExtractAttribute('//meta[@http-equiv="content-type"]', ['content']));
+            foreach($items as $item) {
+                if (str_contains(trim($item), 'charset')) {
+                    $charset = last(explode('=', $item));
+                }
+            }
+        }
+        return $charset;
+    }
+
     /**
      * Get the header collected as an array
      *
@@ -137,6 +158,8 @@ class HtmlScrapper extends HtmlScrapperFilters {
             'viewport' => $this->viewport(),
             'canonical' => $this->canonical(),
             'csrfToken' => $this->csrfToken(),
+            'lang' => $this->lang(),
+            'encodage' => $this->encodage(),
         ];
     }
 
@@ -552,9 +575,9 @@ class HtmlScrapper extends HtmlScrapperFilters {
         return $items;
     }
 
-    public function getFullContentText()
+    public function getFullContentText($max = 10000)
     {
-        return $this->contentToText($this->getFullContent(), 10000);
+        return $this->contentToText($this->getFullContent(), $max);
     }
 
     public function getLightContentText()
@@ -587,6 +610,29 @@ class HtmlScrapper extends HtmlScrapperFilters {
                 }
             });
         }
+    }
+
+    public function text()
+    {
+        $content = $this->getFullContentText(50000);
+        $words = explode(' ', $content);
+        $usefullWords = 0;
+        foreach($words as $word) {
+            if (strlen($word) < 3) {
+                continue;
+            }
+            if (StopWords::isStopWord($word)) {
+                continue;
+            }
+            $usefullWords++;
+        }
+        return [
+            'content' => $content,
+            'contentSize' => strlen($content),
+            'phrasesCount' => count(explode('.', $content)),
+            'wordsCount' => count($words),
+            'wordsUseFullCount' => $usefullWords,
+        ];
     }
 }
 

@@ -9,7 +9,7 @@ use Livewire\Component;
 class SuggestionSearch extends Component
 {
     public $search = '';
-    public $uuid;
+    public $job;
 
     protected $queryString = [
         'search' => ['except' => '']
@@ -19,7 +19,7 @@ class SuggestionSearch extends Component
     {
         $query = new SyntexRtListe();
         // $suggestKeywords = SyntexRtListe::where('uuid', $this->uuid)->paginate(9);
-        $query = $query->where('uuid', $this->uuid);
+        $query = $query->where('uuid', $this->job->uuid);
         if ($this->search !== '') {
             $query = $query->where('forme', 'LIKE', "%{$this->search}%");
         }

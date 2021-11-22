@@ -34,7 +34,7 @@ class StudiesTable extends TableComponent
      */
     public function deleteJob($uuid)
     {
-        $job = Job::find($uuid);
+        $job = Job::where('uuid', $uuid)->first();
         $semanticController = new SemanticsController();
         $semanticController->destroy($uuid);
 

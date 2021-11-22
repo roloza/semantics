@@ -48,7 +48,7 @@
                     <td class="border-b dark:border-dark-5">{{ $keyword->nb_doc }}</td>
 
                     <td class="border-b dark:border-dark-5">
-                        <a href="" class="btn btn-sm btn-dark w-32 mr-2 mb-2">Détails</a>
+                        <a href="{{ route('analyse.show.keyword', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'num' => $keyword->num]) }}" class="btn btn-sm btn-dark w-32 mr-2 mb-2">Détails</a>
                     </td>
 
                 </tr>

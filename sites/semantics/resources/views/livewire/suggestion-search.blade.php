@@ -9,7 +9,7 @@
     </div>
     <div class="grid grid-cols-12 gap-5 mt-5">
         @foreach($suggestKeywords as $suggestKeyword)
-        <a href="{{ route('analyse.page.show.suggestions', ['uuid' => $uuid, 'keyword' => $suggestKeyword->forme]) }}" class="col-span-12 sm:col-span-4 xxl:col-span-3 box p-5 cursor-pointer zoom-in">
+        <a href="{{ route('analyse.show.suggestions', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'keyword' => $suggestKeyword->forme]) }}" class="col-span-12 sm:col-span-4 xxl:col-span-3 box p-5 cursor-pointer zoom-in">
             <div class="font-medium text-base">{{ $suggestKeyword->forme }}</div>
         </a>
         @endforeach

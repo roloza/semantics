@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Custom\Tools\KeywordsGraph;
+use App\Custom\Tools\SuggestGraph;
 
 /**
  * Class PingController
@@ -29,4 +30,19 @@ class AjaxController extends Controller
 
     }
 
+    public function getSuggest($uuid, Request $request)
+    {
+        if (!isset($request->keyword)) {
+            return false;
+        }
+
+        $suggestGraph = new SuggestGraph($uuid, $request->keyword);
+        $suggestGraph->run();
+        return response()
+            ->json([
+                'nodes' => $suggestGraph->getNodes(), // nodes: [{ "id": "Lannister" }]
+                'edges' => $suggestGraph->getEdges() // edges: [{ "from": "Lannister", "to": "Tully" }]
+
+            ]);
+    }
 }

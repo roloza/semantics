@@ -17,11 +17,14 @@
 
     <div class="col-span-12">
         <h1 class="text-lg font-medium truncate mr-5">Analyse : {{ $job->name }}</h1>
-        @if (isset($job->params['url']))
-        <div>
-            <strong>Page analysée : </strong><a class="ml-auto text-theme-1 dark:text-theme-10 truncate" href="{{ $job->params['url'] }}">{{ $job->params['url'] }}</a>
-        </div>
-        @endif
+        @foreach($job->parameters as $param)
+            @if($param->name === 'url')
+            <div>
+                <strong>Page analysée : </strong><a class="ml-auto text-theme-1 dark:text-theme-10 truncate" href="{{ $param->value }}">{{ $param->value }}</a>
+            </div>
+            @endif
+        @endforeach
+
     </div>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
@@ -47,12 +50,12 @@
 
     <div class="col-span-12 lg:col-span-3 xxl:col-span-2">
         <div class="intro-y box p-5 mt-6">
-            <x-analyse.partials.navigation :uuid="$uuid"/>
+            <x-analyse.partials.navigation :job="$job"/>
         </div>
     </div>
 
     <div class="col-span-12">
-        <x-analyse.partials.network-graph :keyword="$bestKeywordLength1" :uuid="$uuid" />
+        <x-analyse.partials.network-graph :keyword="$bestKeywordLength1" :job="$job" />
     </div>
 </div>
 

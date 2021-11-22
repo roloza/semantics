@@ -45,8 +45,8 @@
                         <td class="border-b dark:border-dark-5">
                             <div class="font-medium whitespace-nowrap">{{ $job->name }}</div>
                             <div class="text-gray-600 text-xs whitespace-nowrap">
-                                @foreach($job->params as $name => $param)
-                                    <strong>{{$name}}:</strong> {{$param}}<br>
+                                @foreach($job->parameters as $param)
+                                    <strong>{{$param->name}}:</strong> {{$param->value}}<br>
                                 @endforeach
                             </div>
                         </td>
@@ -69,7 +69,7 @@
                         <td class="border-b dark:border-dark-5">
                             @if(isset($job->status))
                                 @if($job->status->id === 3)
-                                    <a href="{{ route('analyse.' . $job->type->slug . '.show', $job->uuid) }}" class="btn btn-primary mr-1 mb-2 tooltip" title="Consulter"><i class="fas fa-eye"></i></a>
+                                    <a href="{{ route('analyse.show', [$job->type->slug, $job->uuid]) }}" class="btn btn-primary mr-1 mb-2 tooltip" title="Consulter"><i class="fas fa-eye"></i></a>
                                 @endif
                                 @if($job->status->id >= 3)
                                     <button class="btn btn-danger mr-1 mb-2 tooltip" title="Supprimer" wire:click="deleteJob('{{ $job->uuid }}')"><i class="fas fa-trash"></i></button>

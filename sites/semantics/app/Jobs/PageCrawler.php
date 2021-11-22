@@ -9,28 +9,26 @@ use Illuminate\Bus\Queueable;
 use App\Custom\Syntex\MakeDecFile;
 use Illuminate\Support\Facades\Log;
 use App\Custom\Syntex\SyntexWrapper;
+use App\Models\Parameters;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class PageCrawler implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private string $url;
-    private string $typeContent;
+    private array $params;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $url, string $typeContent)
+    public function __construct(array $params)
     {
-        $this->url = $url;
-        $this->typeContent = $typeContent;
+        $this->params = $params;
     }
 
     /**
@@ -42,14 +40,18 @@ class PageCrawler implements ShouldQueue
     {
         $uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $uuid);
-        $domain = ucFirst(str_replace("-", ' ' , current(explode(".", str_replace('www.', '', parse_url($this->url, PHP_URL_HOST))))));
+        $domain = ucFirst(str_replace("-", ' ' , current(explode(".", str_replace('www.', '', parse_url($this->params['url'], PHP_URL_HOST))))));
+        $job = Job::create(['uuid' => $uuid, 'name' => $domain, 'user_id' => 1, 'type_id' => 1, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        foreach($this->params as $name => $value) {
+            $parameter = Parameters::create(['name' => $name, 'value' => $value]);
+            $job->parameters()->attach($parameter->id);
+        }
 
-        Job::create(['uuid' => $uuid, 'name' => $domain, 'user_id' => 1, 'type_id' => 1, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['url' => $this->url, 'type_content' => $this->typeContent]]);
 
         Crawler::create()
-            ->setCrawlObserver(new CustomCrawler($uuid, 1, $this->typeContent))
+            ->setCrawlObserver(new CustomCrawler($uuid, 1, $this->params['typeContent']))
             ->setTotalCrawlLimit(1)
-            ->startCrawling($this->url);
+            ->startCrawling($this->params['url']);
 
         Job::where('uuid', $uuid)->update(['percentage' => 60, 'message' => 'Analyse linguistique en cours']);
         Log::debug('MakeDecFile');

@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\CatGrammatical;
-use App\Models\SyntexDescripteur;
 use App\Models\SyntexRtListe;
 
 class KeywordsTable extends TableComponent
@@ -14,7 +13,7 @@ class KeywordsTable extends TableComponent
     public $longueur = [2 => 1, 3 => 1];
     public $orderField = 'freq';
     public $orderDirection = 'DESC';
-    public $uuid;
+    public $job;
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -31,7 +30,7 @@ class KeywordsTable extends TableComponent
                 $longueurs[] = $k;
             }
         }
-        $keywords = SyntexRtListe::tableUrlDetail(['uuid' => $this->uuid, 'search' => $this->search, 'category_name' => $this->category_name, 'longueur' => $longueurs])
+        $keywords = SyntexRtListe::tableUrlDetail(['uuid' => $this->job->uuid, 'search' => $this->search, 'category_name' => $this->category_name, 'longueur' => $longueurs])
             ->orderBy($this->orderField, $this->orderDirection)
             ->paginate(20);
 

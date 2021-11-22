@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Models\Job;
 use App\Models\Url;
 use GuzzleHttp\Psr7\Uri;
+use App\Models\Parameters;
 use Spatie\Crawler\Crawler;
 use App\Custom\Search\Qwant;
 use App\Custom\Search\Searx;
@@ -26,23 +27,16 @@ class WebCrawler implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private string $keyword;
-    private string $isNews;
-    private string $uuid;
-    private string $totalCrawlLimit;
-    private string $typeContent;
+    private array $params;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(string $keyword, int $totalCrawlLimit, bool $isNews, string $typeContent)
+    public function __construct(array $params)
     {
-        $this->keyword = $keyword;
-        $this->isNews = $isNews;
-        $this->totalCrawlLimit = $totalCrawlLimit;
-        $this->typeContent = $typeContent;
+        $this->params = $params;
     }
 
     /**
@@ -55,23 +49,27 @@ class WebCrawler implements ShouldQueue
         $this->uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $this->uuid);
 
-        Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->keyword), 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement', 'params' => ['keyword' => $this->keyword, 'total_crawl_limit' => $this->totalCrawlLimit, 'is_news' => (int)$this->isNews, 'type_content' => $this->typeContent]]);
+        $job = Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->params['keyword']), 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        foreach($this->params as $name => $value) {
+            $parameter = Parameters::create(['name' => $name, 'value' => $value]);
+            $job->parameters()->attach($parameter->id);
+        }
 
-        if ((bool)$this->isNews) {
-            $webCrawler = new GoogleNewsRss($this->keyword);
+        if ((bool)$this->params['isNews']) {
+            $webCrawler = new GoogleNewsRss($this->params['keyword']);
             $this->getByWebCrawler($webCrawler);
         } else {
-            $webCrawler = new Qwant($this->keyword);
+            $webCrawler = new Qwant($this->params['keyword']);
             $this->getByWebCrawler($webCrawler);
             $countUrls = Url::where('uuid', $this->uuid)->count();
 
-            if ($countUrls < $this->totalCrawlLimit) {
-                $webCrawler = new DuckDuckGo($this->keyword);
+            if ($countUrls < $this->params['totalCrawlLimit']) {
+                $webCrawler = new DuckDuckGo($this->params['keyword']);
                 $this->getByWebCrawler($webCrawler);
             }
             $countUrls = Url::where('uuid', $this->uuid)->count();
-            if ($countUrls < $this->totalCrawlLimit) {
-                $webCrawler = new Searx($this->keyword);
+            if ($countUrls < $this->params['totalCrawlLimit']) {
+                $webCrawler = new Searx($this->params['keyword']);
                 $this->getByWebCrawler($webCrawler);
             }
         }
@@ -93,7 +91,7 @@ class WebCrawler implements ShouldQueue
         $blackListItems = ['www.bing', 'google', 'wikipedia', 'youtube', 'qwant'];
         foreach ($urls as $url) {
             $countUrls = Url::where('uuid', $this->uuid)->count();
-            if ($countUrls >= $this->totalCrawlLimit) {
+            if ($countUrls >= $this->params['totalCrawlLimit']) {
                 break;
             }
             $blacklisted = false;
@@ -110,10 +108,10 @@ class WebCrawler implements ShouldQueue
             $url = $uri->getScheme() . '://' . $uri->getHost() . $uri->getPath();
 
             Job::where('uuid', $this->uuid)->update([
-                'percentage' => min((10 + round((100 * $countUrls / $this->totalCrawlLimit)) / 2), 60),
-                'message' => '[' . $countUrls . '/' . $this->totalCrawlLimit . '] ' . (string)$url
+                'percentage' => min((10 + round((100 * $countUrls / $this->params['totalCrawlLimit'])) / 2), 60),
+                'message' => '[' . $countUrls . '/' . $this->params['totalCrawlLimit'] . '] ' . (string)$url
             ]);
-            Log::debug('[' . $countUrls . '/' . $this->totalCrawlLimit. '] ' . (string)$url);
+            Log::debug('[' . $countUrls . '/' . $this->params['totalCrawlLimit']. '] ' . (string)$url);
             Log::debug('Crawl: ' . $url);
 
             Crawler::create([
@@ -125,7 +123,7 @@ class WebCrawler implements ShouldQueue
                     'User-Agent' => "*",
                 ]
             ])
-            ->setCrawlObserver(new CustomCrawler($this->uuid, 1))
+            ->setCrawlObserver(new CustomCrawler($this->uuid, 1, $this->params['typeContent']))
             ->setTotalCrawlLimit(1)
             ->ignoreRobots()
             ->setParseableMimeTypes(['text/html'])

@@ -66,15 +66,16 @@ class CustomCrawler extends CrawlObserver
             return;
         }
 
-        $urlId = Url::insertGetId([
+        $newUrl = Url::firstOrCreate([
             'uuid' => $this->uuid,
-            'url' => (string)$url,
+            'url' => (string)$url
+        ], [
             'title' => $htmlParser->title(),
             'content' => $content,
         ]);
 
         // Insertion structure HTML de la page
-        SeoAuditStructure::insertUpdate(array_merge(['uuid' => $this->uuid, 'url_id' => $urlId], $htmlParser->run()));
+        SeoAuditStructure::insertUpdate(array_merge(['uuid' => $this->uuid, 'url_id' => $newUrl->id], $htmlParser->run()));
 
         $this->count++;
         Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 50, 'message' => '[' . $this->count . '/' . $this->maximumCrawlCount . '] ' . (string)$url]);

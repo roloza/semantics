@@ -25,21 +25,16 @@ Route::get('/analyse/custom', \App\Http\Controllers\LauncherController::class . 
 
 // Analyse détails
 //Page
-Route::get('/analyse/page/{uuid}', \App\Http\Controllers\StudyPageController::class . '@show')->name('analyse.page.show');
-Route::get('/analyse/page/{uuid}/tous-les-mots-cles', \App\Http\Controllers\StudyPageController::class . '@showAllKeywords')->name('analyse.page.show.keywords.all');
-Route::get('/analyse/page/{uuid}/descripteurs', \App\Http\Controllers\StudyPageController::class . '@showDescripteurs')->name('analyse.page.show.descripteurs');
-Route::get('/analyse/page/{uuid}/suggestions', \App\Http\Controllers\StudyPageController::class . '@showSuggestions')->name('analyse.page.show.suggestions');
-Route::get('/analyse/page/{uuid}/keyword/{num}', \App\Http\Controllers\StudyPageController::class . '@showKeyword')->name('analyse.page.show.keyword');
-
-
-// Site
-Route::get('/analyse/site/{uuid}', \App\Http\Controllers\StudyPageController::class . '@show')->name('analyse.site.show');
-
-// Web
-Route::get('/analyse/web/{uuid}', \App\Http\Controllers\StudyPageController::class . '@show')->name('analyse.web.show');
-
-// Custom
-Route::get('/analyse/custom/{uuid}', \App\Http\Controllers\StudyPageController::class . '@show')->name('analyse.custom.show');
+Route::get('/analyse/{type}/{uuid}', \App\Http\Controllers\StudyController::class . '@show')->name('analyse.show');
+Route::get('/analyse/{type}/{uuid}/tous-les-mots-cles', \App\Http\Controllers\StudyController::class . '@showAllKeywords')->name('analyse.show.keywords.all');
+Route::get('/analyse/{type}/{uuid}/descripteurs', \App\Http\Controllers\StudyController::class . '@showDescripteurs')->name('analyse.show.descripteurs');
+Route::get('/analyse/{type}/{uuid}/suggestions', \App\Http\Controllers\StudyController::class . '@showSuggestions')->name('analyse.show.suggestions');
+Route::get('/analyse/{type}/{uuid}/urls', \App\Http\Controllers\StudyController::class . '@showUrls')->name('analyse.show.urls');
+Route::get('/analyse/{type}/{uuid}/urls/{doc_id}', \App\Http\Controllers\StudyController::class . '@showUrl')->name('analyse.show.url');
+Route::get('/analyse/{type}/{uuid}/urls/{doc_id}/cloud', \App\Http\Controllers\StudyController::class . '@showUrlCloud')->name('analyse.show.url.cloud');
+Route::get('/analyse/{type}/{uuid}/urls/{doc_id}/audit', \App\Http\Controllers\StudyController::class . '@showUrlAudit')->name('analyse.show.url.audit');
+Route::get('/analyse/{type}/{uuid}/keyword/{num}', \App\Http\Controllers\StudyController::class . '@showKeyword')->name('analyse.show.keyword');
 
 // Ajax
 Route::get('/ajax/network-graph-data/{uuid}', \App\Http\Controllers\AjaxController::class . '@getNetworkgraph')->name('ajax.networkgraph-data');
+Route::get('/ajax/suggest/{uuid}', \App\Http\Controllers\AjaxController::class . '@getSuggest')->name('ajax.suggest-data');

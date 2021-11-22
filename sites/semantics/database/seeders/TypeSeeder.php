@@ -15,7 +15,7 @@ class TypeSeeder extends Seeder
      */
     public function run()
     {
-        $names = ['Page', 'Site', 'Web', 'Custom'];
+        $names = ['Page', 'Site', 'Web', 'Custom', 'Suggest'];
         foreach ($names as $name) {
             DB::table('types')->insertOrIgnore([
                 'name' => $name,

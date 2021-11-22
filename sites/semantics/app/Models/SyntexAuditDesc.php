@@ -2,19 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\Url;
+// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-use Jenssegers\Mongodb\Eloquent\Model;
+// use Jenssegers\Mongodb\Eloquent\HybridRelations;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class SyntexAuditDesc extends Model
 {
     use HasFactory;
-    use HybridRelations;
+    use \Awobaz\Compoships\Compoships;
+    // use HybridRelations;
 
-    protected $collection = 'syntex_audit_descs';
-    protected $connection = 'mongodb';
-    protected $primaryKey = 'uuid';
+    protected $table = 'syntex_audit_descs';
+    // protected $collection = 'syntex_audit_descs';
+    // protected $connection = 'mongodb';
+    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',
@@ -29,7 +33,7 @@ class SyntexAuditDesc extends Model
 
     public function url(): \Illuminate\Database\Eloquent\Relations\hasOne
     {
-        return $this->hasOne(Url::class, 'uuid', 'uuid');
+        return $this->hasOne(Url::class, ['doc_id', 'uuid'], ['doc_id', 'uuid']);
     }
 
     public static function insertUpdate($data)
@@ -48,8 +52,9 @@ class SyntexAuditDesc extends Model
     public function scopeGetKeywordDocs($query, $uuid, $num)
     {
         $query->where('uuid', $uuid);
-        $query->where('num', (int)$num);
-        // $query->orderBy('score_moy', 'DESC');
+        $query->where('num', $num);
+        $query->with('url');
+        $query->orderBy('score_moy', 'DESC');
         return $query;
     }
 
@@ -62,7 +67,7 @@ class SyntexAuditDesc extends Model
             $docIds[] = $keywordDoc->doc_id;
         }
 
-        $query->where('job_id', $uuid);
+        $query->where('uuid', $uuid);
         $query->Where('num', '<>', $num);
         $query->whereIn('doc_id', $docIds);
 

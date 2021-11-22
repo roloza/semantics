@@ -20,13 +20,13 @@
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
         <div class="intro-y box p-5 mt-5">
-            <livewire:descripteurs-table :uuid="$uuid" />
+            <livewire:descripteurs-table :job="$job" />
         </div>
     </div>
 
     <div class="col-span-12 lg:col-span-3 xxl:col-span-2">
         <div class="intro-y box p-5 mt-6">
-            <x-analyse.partials.navigation :uuid="$uuid"/>
+            <x-analyse.partials.navigation :job="$job"/>
         </div>
     </div>
 </div>

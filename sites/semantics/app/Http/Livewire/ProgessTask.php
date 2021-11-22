@@ -8,16 +8,16 @@ use Livewire\Component;
 
 class ProgessTask extends Component
 {
-    public $uuid;
+    public $job;
 
-    public function mount($uuid)
+    public function mount($job)
     {
-        $this->uuid = $uuid;
+        $this->job = $job;
     }
 
     public function render()
     {
-        $job = Job::find($this->uuid);
+        $job = Job::where('uuid', $this->job->uuid)->first();
         if ( $job !== null && $job->status->id === 3) {
             $this->emitUp('jobSuccess');
         } elseif ($job !== null && $job->status->id === 4) {

@@ -4,6 +4,7 @@
 namespace App\Custom\Syntex;
 
 
+use App\Models\Job;
 use App\Models\Url;
 use League\Csv\Reader;
 use App\Models\SyntexRtListe;
@@ -39,13 +40,38 @@ class SyntexWrapper
         $this->folder = Storage::disk('local')->path('study/' . $this->uuid . '/');
     }
 
-    public function run() {
+    public function run()
+    {
+        Job::where('uuid', $this->uuid)->update(['percentage' => 80]);
         $this->resDescripteur();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 83]);
         $this->rtListe();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 86]);
         $this->auditListe();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 89]);
         $this->auditIncl();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 92]);
         $this->auditDesc();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 95]);
         $this->auditUrl();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 97]);
+    }
+
+    public function runSuggest()
+    {
+        Job::where('uuid', $this->uuid)->update(['percentage' => 80]);
+        $this->resDescripteur();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 83]);
+        $this->rtListe();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 86]);
+        $this->auditListe();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 89]);
+        $this->rtIncl();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 92]);
+        $this->auditDesc();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 95]);
+        $this->auditUrl();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 97]);
     }
 
     public function resDescripteur()
@@ -82,7 +108,8 @@ class SyntexWrapper
             if(sizeof($data) > $max) {
                 try {
                     Log::debug('SyntexDescripteur::massInsert - ' . sizeof($data));
-                    SyntexDescripteur::insert($data);
+                    // SyntexDescripteur::insert($data);
+                    SyntexDescripteur::upsert($data, ['uuid', 'doc_id', 'lemme']);
                 } catch (\Exception $exception) {
                     Log::error($exception->getMessage());
                 }
@@ -91,7 +118,8 @@ class SyntexWrapper
         }
         try {
             Log::debug('SyntexDescripteur::last massInsert - ' . sizeof($data));
-            SyntexDescripteur::insert($data);
+            // SyntexDescripteur::insert($data);
+            SyntexDescripteur::upsert($data, ['uuid', 'doc_id', 'lemme']);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
         }
@@ -127,7 +155,8 @@ class SyntexWrapper
             if(sizeof($data) > $max) {
                 try {
                     Log::debug('rtListe::massInsert - ' . sizeof($data));
-                    SyntexRtListe::insert($data);
+                    // SyntexRtListe::insert($data);
+                    SyntexRtListe::upsert($data, ['uuid', 'num']);
                 } catch (\Exception $exception) {
                     Log::error($exception->getMessage());
                 }
@@ -137,7 +166,8 @@ class SyntexWrapper
 
         try {
             Log::debug('rtListe::last massInsert - ' . sizeof($data));
-            SyntexRtListe::insert($data);
+            // SyntexRtListe::insert($data);
+            SyntexRtListe::upsert($data, ['uuid', 'num']);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
         }
@@ -172,7 +202,8 @@ class SyntexWrapper
             if(sizeof($data) > $max) {
                 try {
                     Log::debug('auditListe::massInsert - ' . sizeof($data));
-                    SyntexAuditListe::insert($data);
+                    // SyntexAuditListe::insert($data);
+                    SyntexAuditListe::upsert($data, ['uuid', 'num']);
                 } catch (\Exception $exception) {
                     Log::error($exception->getMessage());
                 }
@@ -182,7 +213,8 @@ class SyntexWrapper
 
         try {
             Log::debug('auditListe::last massInsert - ' . sizeof($data));
-            SyntexAuditListe::insert($data);
+            // SyntexAuditListe::insert($data);
+            SyntexAuditListe::upsert($data, ['uuid', 'num']);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
         }
@@ -197,6 +229,7 @@ class SyntexWrapper
         $max = 500;
 
         foreach ( $csv->getRecords() as $offset => $record) {
+            Log::debug($record);
             $data[] = [
                 'uuid' => $this->uuid,
                 'num_1' => (int)$record[0],
@@ -205,15 +238,57 @@ class SyntexWrapper
             if(sizeof($data) > $max) {
                 try {
                     Log::debug('auditIncl::massInsert - ' . sizeof($data));
-                    SyntexAuditIncl::insert($data);
+                    // SyntexAuditIncl::insert($data);
+                    SyntexAuditIncl::upsert($data, ['uuid', 'num_1', 'num_2']);
                 } catch (\Exception $exception) {
                     Log::error($exception->getMessage());
                 }
                 $data = [];
             }
         }
+        try {
             Log::debug('auditIncl::last massInsert - ' . sizeof($data));
-            SyntexAuditIncl::insert($data);
+        // SyntexAuditIncl::insert($data);
+        SyntexAuditIncl::upsert($data, ['uuid', 'num_1', 'num_2']);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+        }
+    }
+
+    public function rtIncl()
+    {
+        $csv = Reader::createFromPath($this->folder.'/RESULTAT4_results/rt_incl.txt', 'r');
+        $csv->setDelimiter("\t");
+
+        $data = [];
+        $max = 500;
+
+        foreach ( $csv->getRecords() as $offset => $record) {
+            Log::debug($record);
+            $data[] = [
+                'uuid' => $this->uuid,
+                'num_1' => (int)$record[0],
+                'num_2' => (int)$record[2],
+            ];
+            if(sizeof($data) > $max) {
+                try {
+                    Log::debug('rtIncl::massInsert - ' . sizeof($data));
+                    // SyntexAuditIncl::insert($data);
+                    SyntexAuditIncl::upsert($data, ['uuid', 'num_1', 'num_2']);
+                } catch (\Exception $exception) {
+                    Log::error($exception->getMessage());
+                }
+                $data = [];
+            }
+        }
+        try {
+            Log::debug('rtIncl::last massInsert - ' . sizeof($data));
+        // SyntexAuditIncl::insert($data);
+        SyntexAuditIncl::upsert($data, ['uuid', 'num_1', 'num_2']);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
+        }
+
 
     }
 
@@ -241,7 +316,8 @@ class SyntexWrapper
             if(sizeof($data) > $max) {
                 try {
                     Log::debug('auditDesc::massInsert - ' . sizeof($data));
-                    SyntexAuditDesc::insert($data);
+                    // SyntexAuditDesc::insert($data);
+                    SyntexAuditDesc::upsert($data, ['uuid', 'num']);
                 } catch (\Exception $exception) {
                     Log::error($exception->getMessage());
                 }
@@ -251,7 +327,8 @@ class SyntexWrapper
 
         try {
             Log::debug('auditDesc::last massInsert - ' . sizeof($data));
-            SyntexAuditDesc::insert($data);
+            // SyntexAuditDesc::insert($data);
+            SyntexAuditDesc::upsert($data, ['uuid', 'num']);
         } catch (\Exception $exception) {
             Log::error($exception->getMessage());
         }
