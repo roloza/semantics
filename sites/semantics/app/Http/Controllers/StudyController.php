@@ -42,7 +42,7 @@ class StudyController extends Controller
 
         // $dataKeywordGraph = (new KeywordsGraphV2($this->uuid, $bestKeywordLength1))->run();
 
-        return view('pages.analyse.page.show', compact('job', 'countKeywords', 'countSyntagmes', 'countUrls', 'bestKeyword', 'topKeywords', 'dataWordCloud', 'bestKeywordLength1'));
+        return view('pages.analyse.show', compact('job', 'countKeywords', 'countSyntagmes', 'countUrls', 'bestKeyword', 'topKeywords', 'dataWordCloud', 'bestKeywordLength1'));
     }
 
     /**
@@ -51,7 +51,7 @@ class StudyController extends Controller
      */
     public function showAllKeywords()
     {
-        return view('pages.analyse.page.show-keywords', ['job' => $this->job]);
+        return view('pages.analyse.show-keywords', ['job' => $this->job]);
     }
 
      /**
@@ -60,7 +60,7 @@ class StudyController extends Controller
      */
     public function showDescripteurs()
     {
-        return view('pages.analyse.page.show-descripteurs', ['job' => $this->job]);
+        return view('pages.analyse.show-descripteurs', ['job' => $this->job]);
     }
 
     /**
@@ -72,7 +72,7 @@ class StudyController extends Controller
     {
         $suggestKeyword = SyntexRtListe::where('uuid', $this->uuid)->whereIn('cat', ['V', 'N'])->orderBy('nincl', 'DESC')->first();
         $keyword = $request->keyword ? $request->keyword : $suggestKeyword->forme;
-        return view('pages.analyse.page.show-suggestions', [
+        return view('pages.analyse.show-suggestions', [
             'job' => $this->job,
             'keyword' => $keyword
         ]);
@@ -108,7 +108,7 @@ class StudyController extends Controller
             $keywordsIncludeds = SyntexRtListe::getIncludeds($this->job->uuid, $keyword);
         }
 
-        return view('pages.analyse.page.show-keyword', [
+        return view('pages.analyse.show-keyword', [
             'job' => $this->job,
             'keyword' => $keyword,
             'synonymsByKeywords' => $synonymsByKeywords,
@@ -128,7 +128,7 @@ class StudyController extends Controller
     public function showUrls()
     {
         $job = $this->job;
-        return view('pages.analyse.page.show-urls', ['job' => $job]);
+        return view('pages.analyse.show-urls', ['job' => $job]);
     }
 
     /**
@@ -140,7 +140,7 @@ class StudyController extends Controller
     public function showUrl(Request $request)
     {
         $url = Url::getUrl($this->job->uuid, $request->doc_id)->firstOrFail();
-        return view('pages.analyse.page.show-url', ['job' => $this->job, 'url' => $url]);
+        return view('pages.analyse.show-url', ['job' => $this->job, 'url' => $url]);
     }
 
     /**
@@ -163,7 +163,7 @@ class StudyController extends Controller
 
         }
         $dataWordCloud = json_encode($dataWordCloud);
-        return view('pages.analyse.page.show-url-cloud', ['job' => $this->job, 'url' => $url, 'dataWordCloud' => $dataWordCloud]);
+        return view('pages.analyse.show-url-cloud', ['job' => $this->job, 'url' => $url, 'dataWordCloud' => $dataWordCloud]);
     }
 
     /**
@@ -180,7 +180,7 @@ class StudyController extends Controller
         $auditValidation = new AuditValidation($audit);
         $auditStructure = $auditValidation->getStructure();
         $auditStructureScore = $auditValidation->getStructureScore();
-        return view('pages.analyse.page.show-url-audit', ['job' => $this->job, 'url' => $url, 'audit' => $audit, 'auditStructure' => $auditStructure, 'auditStructureScore' => $auditStructureScore]);
+        return view('pages.analyse.show-url-audit', ['job' => $this->job, 'url' => $url, 'audit' => $audit, 'auditStructure' => $auditStructure, 'auditStructureScore' => $auditStructureScore]);
     }
 
 

@@ -8,7 +8,7 @@
                         <h3 class="text-lg font-medium mr-auto">{{ $job->message }}</h3>
                         @if(isset($job->status) && $job->status->id === 3)
                         <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
-                            <a href="{{ route('accueil') }}" class="btn box flex items-center text-gray-700 dark:text-gray-300">
+                            <a href="{{ route('analyse.show', [$job->type->slug, $job->uuid]) }}" class="btn box flex items-center text-gray-700 dark:text-gray-300">
                                 Consulter cette analyse
                             </a>
                         </div>

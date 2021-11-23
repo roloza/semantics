@@ -13,21 +13,27 @@
 @endsection
 
 @section('content')
+
     <div class="grid grid-cols-12 gap-6 mt-8">
-        <div class="col-span-12">
-            <h1 class="text-lg font-medium truncate mr-5">Liste des urls</h1>
-        </div>
+        <x-analyse.partials.title :job="$job" title="Analyse détaillée de la page - Nuage de mots-clés"/>
 
         <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
-            <div class="intro-y box p-5 mt-5">
-                <livewire:urls-table :job="$job" />
+            <div class="col-span-12">
+                <div class="box mt-6 p-4">
+                    <h2>Page étudiée : <strong>{{ $url->url }}</strong></h2>
+                </div>
+            </div>
+            <div class="intro-y p-5 mt-5">
+                <x-analyse.partials.word-cloud :data="$dataWordCloud" name="Sujets principaux" showMore="0"/>
             </div>
         </div>
 
         <div class="col-span-12 lg:col-span-3 xxl:col-span-2">
             <div class="intro-y box p-5 mt-6">
-                <x-analyse.partials.navigation :job="$job"/>
+                <x-analyse.partials.navigation :job="$job" :url="$url"/>
             </div>
         </div>
     </div>
+
+
 @endsection

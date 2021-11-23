@@ -1,7 +1,8 @@
+
 @extends('layout')
 
 @section('title')
-    Lancer une analyse
+    Suggestions
 @endsection
 
 @section('description')
@@ -13,15 +14,12 @@
 @endsection
 
 @section('content')
+
 <div class="grid grid-cols-12 gap-6 mt-8">
-    <div class="col-span-12">
-        <h1 class="text-lg font-medium truncate mr-5">Principaux mots-clés</h1>
-    </div>
+    <x-analyse.partials.title :job="$job" title="Suggestions de thématiques"/>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
-        <div class="intro-y box p-5 mt-5">
-            <livewire:descripteurs-table :job="$job" />
-        </div>
+        <livewire:suggestion-search :job="$job" :keyword="$keyword"/>
     </div>
 
     <div class="col-span-12 lg:col-span-3 xxl:col-span-2">
@@ -29,5 +27,9 @@
             <x-analyse.partials.navigation :job="$job"/>
         </div>
     </div>
+</div>
+
+<div class="col-span-12">
+    <x-analyse.partials.network-graph :keyword="$keyword" :job="$job" />
 </div>
 @endsection

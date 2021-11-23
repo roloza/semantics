@@ -15,10 +15,7 @@
 @section('content')
 
 <div class="grid grid-cols-12 gap-6 mt-8">
-
-    <div class="col-span-12">
-        <h1 class="text-lg font-medium truncate mr-5">{{ ucfirst($keyword->forme) }}</h1>
-    </div>
+    <x-analyse.partials.title :job="$job" title="Mot-clé : {{ ucfirst($keyword->forme) }}"/>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10 mt-6">
         <div class="grid grid-cols-12 gap-6">
@@ -27,6 +24,9 @@
                 <div class="report-box-2 intro-y">
                     <div class="box sm:flex">
                         <div class="px-8 py-12 flex flex-col justify-center flex-1">
+                            <div class="relative text-3xl font-bold mb-12">
+                                {{ ucfirst($keyword->forme) }}
+                            </div>
                             <div class="text-theme-12 text-5xl">
                                 <i class="fas fa-hashtag"></i>
                             </div>

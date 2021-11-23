@@ -14,13 +14,11 @@
 
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-8">
-    <div class="col-span-12">
-        <h1 class="text-lg font-medium truncate mr-5">Tous les mots-clés</h1>
-    </div>
+    <x-analyse.partials.title :job="$job" title="Principaux mots-clés"/>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
         <div class="intro-y box p-5 mt-5">
-            <livewire:keywords-table :job="$job" />
+            <livewire:descripteurs-table :job="$job" />
         </div>
     </div>
 

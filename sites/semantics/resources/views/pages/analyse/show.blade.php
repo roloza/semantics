@@ -15,17 +15,7 @@
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-8">
 
-    <div class="col-span-12">
-        <h1 class="text-lg font-medium truncate mr-5">Analyse : {{ $job->name }}</h1>
-        @foreach($job->parameters as $param)
-            @if($param->name === 'url')
-            <div>
-                <strong>Page analysée : </strong><a class="ml-auto text-theme-1 dark:text-theme-10 truncate" href="{{ $param->value }}">{{ $param->value }}</a>
-            </div>
-            @endif
-        @endforeach
-
-    </div>
+    <x-analyse.partials.title :job="$job"/>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
         <div class="grid grid-cols-12 gap-6">

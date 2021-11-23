@@ -15,13 +15,15 @@
 @section('content')
 
 <div class="grid grid-cols-12 gap-6 mt-8">
-    <div class="col-span-12">
-        <h1 class="text-lg font-medium truncate mr-5">Analyse détaillée de la page - Audit de la structure HTML</h1>
-        <strong>{{ $url->url }}</strong>
-    </div>
+    <x-analyse.partials.title :job="$job" title="Analyse détaillée de la page - Audit de la structure HTML"/>
 
     <div class="col-span-12 lg:col-span-9 xxl:col-span-10">
-        <div class="box mt-6">
+        <div class="col-span-12">
+            <div class="box mt-6 p-4">
+                <h2>Page étudiée : <strong>{{ $url->url }}</strong></h2>
+            </div>
+        </div>
+        <div class="box mt-2">
             <div class="tab w-full overflow-hidden border-t">
                 <x-analyse.partials.seo.structure :auditStructure="$auditStructure"/>
             </div>
