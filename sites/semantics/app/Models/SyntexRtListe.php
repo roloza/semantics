@@ -124,4 +124,11 @@ class SyntexRtListe extends Model
         $query->where('num', (int)$num);
         return $query;
     }
+
+    public function scopeStrToKeywords($query, $uuid, $keywords)
+    {
+        $query->where('uuid', $uuid);
+        $query->whereIn('forme', $keywords);
+        return $query;
+    }
 }

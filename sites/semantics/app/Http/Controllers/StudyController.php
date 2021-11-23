@@ -183,5 +183,15 @@ class StudyController extends Controller
         return view('pages.analyse.show-url-audit', ['job' => $this->job, 'url' => $url, 'audit' => $audit, 'auditStructure' => $auditStructure, 'auditStructureScore' => $auditStructureScore]);
     }
 
+    /**
+     * Page de listing des suggests trouvés
+     */
+    public function showKeywordsSuggest(Request $request)
+    {
+        return view('pages.analyse.show-keywords-suggest', ['job' => $this->job, 'keyword' => $request->keyword]);
+
+
+    }
+
 
 }

@@ -2,7 +2,7 @@
     <div class="intro-y flex items-center h-10">
         <h2 class="text-lg font-medium truncate mr-5">{{ $name }}</h2>
         @if (isset($showMore) && $showMore)
-        <a href="{{ route('accueil') }}" class="btn btn-dark ml-auto truncate">Afficher les détails</a>
+        <a href="{{ route('analyse.show.descripteurs', [$job->type->slug, $job->uuid]) }}" class="btn btn-dark ml-auto truncate">Afficher les détails</a>
         @endif
     </div>
     <div class="intro-y box p-5 mt-5">

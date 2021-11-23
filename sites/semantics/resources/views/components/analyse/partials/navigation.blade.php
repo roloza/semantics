@@ -9,6 +9,13 @@
             Vue d'ensemble
         </a>
 
+        {{-- Suggest --}}
+        @if($job->type->slug === 'suggest')
+        <a href="{{ route('analyse.show.keywords.suggest', [$job->type->slug, $job->uuid]) }}" class="flex items-center px-3 py-2 mt-2 rounded-md truncate {{ request()->routeIs('analyse.show.keywords.suggest') ? 'bg-theme-1 text-white font-medium ' : '' }}">
+            Expression avec "{{ $job->name }}"
+        </a>
+        @endif
+
         {{-- All --}}
         <a href="{{ route('analyse.show.keywords.all',[$job->type->slug, $job->uuid]) }}" class="flex items-center px-3 py-2 mt-2 rounded-md truncate {{ request()->routeIs('analyse.show.keywords.all') ? 'bg-theme-1 text-white font-medium ' : '' }}">
             Tous les mots-clés

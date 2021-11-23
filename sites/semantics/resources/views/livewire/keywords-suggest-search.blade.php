@@ -1,4 +1,7 @@
 <div class="intro-y col-span-12 lg:col-span-8  mt-6">
+
+    <x-partials.flash  type="danger" :display="$display"/>
+
     <div class="lg:flex intro-y">
         <div class="relative text-gray-700 dark:text-gray-300">
             <input type="text" class="form-control py-3 px-4 w-full lg:w-64 box pr-10 placeholder-theme-13" placeholder="Rerchercher un mot-clé..." wire:model.debounce.200ms="search">
@@ -6,12 +9,12 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-12 gap-5 mt-6">
-        @foreach($suggestKeywords as $suggestKeyword)
-        <a href="{{ route('analyse.show.suggestions', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'keyword' => $suggestKeyword->forme]) }}" class="col-span-12 sm:col-span-4 xxl:col-span-3 box p-5 cursor-pointer zoom-in">
-            <div class="font-medium text-base">{{ $suggestKeyword->forme }}</div>
-        </a>
+    <div class="grid grid-cols-12 gap-5 mt-5">
+        @foreach($keywords as $keyword)
+        <span class="col-span-12 sm:col-span-4 xxl:col-span-3 box p-5 cursor-pointer zoom-in" wire:click="showKeyword('{{ $keyword }}')">
+            <div class="font-medium text-base">{{ $keyword }}</div>
+        </span>
         @endforeach
     </div>
-
 </div>
+

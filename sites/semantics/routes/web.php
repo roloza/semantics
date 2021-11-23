@@ -34,6 +34,7 @@ Route::get('/analyse/{type}/{uuid}/urls/{doc_id}', \App\Http\Controllers\StudyCo
 Route::get('/analyse/{type}/{uuid}/urls/{doc_id}/cloud', \App\Http\Controllers\StudyController::class . '@showUrlCloud')->name('analyse.show.url.cloud');
 Route::get('/analyse/{type}/{uuid}/urls/{doc_id}/audit', \App\Http\Controllers\StudyController::class . '@showUrlAudit')->name('analyse.show.url.audit');
 Route::get('/analyse/{type}/{uuid}/keyword/{num}', \App\Http\Controllers\StudyController::class . '@showKeyword')->name('analyse.show.keyword');
+Route::get('/analyse/{type}/{uuid}/mots-cles-suggest', \App\Http\Controllers\StudyController::class . '@showKeywordsSuggest')->name('analyse.show.keywords.suggest');
 
 // Ajax
 Route::get('/ajax/network-graph-data/{uuid}', \App\Http\Controllers\AjaxController::class . '@getNetworkgraph')->name('ajax.networkgraph-data');

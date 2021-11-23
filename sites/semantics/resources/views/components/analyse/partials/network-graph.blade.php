@@ -1,7 +1,9 @@
 <div>
-    <div class="intro-y flex items-center h-10">
+    <div class="intro-y flex items-center h-10 mt-6">
         <h2 id="keywordGraph-title" class="text-lg font-medium truncate mr-5">Suggestions d'expression sur le thême <strong id="keywordGraph-keyword">{{ ucfirst(urldecode($keyword)) }}</strong></h2>
-        <a href="{{ route('accueil') }}" class="btn btn-dark ml-auto truncate">Afficher les détails</a>
+        @if (isset($showMore) && $showMore)
+            <a href="{{ route('analyse.show.suggestions', [$job->type->slug, $job->uuid]) }}" class="btn btn-dark ml-auto truncate">Afficher les détails</a>
+        @endif
     </div>
 
     <div class="intro-y box p-5 mt-5">

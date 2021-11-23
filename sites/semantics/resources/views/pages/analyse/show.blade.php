@@ -32,7 +32,7 @@
 
             {{-- BEGIN : Descripteurs Site --}}
             <div class="col-span-12 mt-8">
-                <x-analyse.partials.word-cloud :data="$dataWordCloud" name="Sujets principaux de cette page" showMore="1"/>
+                <x-analyse.partials.word-cloud :job="$job" :data="$dataWordCloud" name="Sujets principaux de cette page" showMore="1"/>
             </div>
             {{-- END : Descripteurs Site --}}
         </div>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="col-span-12">
-        <x-analyse.partials.network-graph :keyword="$bestKeywordLength1" :job="$job" />
+        <x-analyse.partials.network-graph :keyword="$bestKeywordLength1" :job="$job" showMore="1"/>
     </div>
 </div>
 
