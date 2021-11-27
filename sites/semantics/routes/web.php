@@ -25,7 +25,6 @@ Route::get('/analyse/custom', \App\Http\Controllers\LauncherController::class . 
 Route::get('/analyse/suggest', \App\Http\Controllers\LauncherController::class . '@analyseLauncherSuggest')->name('analyse.suggest');
 
 // Analyse détails
-//Page
 Route::get('/analyse/{type}/{uuid}', \App\Http\Controllers\StudyController::class . '@show')->name('analyse.show');
 Route::get('/analyse/{type}/{uuid}/tous-les-mots-cles', \App\Http\Controllers\StudyController::class . '@showAllKeywords')->name('analyse.show.keywords.all');
 Route::get('/analyse/{type}/{uuid}/descripteurs', \App\Http\Controllers\StudyController::class . '@showDescripteurs')->name('analyse.show.descripteurs');
@@ -43,3 +42,10 @@ Route::get('dictionnaire/antonymes', \App\Http\Controllers\PageController::class
 // Ajax
 Route::get('/ajax/network-graph-data/{uuid}', \App\Http\Controllers\AjaxController::class . '@getNetworkgraph')->name('ajax.networkgraph-data');
 Route::get('/ajax/suggest/{uuid}', \App\Http\Controllers\AjaxController::class . '@getSuggest')->name('ajax.suggest-data');
+
+// Auth
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
