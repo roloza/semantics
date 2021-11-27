@@ -180,6 +180,16 @@ class StopWords
 //    ];
 
     private const STOP_WORDS_FR = [
+        'c',
+        'd',
+        'j',
+        'l',
+        'à',
+        'm',
+        'n',
+        's',
+        't',
+        'y',
         'a',
         'A',
         'à',

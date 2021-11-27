@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Custom\AuditValidation;
 use App\Models\Job;
-use App\Models\SeoAuditStructure;
 use App\Models\Url;
+use App\Models\Antonym;
+use App\Models\Synonym;
 use Illuminate\Http\Request;
 use App\Models\SyntexRtListe;
+use App\Custom\AuditValidation;
 use App\Models\SyntexAuditDesc;
 use App\Models\SyntexAuditListe;
+use App\Models\SeoAuditStructure;
 use App\Models\SyntexDescripteur;
 
 class StudyController extends Controller
@@ -88,8 +90,11 @@ class StudyController extends Controller
     {
         $keyword = SyntexRtListe::getKeywordByNum($this->job->uuid, (int)$request->num)->firstOrFail();
 
-        $synonymsByKeywords = [];//Synonyms::getSynonymsByExpression($keyword->lemme, 10);
-        $antonymesByKeywords = [];//Antonyms::getAntonymsByExpression($keyword->lemme, 10);
+        $synonymsByKeywords = Synonym::fuzzySearchByExpression($keyword->forme);
+        $antonymesByKeywords = Antonym::fuzzySearchByExpression($keyword->forme);
+        // dd($antonymesByKeywords);
+        // $synonymsByKeywords = [];//Synonyms::getSynonymsByExpression($keyword->lemme, 10);
+        // $antonymesByKeywords = [];//Antonyms::getAntonymsByExpression($keyword->lemme, 10);
         // foreach ($synonymsByKeywords as $k => $synonymsByKeyword) {
         //     foreach ($synonymsByKeyword as $k2 => $synonymByKeyword) {
         //         $keywordSyn = SyntexRtListe::getKeywordByLemme($uuid, $synonymByKeyword)->first();

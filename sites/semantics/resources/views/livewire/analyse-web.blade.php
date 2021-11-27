@@ -10,7 +10,7 @@
                     <div class="preview">
                         <div class="form-inline">
                             <label for="horizontal-form-1" class="form-label sm:w-20">Thématique</label>
-                            <input id="horizontal-form-1" type="text" class="form-control" name="keyword" placeholder="Thématique à recherche (un mot-clé ou une expression)" wire:model.lazy="keyword">
+                            <input id="horizontal-form-1" type="text" class="form-control" name="keyword" placeholder="Thématique à rechercher (un mot-clé ou une expression)" wire:model.lazy="keyword">
                         </div>
                         @error('keyword') <div class="sm:ml-20 sm:pl-5 text-theme-6 mt-2">{{ $message }}</div> @enderror
 

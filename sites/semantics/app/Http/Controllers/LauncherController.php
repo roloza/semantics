@@ -45,4 +45,12 @@ class LauncherController extends Controller
         return view('pages.launcher.custom');
     }
 
+    /**
+     * Page lancer une analyse Suggest
+     */
+    public function analyseLauncherSuggest()
+    {
+        return view('pages.launcher.suggest');
+    }
+
 }

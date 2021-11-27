@@ -22,6 +22,7 @@ Route::get('/analyse/page', \App\Http\Controllers\LauncherController::class . '@
 Route::get('/analyse/site', \App\Http\Controllers\LauncherController::class . '@analyseLauncherSite')->name('analyse.launcher.site');
 Route::get('/analyse/web', \App\Http\Controllers\LauncherController::class . '@analyseLauncherWeb')->name('analyse.launcher.web');
 Route::get('/analyse/custom', \App\Http\Controllers\LauncherController::class . '@analyseLauncherCustom')->name('analyse.launcher.custom');
+Route::get('/analyse/suggest', \App\Http\Controllers\LauncherController::class . '@analyseLauncherSuggest')->name('analyse.suggest');
 
 // Analyse détails
 //Page
@@ -35,6 +36,9 @@ Route::get('/analyse/{type}/{uuid}/urls/{doc_id}/cloud', \App\Http\Controllers\S
 Route::get('/analyse/{type}/{uuid}/urls/{doc_id}/audit', \App\Http\Controllers\StudyController::class . '@showUrlAudit')->name('analyse.show.url.audit');
 Route::get('/analyse/{type}/{uuid}/keyword/{num}', \App\Http\Controllers\StudyController::class . '@showKeyword')->name('analyse.show.keyword');
 Route::get('/analyse/{type}/{uuid}/mots-cles-suggest', \App\Http\Controllers\StudyController::class . '@showKeywordsSuggest')->name('analyse.show.keywords.suggest');
+
+Route::get('dictionnaire/synonymes', \App\Http\Controllers\PageController::class . '@synonym')->name('dictionnaire.synonyms');
+Route::get('dictionnaire/antonymes', \App\Http\Controllers\PageController::class . '@antonym')->name('dictionnaire.antonyms');
 
 // Ajax
 Route::get('/ajax/network-graph-data/{uuid}', \App\Http\Controllers\AjaxController::class . '@getNetworkgraph')->name('ajax.networkgraph-data');

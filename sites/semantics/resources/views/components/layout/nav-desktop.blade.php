@@ -29,6 +29,20 @@
                 </div>
             </a>
         </li>
+
+        <li>
+            <a href="#" class="side-menu">
+                <div class="side-menu__icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="side-menu__title">
+                    Démos
+                </div>
+            </a>
+        </li>
+
+        <div class="side-nav__devider my-6"></div>
+
         <li>
             <a href="javascript:;" class="side-menu side-menu-parent {{  request()->routeIs('analyse.launcher*') ? 'side-menu--active  side-menu--open' : '' }}">
                 <div class="side-menu__icon">
@@ -86,9 +100,58 @@
                 </li>
             </ul>
         </li>
+
+        <li>
+            <a href="{{ route('analyse.suggest') }}" class="side-menu {{ request()->routeIs('analyse.suggest') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="side-menu__title">
+                    Trouver des Suggestions
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('dictionnaire.synonyms') }}" class="side-menu {{ request()->routeIs('dictionnaire.synonyms') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="side-menu__title">
+                    Dico Synonymes
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="{{ route('dictionnaire.antonyms') }}" class="side-menu {{ request()->routeIs('dictionnaire.antonyms') ? 'side-menu--active' : '' }}">
+                <div class="side-menu__icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="side-menu__title">
+                    Dico Antonymes
+                </div>
+            </a>
+        </li>
         <div class="side-nav__devider my-6"></div>
-
-
+        <li>
+            <a href="#" class="side-menu">
+                <div class="side-menu__icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="side-menu__title">
+                    Actualités
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="side-menu">
+                <div class="side-menu__icon">
+                    <i data-feather="activity"></i>
+                </div>
+                <div class="side-menu__title">
+                    FAQ
+                </div>
+            </a>
+        </li>
     </ul>
 </nav>
 <!-- END: Side Menu -->

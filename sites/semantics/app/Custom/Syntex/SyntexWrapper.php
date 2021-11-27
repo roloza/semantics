@@ -9,6 +9,7 @@ use App\Models\Url;
 use League\Csv\Reader;
 use App\Models\SyntexRtListe;
 use App\Models\CatGrammatical;
+use App\Custom\Tools\StopWords;
 use App\Models\SyntexAuditDesc;
 use App\Models\SyntexAuditIncl;
 use App\Models\SyntexAuditListe;
@@ -102,7 +103,7 @@ class SyntexWrapper
                 'forme' => utf8_encode(current($formes)),
                 'rang' => (int)$record['rang'],
                 'freq_pond' => (float)$record['freq pond'],
-                'longueur' => preg_match_all('/\pL+/u',$lemme, $matches)
+                'longueur' => $this->lemmeLength($lemme)
             ];
 
             if(sizeof($data) > $max) {
@@ -149,7 +150,7 @@ class SyntexWrapper
                 'nb_doc' => (int)$record[6],
                 'frequisol' => (int)$record[7],
                 'nincl' => (int)$record[14],
-                'longueur' => preg_match_all('/\pL+/u',$lemme, $matches)
+                'longueur' => $this->lemmeLength($lemme)
             ];
 
             if(sizeof($data) > $max) {
@@ -192,7 +193,7 @@ class SyntexWrapper
                 'category_name' => ($category !== null) ? $category->name :  'Autres',
                 'lemme' => $lemme,
                 'longueur_num' => (int)$record[3],
-                'longueur' => preg_match_all('/\pL+/u',$lemme, $matches),
+                'longueur' => $this->lemmeLength($lemme),
                 'score' => (int)$record[4],
                 'freq_num' => (int)$record[5],
                 'nbincl1_num' => (int)$record[6],
@@ -311,7 +312,7 @@ class SyntexWrapper
                 'score_moy' => (int)$record[4] * 100,
                 'freq_doc' => (int)$record[5],
                 'forme' => $forme,
-                'longueur' => preg_match_all('/\pL+/u',$forme, $matches),
+                'longueur' => $this->lemmeLength($forme),
             ];
             if(sizeof($data) > $max) {
                 try {
@@ -344,5 +345,28 @@ class SyntexWrapper
                 ->where('url', 'LIKE', '%' . $record[2])
                 ->update(['doc_id' => $record[1]]);
         }
+    }
+
+    /**
+     * Calcul la longeur d'une expression
+     */
+    private function lemmeLength($lemme)
+    {
+        $items = explode(' ', $lemme);
+        $list = [];
+        foreach($items as $item)
+        {
+            if (strlen($item <= 2)) {
+                continue;
+            }
+            if (StopWords::isStopWord($item)) {
+                continue;
+            }
+
+            $list[] = $item;
+        }
+        $lemme = implode(' ', $list);
+
+        return preg_match_all('/\pL+/u',$lemme, $matches);
     }
 }

@@ -3,21 +3,20 @@
 namespace App\Http\Livewire;
 
 use App\Models\Job;
-use App\Models\Task;
 use Livewire\Component;
 
 class ProgessTask extends Component
 {
-    public $job;
+    public $uuid;
 
-    public function mount($job)
+    public function mount($uuid)
     {
-        $this->job = $job;
+        $this->uuid = $uuid;
     }
 
     public function render()
     {
-        $job = Job::where('uuid', $this->job->uuid)->first();
+        $job = Job::where('uuid', $this->uuid)->first();
         if ( $job !== null && $job->status->id === 3) {
             $this->emitUp('jobSuccess');
         } elseif ($job !== null && $job->status->id === 4) {

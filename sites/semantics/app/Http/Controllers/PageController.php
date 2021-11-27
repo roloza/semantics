@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Synonym;
 use Illuminate\Http\Request;
 
 class PageController extends Controller
@@ -21,6 +22,24 @@ class PageController extends Controller
     {
         return view('pages.analyse.list');
     }
+
+    /**
+     * Page de recherche d'un synonyme
+     */
+    public function synonym()
+    {
+        return view('pages.dico.synonym');
+    }
+
+     /**
+     * Page de recherche d'un antonyme
+     */
+    public function antonym()
+    {
+        return view('pages.dico.antonym');
+    }
+
+
 
 
 }

@@ -46,7 +46,7 @@
         @endif
 
         {{-- Site / keyword --}}
-        @if($job->type->slug === 'site' || $job->type->slug === 'keyword')
+        @if($job->type->slug === 'site' || $job->type->slug === 'web' || $job->type->slug === 'keyword')
             <a href="{{ route('analyse.show.urls', [$job->type->slug, $job->uuid]) }}" class="flex items-center px-3 py-2 mt-2 rounded-md truncate {{ request()->routeIs('analyse.show.urls') ? 'bg-theme-1 text-white font-medium ' : '' }}">
                 Détails des urls
             </a>
