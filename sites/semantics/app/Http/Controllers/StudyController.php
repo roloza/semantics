@@ -13,6 +13,8 @@ use App\Models\SyntexAuditDesc;
 use App\Models\SyntexAuditListe;
 use App\Models\SeoAuditStructure;
 use App\Models\SyntexDescripteur;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class StudyController extends Controller
 {

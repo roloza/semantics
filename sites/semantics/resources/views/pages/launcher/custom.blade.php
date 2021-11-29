@@ -20,7 +20,7 @@
     <div class="pos intro-y grid grid-cols-12 gap-5 mt-5">
         <div class="col-span-12 xl:col-span-8">
             <x-analyse.launcher.tabs active="custom"/>
-            @livewire('analyse-site')
+            @livewire('analyse-custom')
 
         </div>
     </div>

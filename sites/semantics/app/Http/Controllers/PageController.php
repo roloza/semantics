@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Synonym;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -20,6 +21,7 @@ class PageController extends Controller
      */
     public function analyseList()
     {
+
         return view('pages.analyse.list');
     }
 

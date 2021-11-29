@@ -7,9 +7,9 @@ use App\Models\Url;
 use App\Models\Type;
 use App\Jobs\SuggestJob;
 use App\Jobs\WebCrawler;
-use GuzzleHttp\Psr7\Uri;
 use App\Jobs\PageCrawler;
 use App\Jobs\SiteCrawler;
+use App\Jobs\CustomCrawlerJob;
 use Illuminate\Http\Request;
 use App\Models\SyntexRtListe;
 use App\Models\SyntexAuditDesc;
@@ -60,6 +60,13 @@ class SemanticsController extends Controller
             case 'web':
                 $params = ['keyword' => $keyword, 'totalCrawlLimit' => $totalCrawlLimit, 'isNews' => $isNews, 'typeContent' => $typeContent];
                 $uuid = $this->launchJobWeb($params);
+                break;
+            case 'custom':
+                $filepath = $request->filepath ? $request->filepath : null;
+                $filename = $request->filename ? $request->filename : '';
+                $separator = $request->separator ? $request->separator : ';';
+                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator];
+                $uuid = $this->launchJobCustom($params);
                 break;
             case 'page':
             default:
@@ -160,5 +167,19 @@ class SemanticsController extends Controller
             ], 200);
         }
         return $this->dispatch(new SuggestJob($params));
+    }
+
+    private function launchJobCustom($params)
+    {
+        $job = Job::hasJob($params, 1, $this->type->id);
+        if ($job) {
+            $this->destroySuggest($job->uuid);
+        }
+        if ($params['filepath'] === null || $params['filename'] === '') {
+            return response()->json([
+                'message' => 'Invalid file'
+            ], 200);
+        }
+        return $this->dispatch(new CustomCrawlerJob($params));
     }
 }

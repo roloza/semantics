@@ -89,7 +89,13 @@
 
             @else
                 <div class="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0 pt-8">
-                    <p>Aucune analyse trouvée</p>
+                    <p>Aucune analyse trouvée.</p>
+                    @guest
+                        <a href="{{ route('login') }}" class="btn btn-outline-primary mt-3">{{ __('Log in') }}</a>
+                        <a href="{{ route('register') }}" class="btn btn-outline-primary mt-3">{{ __('Register') }}</a>
+                    @else
+                        <a href="{{ route('analyse.launcher.page') }}" class="btn btn-outline-primary mt-3">Créez votre première analyse</a>
+                    @endguest
                 </div>
 
             @endif

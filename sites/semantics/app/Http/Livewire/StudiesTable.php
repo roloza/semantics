@@ -2,8 +2,9 @@
 
 namespace App\Http\Livewire;
 
-use App\Http\Controllers\SemanticsController;
 use App\Models\Job;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SemanticsController;
 
 class StudiesTable extends TableComponent
 {
@@ -18,10 +19,17 @@ class StudiesTable extends TableComponent
     public function render()
     {
         $query = new Job();
-        if ($this->search !== '') {
-            $query = $query->where('name', 'LIKE', "%{$this->search}%");
+        $user = Auth::user();
+        if ($user) {
+            $query = $query->where('user_id', $user->id);
+            if ($this->search !== '') {
+                $query = $query->where('name', 'LIKE', "%{$this->search}%");
+            }
+            $query = $query->orderBy('created_at', 'DESC');
+        } else {
+            $query = $query->where('user_id', 0);
         }
-        $query = $query->orderBy('created_at', 'DESC');
+
         $jobs = $query->paginate(20);
 
         return view('livewire.studies-table', [

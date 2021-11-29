@@ -15,7 +15,7 @@
 
 @section('content')
 
-<div class="grid grid-cols-12 gap-6 mt-8">
+<div class="grid grid-cols-12 gap-6 mt-4">
 
     <x-analyse.partials.title :job="$job" title="Idées d'expressions avec {{$job->name}}"/>
         <div class="col-span-12 lg:col-span-9 xxl:col-span-10">

@@ -12,6 +12,8 @@ class AnalyseComponent extends Component
     public $total_crawl_limit;
     public $is_news = '0';
     public $type_content = 'all';
+    public $file = '';
+    public $separator = ';';
     public $state = ['label' => 'Lancer', 'class' => 'btn-primary'];
     public $active = 0;
     public $uuid = '';

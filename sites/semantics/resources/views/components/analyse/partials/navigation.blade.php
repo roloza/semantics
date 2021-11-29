@@ -46,7 +46,7 @@
         @endif
 
         {{-- Site / keyword --}}
-        @if($job->type->slug === 'site' || $job->type->slug === 'web' || $job->type->slug === 'keyword')
+        @if($job->type->slug === 'site' || $job->type->slug === 'web' || $job->type->slug === 'keyword' || $job->type->slug === 'custom')
             <a href="{{ route('analyse.show.urls', [$job->type->slug, $job->uuid]) }}" class="flex items-center px-3 py-2 mt-2 rounded-md truncate {{ request()->routeIs('analyse.show.urls') ? 'bg-theme-1 text-white font-medium ' : '' }}">
                 Détails des urls
             </a>
@@ -56,7 +56,9 @@
             <ul>
                 <li><a href="{{ route('analyse.show.url', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'doc_id' => $url->doc_id]) }}" class="flex items-center px-4 py-1 mt-2 ml-5 rounded-md {{ request()->routeIs('analyse.show.url') ? 'text-white bg-gray-400 font-medium ' : '' }}">Url - Sujets principaux</a></li>
                 <li><a href="{{ route('analyse.show.url.cloud', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'doc_id' => $url->doc_id]) }}" class="flex items-center px-4 py-1 mt-2 ml-5 rounded-md {{ request()->routeIs('analyse.show.url.cloud') ? 'text-white bg-gray-400 font-medium ' : '' }}">Nuage</a></li>
-                <li><a href="{{ route('analyse.show.url.audit', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'doc_id' => $url->doc_id]) }}" class="flex items-center px-4 py-1 mt-2 ml-5 rounded-md {{ request()->routeIs('analyse.show.url.audit') ? 'text-white bg-gray-400 font-medium ' : '' }}">Audit de la structure HTML</a></li>
+                @if($job->type->slug === 'site' || $job->type->slug === 'web' || $job->type->slug === 'keyword')
+                    <li><a href="{{ route('analyse.show.url.audit', ['type' => $job->type->slug, 'uuid' => $job->uuid, 'doc_id' => $url->doc_id]) }}" class="flex items-center px-4 py-1 mt-2 ml-5 rounded-md {{ request()->routeIs('analyse.show.url.audit') ? 'text-white bg-gray-400 font-medium ' : '' }}">Audit de la structure HTML</a></li>
+                @endif
             </ul>
             @endif
         @endif
