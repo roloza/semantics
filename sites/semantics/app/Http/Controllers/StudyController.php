@@ -15,6 +15,8 @@ use App\Models\SeoAuditStructure;
 use App\Models\SyntexDescripteur;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class StudyController extends Controller
 {
@@ -46,6 +48,11 @@ class StudyController extends Controller
 
         // $dataKeywordGraph = (new KeywordsGraphV2($this->uuid, $bestKeywordLength1))->run();
 
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $job->type->name . ' - ' . $job->name]
+        ];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.analyse.show', compact('job', 'countKeywords', 'countSyntagmes', 'countUrls', 'bestKeyword', 'topKeywords', 'dataWordCloud', 'bestKeywordLength1'));
     }
 
@@ -55,6 +62,12 @@ class StudyController extends Controller
      */
     public function showAllKeywords()
     {
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Tous les mots-clés']
+        ];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.analyse.show-keywords', ['job' => $this->job]);
     }
 
@@ -64,6 +77,12 @@ class StudyController extends Controller
      */
     public function showDescripteurs()
     {
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Sujets principaux']
+        ];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.analyse.show-descripteurs', ['job' => $this->job]);
     }
 
@@ -76,6 +95,14 @@ class StudyController extends Controller
     {
         $suggestKeyword = SyntexRtListe::where('uuid', $this->uuid)->whereIn('cat', ['V', 'N'])->orderBy('nincl', 'DESC')->first();
         $keyword = $request->keyword ? $request->keyword : $suggestKeyword->forme;
+
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Suggestions de thématiques']
+        ];
+        View::share('breadcrumb', $breadcrumb);
+
         return view('pages.analyse.show-suggestions', [
             'job' => $this->job,
             'keyword' => $keyword
@@ -115,6 +142,13 @@ class StudyController extends Controller
             $keywordsIncludeds = SyntexRtListe::getIncludeds($this->job->uuid, $keyword);
         }
 
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => $keyword->forme]
+        ];
+        View::share('breadcrumb', $breadcrumb);
+
         return view('pages.analyse.show-keyword', [
             'job' => $this->job,
             'keyword' => $keyword,
@@ -135,6 +169,14 @@ class StudyController extends Controller
     public function showUrls()
     {
         $job = $this->job;
+
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Liste des urls']
+        ];
+        View::share('breadcrumb', $breadcrumb);
+
         return view('pages.analyse.show-urls', ['job' => $job]);
     }
 
@@ -147,6 +189,14 @@ class StudyController extends Controller
     public function showUrl(Request $request)
     {
         $url = Url::getUrl($this->job->uuid, $request->doc_id)->firstOrFail();
+
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => $url->url]
+        ];
+        View::share('breadcrumb', $breadcrumb);
+
         return view('pages.analyse.show-url', ['job' => $this->job, 'url' => $url]);
     }
 
@@ -170,6 +220,14 @@ class StudyController extends Controller
 
         }
         $dataWordCloud = json_encode($dataWordCloud);
+
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Nuage de mots-clés']
+        ];
+        View::share('breadcrumb', $breadcrumb);
+
         return view('pages.analyse.show-url-cloud', ['job' => $this->job, 'url' => $url, 'dataWordCloud' => $dataWordCloud]);
     }
 
@@ -187,6 +245,13 @@ class StudyController extends Controller
         $auditValidation = new AuditValidation($audit);
         $auditStructure = $auditValidation->getStructure();
         $auditStructureScore = $auditValidation->getStructureScore();
+
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Audit SEO']
+        ];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.analyse.show-url-audit', ['job' => $this->job, 'url' => $url, 'audit' => $audit, 'auditStructure' => $auditStructure, 'auditStructureScore' => $auditStructureScore]);
     }
 
@@ -195,6 +260,12 @@ class StudyController extends Controller
      */
     public function showKeywordsSuggest(Request $request)
     {
+        $breadcrumb = [
+            ['title' => 'Mes analyses', 'link' => route('analyse.list')],
+            ['title' =>  'Analyse ' . $this->job->type->name . ' - ' . $this->job->name, 'link' => route('analyse.show', ['type' => $this->job->type->name, 'uuid' => $this->job->uuid])],
+            ['title' => 'Suggestions']
+        ];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.analyse.show-keywords-suggest', ['job' => $this->job, 'keyword' => $request->keyword]);
 
 

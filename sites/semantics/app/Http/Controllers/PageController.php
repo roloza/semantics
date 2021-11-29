@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Synonym;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class PageController extends Controller
 {
@@ -21,7 +23,8 @@ class PageController extends Controller
      */
     public function analyseList()
     {
-
+        $breadcrumb = [['title' => 'Analyse', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.analyse.list');
     }
 
@@ -30,6 +33,8 @@ class PageController extends Controller
      */
     public function synonym()
     {
+        $breadcrumb = [['title' => 'Recherche de synonymes', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.dico.synonym');
     }
 
@@ -38,6 +43,8 @@ class PageController extends Controller
      */
     public function antonym()
     {
+        $breadcrumb = [['title' => 'Recherche d\'antonymes', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.dico.antonym');
     }
 

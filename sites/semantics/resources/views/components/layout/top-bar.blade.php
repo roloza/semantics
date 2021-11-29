@@ -1,9 +1,12 @@
 <div class="top-bar">
-    @include('generics.partials.breadcrumb')
+{{--    @include('generics.partials.breadcrumb')--}}
     {{-- @include('generics.partials.search')
 
     @include('generics.partials.notifications') --}}
     {{-- @include('generics.partials.account') --}}
+
+    <x-layout.breadcrumb></x-layout.breadcrumb>
+
     <!-- Settings Dropdown -->
     @auth
     <div class="hidden sm:flex sm:items-center sm:ml-6">

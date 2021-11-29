@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+
 class LauncherController extends Controller
 {
 
@@ -18,6 +21,8 @@ class LauncherController extends Controller
      */
     public function analyseLauncherPage()
     {
+        $breadcrumb = [['title' => 'Analyse sémantique d\'une page', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.launcher.page');
     }
 
@@ -26,6 +31,8 @@ class LauncherController extends Controller
      */
     public function analyseLauncherSite()
     {
+        $breadcrumb = [['title' => 'Analyse sémantique d\'un site', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.launcher.site');
     }
 
@@ -34,6 +41,8 @@ class LauncherController extends Controller
      */
     public function analyseLauncherWeb()
     {
+        $breadcrumb = [['title' => 'Analyse sémantique d\'une thématique', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.launcher.web');
     }
 
@@ -42,6 +51,8 @@ class LauncherController extends Controller
      */
     public function analyseLauncherCustom()
     {
+        $breadcrumb = [['title' => 'Analyse sémantique d\'un fichier personalisé', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.launcher.custom');
     }
 
@@ -50,6 +61,8 @@ class LauncherController extends Controller
      */
     public function analyseLauncherSuggest()
     {
+        $breadcrumb = [['title' => 'Trouver des suggestions', 'link' => route(Route::getCurrentRoute()->getName())]];
+        View::share('breadcrumb', $breadcrumb);
         return view('pages.launcher.suggest');
     }
 
