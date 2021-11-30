@@ -3,7 +3,7 @@
     @if (Route::has('login'))
     <div class="">
         @auth
-            <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 ">{{ Auth::user()->name }}</a>
+            <a href="{{ route('user.profile') }}" class="text-sm text-gray-700 dark:text-gray-500 ">{{ Auth::user()->name }}</a>
         @else
             <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 ">Se connecter</a>
 

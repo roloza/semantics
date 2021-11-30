@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Custom\Tools\Avatar;
+use App\Models\Job;
 use App\Models\Synonym;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,6 +50,20 @@ class PageController extends Controller
         return view('pages.dico.antonym');
     }
 
+    /**
+     * Page profil d'un utilisateur
+     */
+    public function userProfile()
+    {
+        $user = Auth::user();
+        $jobs = Job::where('user_id', $user->id)->where('status_id', 3)->orderBy('created_at', 'DESC')->get();
+        $breadcrumb = [['title' => 'Profile']];
+        View::share('breadcrumb', $breadcrumb);
+        return view('pages.user.profil', [
+            'user' => $user,
+            'jobs' => $jobs
+        ]);
+    }
 
 
 

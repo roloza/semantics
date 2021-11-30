@@ -35,7 +35,6 @@
             <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.antonyms')">{{ __('Dico Antonymes') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.list')">{{ __('Actualités') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.list')">{{ __('FAQ') }}</x-responsive-nav-link>
-
         </div>
 
         <!-- Responsive Settings Options -->

@@ -50,8 +50,6 @@ Route::middleware(['user-job'])->group(function () {
 });
 
 // Auth
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/mon-profil', \App\Http\Controllers\PageController::class . '@userProfile')->middleware(['auth'])->name('user.profile');
 
 require __DIR__.'/auth.php';
