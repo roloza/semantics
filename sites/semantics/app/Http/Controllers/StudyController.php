@@ -209,7 +209,8 @@ class StudyController extends Controller
     public function showUrlCloud(Request $request)
     {
         $url = Url::getUrl($this->job->uuid, $request->doc_id)->firstOrFail();
-        $keywords = SyntexDescripteur::tableUrlDetail(['job' => $this->job, 'doc_id' => $request->doc_id])->get();
+        $keywords = SyntexDescripteur::tableUrlDetail(['uuid' => $this->job->uuid, 'doc_id' => $request->doc_id])->get();
+
         $dataWordCloud = [];
         foreach ($keywords as $keyword) {
 
