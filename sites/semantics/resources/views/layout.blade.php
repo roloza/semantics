@@ -22,8 +22,7 @@
 
 <body class="main">
 
-    {{-- <x-layout.nav-mobile></x-layout.nav-mobile> --}}
-    {{-- <div class="flex"> --}}
+    <x-layout.nav-mobile></x-layout.nav-mobile>
     <div class="flex">
         <x-layout.nav-desktop></x-layout.nav-desktop>
         <div class="content">
