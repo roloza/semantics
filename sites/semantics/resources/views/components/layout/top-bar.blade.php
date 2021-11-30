@@ -40,11 +40,13 @@
         </x-dropdown>
     </div>
     @else
+        <div class="hidden sm:flex sm:items-center sm:ml-6">
         <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 ">Se connecter</a>
 
         @if (Route::has('register'))
             <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 dark:text-gray-500 ">S'enregistrer</a>
         @endif
+        </div>
     @endauth
 
 </div>

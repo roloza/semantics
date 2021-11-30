@@ -11,7 +11,7 @@
         <li>
             <a href="{{ route('accueil') }}" class="side-menu {{ request()->routeIs('accueil') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
-                    <i data-feather="home"></i>
+                    <i class="fas fa-home"></i>
                 </div>
                 <div class="side-menu__title">
                     Accueil
@@ -22,7 +22,7 @@
         <li>
             <a href="{{ route('analyse.list') }}" class="side-menu {{ request()->routeIs('analyse.list') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="fas fa-list"></i>
                 </div>
                 <div class="side-menu__title">
                     Mes analyses
@@ -33,7 +33,7 @@
         <li>
             <a href="#" class="side-menu">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="far fa-lemon"></i>
                 </div>
                 <div class="side-menu__title">
                     Démos
@@ -46,7 +46,7 @@
         <li>
             <a href="javascript:;" class="side-menu side-menu-parent {{  request()->routeIs('analyse.launcher*') ? 'side-menu--active  side-menu--open' : '' }}">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="fas fa-search"></i>
                 </div>
                 <div class="side-menu__title">
                     Analyser
@@ -104,7 +104,7 @@
         <li>
             <a href="{{ route('analyse.suggest') }}" class="side-menu {{ request()->routeIs('analyse.suggest') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="fas fa-hat-wizard"></i>
                 </div>
                 <div class="side-menu__title">
                     Trouver des Suggestions
@@ -114,7 +114,7 @@
         <li>
             <a href="{{ route('dictionnaire.synonyms') }}" class="side-menu {{ request()->routeIs('dictionnaire.synonyms') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="fas fa-pen"></i>
                 </div>
                 <div class="side-menu__title">
                     Dico Synonymes
@@ -124,7 +124,7 @@
         <li>
             <a href="{{ route('dictionnaire.antonyms') }}" class="side-menu {{ request()->routeIs('dictionnaire.antonyms') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="fas fa-pen-alt"></i>
                 </div>
                 <div class="side-menu__title">
                     Dico Antonymes
@@ -135,7 +135,7 @@
         <li>
             <a href="#" class="side-menu">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="far fa-newspaper"></i>
                 </div>
                 <div class="side-menu__title">
                     Actualités
@@ -145,7 +145,7 @@
         <li>
             <a href="#" class="side-menu">
                 <div class="side-menu__icon">
-                    <i data-feather="activity"></i>
+                    <i class="far fa-question-circle"></i>
                 </div>
                 <div class="side-menu__title">
                     FAQ
