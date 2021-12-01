@@ -42,7 +42,7 @@ class CustomCrawlerJob implements ShouldQueue
         $this->uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $this->uuid);
 
-        $job = Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->params['filename']), 'user_id' => 1, 'type_id' => 4, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        $job = Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->params['filename']), 'user_id' => $this->params['userId'], 'type_id' => 4, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
 
         $csv = Reader::createFromPath($this->params['filepath'], 'r');
         $csv->setDelimiter($this->params['separtor']);

@@ -44,7 +44,7 @@ class SiteCrawler implements ShouldQueue
         $uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $uuid);
         $domain = ucFirst(str_replace("-", ' ' , current(explode(".", str_replace('www.', '', parse_url($this->params['url'], PHP_URL_HOST))))));
-        $job = Job::create(['uuid' => $uuid , 'name' => $domain, 'user_id' => 1, 'type_id' => 2, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        $job = Job::create(['uuid' => $uuid , 'name' => $domain, 'user_id' => $this->params['userId'], 'type_id' => 2, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
         foreach($this->params as $name => $value) {
             $parameter = Parameters::create(['name' => $name, 'value' => $value]);
             $job->parameters()->attach($parameter->id);

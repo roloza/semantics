@@ -49,7 +49,7 @@ class WebCrawler implements ShouldQueue
         $this->uuid = $this->job->getJobId();
         Log::debug('Uuid: ' . $this->uuid);
 
-        $job = Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->params['keyword']), 'user_id' => 1, 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
+        $job = Job::create(['uuid' => $this->uuid, 'name' => ucFirst($this->params['keyword']), 'user_id' => $this->params['userId'], 'type_id' => 3, 'status_id' => 2, 'percentage' => 5, 'message' => 'Initialisation du traitement']);
         foreach($this->params as $name => $value) {
             $parameter = Parameters::create(['name' => $name, 'value' => $value]);
             $job->parameters()->attach($parameter->id);

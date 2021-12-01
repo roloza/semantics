@@ -37,7 +37,6 @@ class CustomCrawler extends CrawlObserver
     public function crawled(\Psr\Http\Message\UriInterface $url, \Psr\Http\Message\ResponseInterface $response, ?\Psr\Http\Message\UriInterface $foundOnUrl = null): void
     {
         Log::debug('[crawled] : ' . (string)$url);
-
         if ($response->getStatusCode() !== 200) {
             Log::error('Url non traitée. Mauvais statut : ' . $response->getStatusCode());
             return;
@@ -52,33 +51,48 @@ class CustomCrawler extends CrawlObserver
         }
 
         $htmlParser = new HtmlScrapper((string)$response->getBody(), $url);
-
         if ($this->typeContent === 'full') {
             $content = $htmlParser->getFullContentText();
         } else {
             $content = $htmlParser->getLightContentText();
         }
-
         $detector = new LanguageDetector();
-        $language = $detector->evaluate($content)->getLanguage();
+        try {
+            $language = $detector->evaluate(substr($content, 0, 500))->getLanguage();
+        } catch (\Exception $e) {
+            Log::error('language : ' . $e->getMessage());
+            return;
+        }
         if ($language->getCode() !== 'fr') {
             Log::error('Langue non traitée : ' . $language->getCode());
             return;
         }
 
-        $newUrl = Url::firstOrCreate([
-            'uuid' => $this->uuid,
-            'url' => (string)$url
-        ], [
-            'title' => $htmlParser->title(),
-            'content' => $content,
-        ]);
+        try {
+            $newUrl = Url::firstOrCreate([
+                'uuid' => $this->uuid,
+                'url' => (string)$url
+            ], [
+                'title' => $htmlParser->title(),
+                'content' => $content,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('newUrl create : ' . $e->getMessage());
+        }
 
         // Insertion structure HTML de la page
-        SeoAuditStructure::insertUpdate(array_merge(['uuid' => $this->uuid, 'url_id' => $newUrl->id], $htmlParser->run()));
+        try {
+            SeoAuditStructure::insertUpdate(array_merge(['uuid' => $this->uuid, 'url_id' => $newUrl->id], $htmlParser->run()));
+        } catch (\Exception $e) {
+            Log::error('SeoAuditStructure : ' . $e->getMessage());
+        }
 
         $this->count++;
-        Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 50, 'message' => '[' . $this->count . '/' . $this->maximumCrawlCount . '] ' . (string)$url]);
+        try {
+            Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 50, 'message' => '[' . $this->count . '/' . $this->maximumCrawlCount . '] ' . (string)$url]);
+        } catch (\Exception $e) {
+            Log::error('Job insert : ' . $e->getMessage());
+        }
     }
 
     public function crawlFailed(\Psr\Http\Message\UriInterface $url, \GuzzleHttp\Exception\RequestException $requestException, ?\Psr\Http\Message\UriInterface $foundOnUrl = null): void
@@ -86,6 +100,5 @@ class CustomCrawler extends CrawlObserver
         Log::debug('[crawlFailed] : ' . (string)$url);
         Log::debug('Status : ' . $requestException->getCode());
         Log::debug($requestException->getMessage());
-        // TODO: Implement crawlFailed() method.
     }
 }

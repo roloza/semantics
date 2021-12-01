@@ -17,6 +17,7 @@ use App\Models\SyntexAuditIncl;
 use App\Models\SyntexAuditListe;
 use App\Models\SeoAuditStructure;
 use App\Models\SyntexDescripteur;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class PingController
@@ -50,27 +51,27 @@ class SemanticsController extends Controller
 
         switch($this->type->slug) {
             case 'suggest':
-                $params = ['keyword' => $keyword];
+                $params = ['keyword' => $keyword, 'userId' => Auth::user()->id];
                 $uuid = $this->launchJobSuggest($params);
                 break;
             case 'site':
-                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent];
+                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
                 $uuid = $this->launchJobSite($params);
                 break;
             case 'web':
-                $params = ['keyword' => $keyword, 'totalCrawlLimit' => $totalCrawlLimit, 'isNews' => $isNews, 'typeContent' => $typeContent];
+                $params = ['keyword' => $keyword, 'totalCrawlLimit' => $totalCrawlLimit, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
                 $uuid = $this->launchJobWeb($params);
                 break;
             case 'custom':
                 $filepath = $request->filepath ? $request->filepath : null;
                 $filename = $request->filename ? $request->filename : '';
                 $separator = $request->separator ? $request->separator : ';';
-                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator];
+                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator, 'userId' => Auth::user()->id];
                 $uuid = $this->launchJobCustom($params);
                 break;
             case 'page':
             default:
-                $params = ['url' => $url, 'typeContent' => $typeContent];
+                $params = ['url' => $url, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
                 $uuid = $this->launchJobPage($params);
                 break;
         }

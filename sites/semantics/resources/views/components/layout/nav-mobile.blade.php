@@ -57,6 +57,9 @@
                     </x-responsive-nav-link>
                 </form>
             </div>
+            @else
+                <x-responsive-nav-link :href="route('login')">{{ __('Log in') }}</x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('logout')">{{ __('Log Out') }}</x-responsive-nav-link>
             @endauth
         </div>
     </div>

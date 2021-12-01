@@ -230,7 +230,6 @@ class SyntexWrapper
         $max = 500;
 
         foreach ( $csv->getRecords() as $offset => $record) {
-            Log::debug($record);
             $data[] = [
                 'uuid' => $this->uuid,
                 'num_1' => (int)$record[0],
