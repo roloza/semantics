@@ -8,7 +8,6 @@ class AnalyseWeb extends AnalyseComponent
 {
     protected $rules = [
         'keyword' => 'required',
-        'total_crawl_limit' => '',
         'type_content' => '',
         'is_news' => '',
     ];
@@ -23,7 +22,6 @@ class AnalyseWeb extends AnalyseComponent
         $request = new \Illuminate\Http\Request();
         $request->replace([
             'keyword' => $validatedData['keyword'],
-            'total_crawl_limit' => $validatedData['total_crawl_limit'] ?? 10,
             'type_content' => $validatedData['type_content'] ?? 'all',
             'is_news' => $validatedData['is_news'] ?? 0,
             'type' => 'web'
@@ -40,8 +38,7 @@ class AnalyseWeb extends AnalyseComponent
         return view('livewire.analyse-web', [
             'state' => $this->state,
             'active' => $this->active,
-            'uuid' => $this->uuid,
-            'totalCrawlLimitValues' => [10,50,100,200,500]
+            'uuid' => $this->uuid
         ]);
     }
 }

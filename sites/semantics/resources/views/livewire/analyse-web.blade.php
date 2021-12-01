@@ -15,15 +15,6 @@
                         @error('keyword') <div class="sm:ml-20 sm:pl-5 text-theme-6 mt-2">{{ $message }}</div> @enderror
 
                         <div class="form-inline mt-5">
-                            <label for="total_crawl_limit" class="form-label sm:w-20">Maximum</label>
-                            <select id="total_crawl_limit" name="total_crawl_limit" class="form-select" wire:model.lazy="total_crawl_limit">
-                                @foreach($totalCrawlLimitValues as $totalCrawlLimitValue)
-                                    <option value="{{$totalCrawlLimitValue}}" wire:key="{{$totalCrawlLimitValue}}">{{$totalCrawlLimitValue}} pages</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-inline mt-5">
                             <div class="flex flex-col sm:flex-row mt-2">
                                 <label for="is_news" class="form-label sm:w-20">Crawler</label>
                                 <div class="form-check mr-2">

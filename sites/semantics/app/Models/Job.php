@@ -80,6 +80,7 @@ class Job extends Model
         foreach($jobs as $job) {
             $sameJob = true;
             foreach($job->parameters as $parameter) {
+                if (!isset($params[$parameter->name])) continue;
                 if ($params[$parameter->name] !== $parameter->value) {
                     $sameJob = false;
                 }

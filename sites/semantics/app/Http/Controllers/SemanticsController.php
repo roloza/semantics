@@ -59,7 +59,7 @@ class SemanticsController extends Controller
                 $uuid = $this->launchJobSite($params);
                 break;
             case 'web':
-                $params = ['keyword' => $keyword, 'totalCrawlLimit' => $totalCrawlLimit, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
+                $params = ['keyword' => $keyword, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
                 $uuid = $this->launchJobWeb($params);
                 break;
             case 'custom':

@@ -21,13 +21,13 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class WebCrawler implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     private array $params;
+    private $totalCrawlLimit;
 
     /**
      * Create a new job instance.
@@ -37,6 +37,7 @@ class WebCrawler implements ShouldQueue
     public function __construct(array $params)
     {
         $this->params = $params;
+        $this->totalCrawlLimit = 30;
     }
 
     /**
@@ -63,12 +64,12 @@ class WebCrawler implements ShouldQueue
             $this->getByWebCrawler($webCrawler);
             $countUrls = Url::where('uuid', $this->uuid)->count();
 
-            if ($countUrls < $this->params['totalCrawlLimit']) {
+            if ($countUrls < $this->totalCrawlLimit) {
                 $webCrawler = new DuckDuckGo($this->params['keyword']);
                 $this->getByWebCrawler($webCrawler);
             }
             $countUrls = Url::where('uuid', $this->uuid)->count();
-            if ($countUrls < $this->params['totalCrawlLimit']) {
+            if ($countUrls < $this->totalCrawlLimit) {
                 $webCrawler = new Searx($this->params['keyword']);
                 $this->getByWebCrawler($webCrawler);
             }
@@ -91,7 +92,7 @@ class WebCrawler implements ShouldQueue
         $blackListItems = ['www.bing', 'google', 'wikipedia', 'youtube', 'qwant'];
         foreach ($urls as $url) {
             $countUrls = Url::where('uuid', $this->uuid)->count();
-            if ($countUrls >= $this->params['totalCrawlLimit']) {
+            if ($countUrls >= $this->totalCrawlLimit) {
                 break;
             }
             $blacklisted = false;
@@ -108,10 +109,10 @@ class WebCrawler implements ShouldQueue
             $url = $uri->getScheme() . '://' . $uri->getHost() . $uri->getPath();
 
             Job::where('uuid', $this->uuid)->update([
-                'percentage' => min((10 + round((100 * $countUrls / $this->params['totalCrawlLimit'])) / 2), 60),
-                'message' => '[' . $countUrls . '/' . $this->params['totalCrawlLimit'] . '] ' . (string)$url
+                'percentage' => min((10 + round((100 * $countUrls / $this->totalCrawlLimit)) / 2), 60),
+                'message' => '[' . $countUrls . '/' . $this->totalCrawlLimit . '] ' . (string)$url
             ]);
-            Log::debug('[' . $countUrls . '/' . $this->params['totalCrawlLimit']. '] ' . (string)$url);
+            Log::debug('[' . $countUrls . '/' . $this->totalCrawlLimit. '] ' . (string)$url);
             Log::debug('Crawl: ' . $url);
 
             Crawler::create([
