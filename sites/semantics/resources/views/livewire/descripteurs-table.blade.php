@@ -21,8 +21,11 @@
             </div>
         @endfor
     </div>
-    <div class="sm:ml-20 sm:pl-5 mt-5">
+    <div class="sm:ml-20 sm:pl-5 mt-5 flex">
         <button id="filter-clear" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" wire:click="resetFilters()">Reset</button>
+        <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
+            <a href="{{ route('export.audit-list', ['uuid' => $job->uuid]) }}" class="ml-3 btn btn-outline-dark flex items-center text-gray-700 dark:text-gray-300"><i class="fas fa-file-export hidden sm:block w-4 h-4 mr-2"></i>Export</a>
+        </div>
     </div>
 
     <div class="mt-5 overflow-x-auto">

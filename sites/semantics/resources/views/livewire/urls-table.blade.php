@@ -1,12 +1,18 @@
 <div>
-    <span class="flex flex-col sm:flex-row sm:items-end xl:items-start">
-        <div class="xl:flex sm:mr-auto">
-            <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-                <input id="filter-value" class="form-control sm:w-40 xxl:w-full mt-2 sm:mt-0" type="text" placeholder="Recherche..." wire:model.debounce.500ms="search">
-                <button id="filter-clear" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" wire:click="resetFilters()">Reset</button>
+    <div class="flex">
+        <span class="flex flex-col sm:flex-row sm:items-end xl:items-start">
+            <div class="xl:flex sm:mr-auto">
+                <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+                    <input id="filter-value" class="form-control sm:w-40 xxl:w-full mt-2 sm:mt-0" type="text" placeholder="Recherche..." wire:model.debounce.500ms="search">
+                </div>
             </div>
+        </span>
+        <button id="filter-clear" class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" wire:click="resetFilters()">Reset</button>
+
+        <div class="flex items-center sm:ml-auto mt-3 sm:mt-0">
+            <a href="{{ route('export.urls', ['uuid' => $job->uuid]) }}" class="ml-3 btn btn-outline-dark flex items-center text-gray-700 dark:text-gray-300"><i class="fas fa-file-export hidden sm:block w-4 h-4 mr-2"></i>Export</a>
         </div>
-    </span>
+    </div>
     <div class="mt-5 overflow-x-auto">
         <table class="table border ">
             <thead>

@@ -20,6 +20,7 @@
         "league/csv": "^9.7",
         "livewire/livewire": "^2.7",
         "loilo/fuse": "^6.4",
+        "maatwebsite/excel": "^3.1",
         "spatie/crawler": "^7.0",
         "spatie/url": "^2.0"
     },

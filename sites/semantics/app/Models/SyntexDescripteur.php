@@ -33,6 +33,11 @@ class SyntexDescripteur extends Model
         'freq_pond',
     ];
 
+    public function url()
+    {
+        return $this->hasOne(Url::class, ['uuid', 'doc_id'], ['uuid','doc_id']);
+    }
+
     public function SyntexRtListe()
     {
         return $this->hasOne(SyntexRtListe::class, ['uuid', 'lemme'], ['uuid','lemme']);

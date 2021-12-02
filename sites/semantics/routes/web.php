@@ -53,3 +53,4 @@ Route::middleware(['user-job'])->group(function () {
 Route::get('/mon-profil', \App\Http\Controllers\PageController::class . '@userProfile')->middleware(['auth'])->name('user.profile');
 
 require __DIR__.'/auth.php';
+require __DIR__.'/export.php';
