@@ -29,6 +29,7 @@
 
             <x-slot name="content">
                 <x-dropdown-link href="{{ route('user.profile') }}">Mon profil</x-dropdown-link>
+                <x-dropdown-link href="{{ route('admin.posts.index') }}">Admin</x-dropdown-link>
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
