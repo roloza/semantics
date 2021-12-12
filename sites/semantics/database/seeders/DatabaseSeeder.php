@@ -17,5 +17,8 @@ class DatabaseSeeder extends Seeder
         $this->call(StatusSeeder::class);
         $this->call(TypeSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(AntonymSeeder::class);
+        $this->call(SynonymSeeder::class);
+        $this->call(LexiqueSeeder::class);
     }
 }

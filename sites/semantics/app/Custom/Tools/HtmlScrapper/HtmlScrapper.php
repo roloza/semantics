@@ -470,7 +470,7 @@ class HtmlScrapper extends HtmlScrapperFilters {
         return $result;
     }
 
-    public function getFullContent()
+    public function getFullContent($usefull = true)
     {
         $this->removeBalisesContent(['script', 'style']);
         $text = $this->crawler->filterXpath('//body')->html();
@@ -500,7 +500,9 @@ class HtmlScrapper extends HtmlScrapperFilters {
 
 
         $items = explode("\n", $text);
-        $items = $this->getUsefullText($items);
+        if ($usefull) {
+            $items = $this->getUsefullText($items);
+        }
         return $items;
     }
 
@@ -575,9 +577,9 @@ class HtmlScrapper extends HtmlScrapperFilters {
         return $items;
     }
 
-    public function getFullContentText($max = 10000)
+    public function getFullContentText($max = 10000, $usefull = true)
     {
-        return $this->contentToText($this->getFullContent(), $max);
+        return $this->contentToText($this->getFullContent($usefull), $max);
     }
 
     public function getLightContentText()
@@ -612,9 +614,9 @@ class HtmlScrapper extends HtmlScrapperFilters {
         }
     }
 
-    public function text()
+    public function text($usefull = true)
     {
-        $content = $this->getFullContentText(50000);
+        $content = $this->getFullContentText(50000, $usefull);
         $words = explode(' ', $content);
         $usefullWords = 0;
         foreach($words as $word) {

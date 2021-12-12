@@ -54,3 +54,4 @@ Route::get('/mon-profil', \App\Http\Controllers\PageController::class . '@userPr
 
 require __DIR__.'/auth.php';
 require __DIR__.'/export.php';
+require __DIR__.'/admin.php';
