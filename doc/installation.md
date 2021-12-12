@@ -50,3 +50,11 @@ sudo echo "extension=mongodb.so" > /etc/php/8.0/cli/php.ini
 ou
 sudo nano /etc/php/8.0/cli/php.ini AND add "extension=mongodb.so"
 ```
+
+### Resources
+```
+Dezipper "resources/storage-resources.zip" dans le dossier "storage/app" du projet
+Copier "auditfactory-syntex.sh" dans "/usr/local/scripts/bash"
+Copier "https://github.com/roloza/syntex" dans "/usr/local/syntex3"
+Copier "https://github.com/roloza/treetagger" dans "/usr/local/treetagger"
+```
