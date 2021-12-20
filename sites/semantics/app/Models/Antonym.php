@@ -23,7 +23,7 @@ class Antonym extends Model
             return [];
         }
         $query = self::query();
-        $query->select('racine',   DB::raw('group_concat(words SEPARATOR "|") as words'));
+        $query->select('racine',   DB::raw('group_concat(words, "|") as words'));
         $words = self::getLevenshtein1($word);
         foreach($words as $word) {
             $query->orWhere('racine', 'LIKE', '%' . $word . '%');

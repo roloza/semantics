@@ -28,7 +28,8 @@
                 <tr>
                     <th class="whitespace-nowrap">Titre</th>
                     <th class="whitespace-nowrap">Tags</th>
-                    <th class="text-center whitespace-nowrap">ACTIONS</th>
+                    <th class="whitespace-nowrap">Catégorie</th>
+                    <th class="text-center whitespace-nowrap">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -41,6 +42,7 @@
                                 <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded  uppercase last:mr-0 mr-1">{{ $tag->name }}</span>
                             @endforeach
                         </td>
+                        <td>{{ $post->category->name ?? '' }}</td>
                         <td><a  href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-info shadow-md mr-2">Edition</a></td>
                     </tr>
                 @endforeach

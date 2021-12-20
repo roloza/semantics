@@ -15,11 +15,18 @@ class Post extends Model
 
     protected $table = 'posts';
 
-    protected $fillable = ['name', 'content'];
+    protected $fillable = ['name', 'slug', 'image_id', 'category_id', 'parent_id', 'description', 'keywords', 'author', 'content'];
+
+    protected $with = ['tags', 'category'];
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public static function draft()
@@ -35,9 +42,9 @@ class Post extends Model
     public function saveTags(string $tags)
     {
 
-        $tags =  array_filter(array_unique(array_map(function($item) {
+        $tags = array_filter(array_unique(array_map(function ($item) {
             return trim($item);
-        }, explode(',', $tags))), function($item) {
+        }, explode(',', $tags))), function ($item) {
             return !empty($item);
         });
 
@@ -49,11 +56,12 @@ class Post extends Model
         $persistedTags = Tag::whereIn('name', $tags)->get();
         $tagsToCreate = array_diff($tags, $persistedTags->pluck('name')->all()); // On récupère uniquement la différence entre les tags existants et les tags "à créer"
 
-        $tagsToCreate = array_map(function($tag) {
+        $tagsToCreate = array_map(function ($tag) {
             return ['name' => $tag, 'slug' => Str::slug($tag)];
         }, $tagsToCreate);
-        $createdTags =  $this->tags()->createMany($tagsToCreate);
+        $createdTags = $this->tags()->createMany($tagsToCreate);
         $persistedTags = $persistedTags->merge($createdTags);
         $this->tags()->sync($persistedTags);
     }
+
 }

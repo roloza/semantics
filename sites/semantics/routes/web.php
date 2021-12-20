@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 // Accueil
 Route::get('/', \App\Http\Controllers\PageController::class . '@accueil')->name('accueil');
 
+Route::get('image/{filename}', \App\Http\Controllers\ImageController::class . '@displayImage')->name('image.displayImage');
+
 // Analyse
 Route::get('/analyses', \App\Http\Controllers\PageController::class . '@analyseList')->name('analyse.list');
 Route::middleware(['auth'])->group(function () {

@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'name' => 'Romain Lozach',
             'email' => 'romainloza@gmail.com',
             'password' => Hash::make('password'),
+            'profile_id' => 1,
+            'count_jobs' => 0,
         ]);
     }
 }

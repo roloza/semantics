@@ -32,6 +32,7 @@ php artisan db:seed --class=UserSeeder
 php artisan db:seed --class=SynonymSeeder
 php artisan db:seed --class=AntonymSeeder
 php artisan db:seed --class=LexiqueSeeder
+php artisan db:seed --class=ProfileSeeder
 
 ```
 
