@@ -16,7 +16,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::notDraft()->get();
+        $posts = Post::notDraft()->orderBy('created_at', 'DESC')->paginate(25);
         return view('pages.admin.posts.index', ['posts' => $posts]);
     }
 
@@ -70,6 +70,7 @@ class PostController extends Controller
             'keywords' => '',
             'author' => '',
             'parent_id' => '',
+            'published' => '',
         ]);
 
         $post->update([
@@ -80,8 +81,9 @@ class PostController extends Controller
             'category_id' => $request->category_id ?? null,
             'description' => $request->description ?? '',
             'keywords' => $request->keywords ?? '',
-            'author' => $request->author ?? 'roloza',
+            'author' => $request->author ?? 'Roloza',
             'parent_id' => $request->parent_id ?? null,
+            'published' => $request->published && $request->published === 'on',
         ]);
 
         $tags = $request->get('tags') ?? '';

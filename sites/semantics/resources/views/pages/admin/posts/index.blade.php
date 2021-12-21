@@ -29,6 +29,7 @@
                     <th class="whitespace-nowrap">Titre</th>
                     <th class="whitespace-nowrap">Tags</th>
                     <th class="whitespace-nowrap">Catégorie</th>
+                    <th class="text-center whitespace-nowrap">Statut</th>
                     <th class="text-center whitespace-nowrap">Actions</th>
                 </tr>
                 </thead>
@@ -43,13 +44,30 @@
                             @endforeach
                         </td>
                         <td>{{ $post->category->name ?? '' }}</td>
-                        <td><a  href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-info shadow-md mr-2">Edition</a></td>
+                        <td class="w-40">
+                            @if($post->published)
+                                <div class="flex items-center justify-center text-theme-9">
+                                    <i class="far fa-check-square w-4 h-4 mr-2"></i>En ligne
+                                </div>
+                            @else
+                                <div class="flex items-center justify-center text-theme-6">
+                                    <i class="far fa-check-square w-4 h-4 mr-2"></i>Hors ligne
+                                </div>
+                            @endif
+                        </td>
+                        <td class="w-40">
+                            <div class="flex justify-center items-center">
+                                <a class="flex items-center mr-3"  href="{{ route('admin.posts.edit', $post->id) }}"><i class="fas fa-pen w-4 h-4 mr-2"></i> Editer</a>
+                            </div>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
 
-
+            <div class="mt-5">
+                {{ $posts->links() }}
+            </div>
 
             </div>
         </div>

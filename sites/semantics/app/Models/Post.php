@@ -15,9 +15,9 @@ class Post extends Model
 
     protected $table = 'posts';
 
-    protected $fillable = ['name', 'slug', 'image_id', 'category_id', 'parent_id', 'description', 'keywords', 'author', 'content'];
+    protected $fillable = ['name', 'slug', 'image_id', 'category_id', 'parent_id', 'description', 'keywords', 'author', 'content', 'published'];
 
-    protected $with = ['tags', 'category'];
+    protected $with = ['tags', 'category', 'image'];
 
     public function tags()
     {
@@ -29,6 +29,11 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+
     public static function draft()
     {
         return self::firstOrCreate(['name' => null], ['content' => '']);
@@ -37,6 +42,11 @@ class Post extends Model
     public function scopeNotDraft($query)
     {
         return $query->whereNotNull('name');
+    }
+
+    public function scopeOnline($query)
+    {
+        return $query->where('published', true);
     }
 
     public function saveTags(string $tags)

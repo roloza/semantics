@@ -34,6 +34,8 @@ php artisan db:seed --class=AntonymSeeder
 php artisan db:seed --class=LexiqueSeeder
 php artisan db:seed --class=ProfileSeeder
 
+php artisan db:seed --class=PostSeeder
+
 ```
 
 ### Création lien symbolique

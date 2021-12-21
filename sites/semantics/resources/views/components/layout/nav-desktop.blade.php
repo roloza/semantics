@@ -143,12 +143,13 @@
         </li>
         <div class="side-nav__devider my-6"></div>
         <li>
-            <a href="#" class="side-menu">
+            <a href="{{ route('blog.index') }}"
+               class="side-menu {{ request()->routeIs('blog.*') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
                     <i class="far fa-newspaper"></i>
                 </div>
                 <div class="side-menu__title">
-                    Actualités
+                    Articles
                 </div>
             </a>
         </li>

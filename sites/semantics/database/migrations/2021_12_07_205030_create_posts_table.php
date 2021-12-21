@@ -23,7 +23,9 @@ class CreatePostsTable extends Migration
             $table->string('author')->nullable();
             $table->integer('parent_id')->nullable();
             $table->integer('category_id')->nullable();
+            $table->integer('category_id')->nullable();
             $table->longText('content');
+            $table->boolean('published')->default(0);
             $table->timestamps();
         });
     }
