@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Custom\Tools\Avatar;
 use App\Models\Job;
-use App\Models\Synonym;
-use Illuminate\Http\Request;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -17,7 +15,9 @@ class PageController extends Controller
      */
     public function accueil()
     {
-        return view('pages.accueil');
+        return view('pages.accueil', [
+            'posts' => Post::notDraft()->online()->orderBy('created_at', 'DESC')->take(3)->get()
+        ]);
     }
 
     /**
