@@ -1,10 +1,7 @@
 <!-- BEGIN: Side Menu -->
 <nav class="side-nav">
-    <a href="" class="intro-x flex items-center pl-5 pt-4">
-
-        <span class="hidden xl:block text-white text-lg ml-3">
-                    Ru<span class="font-medium">bick</span>
-                </span>
+    <a href="{{ route('accueil') }}" class="intro-x flex items-center pl-5 pt-4">
+        <x-application-logo class=""/>
     </a>
     <div class="side-nav__devider my-6"></div>
     <ul>
@@ -33,12 +30,13 @@
         </li>
 
         <li>
-            <a href="#" class="side-menu">
+            <a href="{{ route('demos') }}"
+               class="side-menu side-menu-parent {{  request()->routeIs('demos') ? 'side-menu--active  side-menu--open' : '' }}">
                 <div class="side-menu__icon">
                     <i class="far fa-lemon"></i>
                 </div>
                 <div class="side-menu__title">
-                    Démos
+                    {{ __('Démos') }}
                 </div>
             </a>
         </li>
@@ -154,7 +152,8 @@
             </a>
         </li>
         <li>
-            <a href="#" class="side-menu">
+            <a href="{{ route('faq.index') }}"
+               class="side-menu {{ request()->routeIs('faq.*') ? 'side-menu--active' : '' }}">
                 <div class="side-menu__icon">
                     <i class="far fa-question-circle"></i>
                 </div>

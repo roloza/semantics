@@ -28,14 +28,26 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('accueil')" :active="request()->routeIs('accueil')">{{ __('Accueil') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('analyse.list')" :active="request()->routeIs('analyse.list')">{{ __('Mes analyses') }}</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('analyse.list')" :active="request()->routeIs('analyse.list')">{{ __('Démos') }}</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('demos')" :active="request()->routeIs('demos')">{{ __('Démos') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('analyse.launcher.page')" :active="request()->routeIs('analyse.launcher.page')">{{ __('Analyser') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('analyse.suggest')" :active="request()->routeIs('analyse.suggest')">{{ __('Trouver des Suggestions') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dictionnaire.synonyms')" :active="request()->routeIs('analyse.synonyms')">{{ __('Dico Synonymes') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.antonyms')">{{ __('Dico Antonymes') }}</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.list')">{{ __('Actualités') }}</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.list')">{{ __('FAQ') }}</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">{{ __('Articles') }}</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.*')">{{ __('FAQ') }}</x-responsive-nav-link>
         </div>
+
+        {{-- Back-office : Authentifié + Administrateur --}}
+        @auth
+            @if(Auth::user()->profile_id === 1)
+                <div class="pt-4 pb-1 border-t  border-gray-200 mb-4">
+                    <x-responsive-nav-link :href="route('admin.posts.index')" :active="request()->routeIs('admin.posts*')">{{ __('Articles') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.images.index')" :active="request()->routeIs('admin.images*')">{{ __('Images') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories*')">{{ __('Catégories') }}</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users*')">{{ __('Utilisateurs') }}</x-responsive-nav-link>
+                </div>
+            @endif
+        @endauth
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-b border-gray-200 mb-4">

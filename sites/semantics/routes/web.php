@@ -20,6 +20,12 @@ Route::get('/', \App\Http\Controllers\PageController::class . '@accueil')->name(
 Route::get('/articles', \App\Http\Controllers\PostController::class . '@index')->name('blog.index');
 Route::get('/article/{slug}', \App\Http\Controllers\PostController::class . '@show')->name('blog.show');
 
+// Faq
+Route::get('/faq', \App\Http\Controllers\FaqController::class . '@index')->name('faq.index');
+
+// Démos
+Route::get('/demos', \App\Http\Controllers\PageController::class . '@demos')->name('demos');
+
 // Affichage images
 Route::get('image/{filename}', \App\Http\Controllers\ImageController::class . '@displayImage')->name('image.displayImage');
 

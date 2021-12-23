@@ -30,6 +30,7 @@
                 <x-partials.article-card-light :post="$post"/>
             @endforeach
         </div>
+        <a href="{{ route('blog.index') }}" class="intro-x w-full block text-center rounded-md py-3 border border-dotted border-theme-15 dark:border-dark-5 text-theme-16 dark:text-gray-600 mt-5">Tous les articles</a>
     </div>
 
     <div class="grid grid-cols-12 gap-6 report-box-3 px-5 mt-5 pt-8 pb-14 ">

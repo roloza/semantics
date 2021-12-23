@@ -45,3 +45,7 @@
     margin-top: 50px;
 }
 /* END Keyword graph component */
+
+.logo a img, .logo a span {
+    margin: auto;
+}
