@@ -65,6 +65,10 @@ class PageController extends Controller
         ]);
     }
 
+    public function demos()
+    {
+        return view('pages.demos');
+    }
 
 
 }
