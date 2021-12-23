@@ -43,7 +43,7 @@ class Antonym extends Model
             $words = explode('|', $items['item']['words']);
             $results[] = [
                 'racine' => $items['item']['racine'],
-                'words' => array_slice($words, 0, $maxWords)
+                'words' => array_filter(array_slice($words, 0, $maxWords))
             ];
 
         }
@@ -51,7 +51,6 @@ class Antonym extends Model
         if ($first) {
             return collect($results)->first();
         }
-
         return $results;
     }
 
