@@ -55,5 +55,6 @@
                 </x-button>
             </div>
         </form>
+        <x-fast-connexion></x-fast-connexion>
     </x-auth-card>
 </x-guest-layout>
