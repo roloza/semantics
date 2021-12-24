@@ -32,7 +32,13 @@ class AnalyseSite extends AnalyseComponent
 
         $response = app(SemanticsController::class)->store($request);
 
+
         $this->uuid = $response->getData()->uuid;
+
+        if ($this->uuid === null) {
+            $this->state = ['label' => $response->getData()->message, 'class' => 'btn-danger'];
+            $this->active = 4;
+        }
         // Add registration data to modal
     }
 

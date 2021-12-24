@@ -54,9 +54,26 @@ class SuggestJob implements ShouldQueue
             'content' => $contentHtml['content'],
         ]);
 
-        (new MakeDecFile($this->uuid))->run();
-        (new SyntexWrapper($this->uuid))->runSuggest();
+        Job::where('uuid', $this->uuid)->update(['percentage' => 60, 'message' => 'Analyse linguistique en cours']);
+        Log::debug('MakeDecFile');
+        try {
+            (new MakeDecFile($this->uuid))->run();
+        } catch(\Exception $e) {
+            Log::debug($e->getMessage());
+            Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 100, 'status_id' => 4, 'message' => $e->getMessage()]);
+            return false;
+        }
+        Job::where('uuid', $this->uuid)->update(['percentage' => 80, 'message' => 'Consolidation des données']);
 
+        Log::debug('SyntexWrapper');
+        try {
+            (new SyntexWrapper($this->uuid))->runSuggest();
+
+        } catch(\Exception $e) {
+            Log::debug($e->getMessage());
+            Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 100, 'status_id' => 4, 'message' => 'Erreur lors de l\'analyse des données']);
+            return false;
+        }
         Job::insertUpdate(['uuid' => $this->uuid, 'percentage' => 100, 'status_id' => 3, 'message' => 'Traitement terminé']);
     }
 

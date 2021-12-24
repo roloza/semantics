@@ -46,8 +46,6 @@ class StudyController extends Controller
 
         $bestKeywordLength1 = (SyntexRtListe::getBestKeywordByLength($this->job->uuid)->first())->forme;
 
-        // $dataKeywordGraph = (new KeywordsGraphV2($this->uuid, $bestKeywordLength1))->run();
-
         $breadcrumb = [
             ['title' => 'Mes analyses', 'link' => route('analyse.list')],
             ['title' =>  'Analyse ' . $job->type->name . ' - ' . $job->name]
@@ -121,17 +119,6 @@ class StudyController extends Controller
 
         $synonymsByKeywords = Synonym::fuzzySearchByExpression($keyword->forme);
         $antonymesByKeywords = Antonym::fuzzySearchByExpression($keyword->forme);
-        // dd($antonymesByKeywords);
-        // $synonymsByKeywords = [];//Synonyms::getSynonymsByExpression($keyword->lemme, 10);
-        // $antonymesByKeywords = [];//Antonyms::getAntonymsByExpression($keyword->lemme, 10);
-        // foreach ($synonymsByKeywords as $k => $synonymsByKeyword) {
-        //     foreach ($synonymsByKeyword as $k2 => $synonymByKeyword) {
-        //         $keywordSyn = SyntexRtListe::getKeywordByLemme($uuid, $synonymByKeyword)->first();
-        //         if ($keywordSyn !== null) {
-        //             $synonymsByKeywords[$k][$k2] = $keywordSyn;
-        //         }
-        //     }
-        // }
 
         $keywordDocs = SyntexAuditDesc::getKeywordDocs($this->job->uuid, (int)$request->num)->get();
         $keywordsSuggest = SyntexAuditDesc::GetNumsSimilaireKeywords($this->job->uuid, $keywordDocs, (int)$request->num);

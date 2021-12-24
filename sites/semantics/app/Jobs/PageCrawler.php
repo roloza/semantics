@@ -55,12 +55,24 @@ class PageCrawler implements ShouldQueue
 
         Job::where('uuid', $uuid)->update(['percentage' => 60, 'message' => 'Analyse linguistique en cours']);
         Log::debug('MakeDecFile');
-        (new MakeDecFile($uuid))->run();
-
+        try {
+            (new MakeDecFile($uuid))->run();
+        } catch(\Exception $e) {
+            Log::debug($e->getMessage());
+            Job::insertUpdate(['uuid' => $uuid, 'percentage' => 100, 'status_id' => 4, 'message' => $e->getMessage()]);
+            return false;
+        }
         Job::where('uuid', $uuid)->update(['percentage' => 80, 'message' => 'Consolidation des données']);
-        Log::debug('SyntexWrapper');
-        (new SyntexWrapper($uuid))->run();
 
+        Log::debug('SyntexWrapper');
+        try {
+            (new SyntexWrapper($uuid))->run();
+
+        } catch(\Exception $e) {
+            Log::debug($e->getMessage());
+            Job::insertUpdate(['uuid' => $uuid, 'percentage' => 100, 'status_id' => 4, 'message' => 'Erreur lors de l\'analyse des données']);
+            return false;
+        }
         Job::insertUpdate(['uuid' => $uuid, 'percentage' => 100, 'status_id' => 3, 'message' => 'Traitement terminé']);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Crawler;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use mysql_xdevapi\Exception;
 
 class MakeDecFile
 {
@@ -28,6 +29,12 @@ class MakeDecFile
     {
         // Récupération des contenus du job
         $items = Url::where('uuid', $this->uuid)->get();
+
+        // Si aucun contenu n'est récupéré
+        if ($items->first() === null) {
+            throw new \RuntimeException('Aucun contenu à analyser');
+            return;
+        }
         $content = '';
         $idDoc = 1;
         // Génération format .dec

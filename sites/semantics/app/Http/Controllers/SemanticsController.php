@@ -47,31 +47,40 @@ class SemanticsController extends Controller
         $isNews = $request->is_news ? (bool)$request->is_news : false;
         $typeContent = $request->type_content ? $request->type_content : 'all';
 
+        $user = Auth::user();
+        if (Job::where('user_id', $user->id)->where('status_id', 2)->count() > 0) {
+            return response()->json([
+                'message' => 'Erreur. Vous ne pouvez pas executer plusieurs traitement simultanément',
+                'uuid' => null,
+            ], 200);
+        }
+
+
         $this->type = Type::where('slug', $typeParam)->first();
 
         switch($this->type->slug) {
             case 'suggest':
-                $params = ['keyword' => $keyword, 'userId' => Auth::user()->id];
+                $params = ['keyword' => $keyword, 'userId' => $user->id];
                 $uuid = $this->launchJobSuggest($params);
                 break;
             case 'site':
-                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
+                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent, 'userId' => $user->id];
                 $uuid = $this->launchJobSite($params);
                 break;
             case 'web':
-                $params = ['keyword' => $keyword, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
+                $params = ['keyword' => $keyword, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => $user->id];
                 $uuid = $this->launchJobWeb($params);
                 break;
             case 'custom':
                 $filepath = $request->filepath ? $request->filepath : null;
                 $filename = $request->filename ? $request->filename : '';
                 $separator = $request->separator ? $request->separator : ';';
-                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator, 'userId' => Auth::user()->id];
+                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator, 'userId' => $user->id];
                 $uuid = $this->launchJobCustom($params);
                 break;
             case 'page':
             default:
-                $params = ['url' => $url, 'typeContent' => $typeContent, 'userId' => Auth::user()->id];
+                $params = ['url' => $url, 'typeContent' => $typeContent, 'userId' => $user->id];
                 $uuid = $this->launchJobPage($params);
                 break;
         }
