@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProfileSeeder::class);
         $this->call(AntonymSeeder::class);
         $this->call(SynonymSeeder::class);
-        $this->call(LexiqueSeeder::class);
+//        $this->call(LexiqueSeeder::class);
     }
 }

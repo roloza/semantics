@@ -17,6 +17,7 @@ class AnalyseComponent extends Component
     public $state = ['label' => 'Lancer', 'class' => 'btn-primary'];
     public $active = 0;
     public $uuid = '';
+    public $label = '';
 
     public function jobSuccess()
     {

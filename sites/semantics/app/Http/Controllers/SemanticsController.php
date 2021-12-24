@@ -50,7 +50,8 @@ class SemanticsController extends Controller
         $user = Auth::user();
         if (Job::where('user_id', $user->id)->where('status_id', 2)->count() > 0) {
             return response()->json([
-                'message' => 'Erreur. Vous ne pouvez pas executer plusieurs traitement simultanément',
+                'message' => 'Erreur',
+                'label' => 'Vous ne pouvez pas exécuter plusieurs traitement simultanément.',
                 'uuid' => null,
             ], 200);
         }

@@ -22,6 +22,7 @@ class AnalyseCustom extends AnalyseComponent
 
         $this->state = ['label' => 'En cours', 'class' => 'btn-dark'];
         $this->active = 2;
+        $this->label = '';
 
         $request = new \Illuminate\Http\Request();
         $request->replace([
@@ -37,6 +38,7 @@ class AnalyseCustom extends AnalyseComponent
         if ($this->uuid === null) {
             $this->state = ['label' => $response->getData()->message, 'class' => 'btn-danger'];
             $this->active = 4;
+            $this->label = $response->getData()->label;
         }
         // Add registration data to modal
     }

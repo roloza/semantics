@@ -74,6 +74,12 @@
                         </div>
                     </div>
                 </form>
+                @if($label !== '')
+                    <div class="alert alert-secondary-soft show flex items-center mb-2 mt-4" role="alert">
+                        <i class="fas fa-exclamation-triangle w-6 h-6 mr-2"></i>
+                        {{ $label }}
+                    </div>
+                @endif
             </div>
         </div>
     </div>
