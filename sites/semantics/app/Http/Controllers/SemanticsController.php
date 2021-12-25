@@ -38,6 +38,11 @@ class SemanticsController extends Controller
         return $jobs;
     }
 
+    public function show($uuid)
+    {
+        return Job::where('uuid', $uuid)->firstOrFail();
+    }
+
     public function store(Request $request)
     {
         $typeParam = $request->type ?? 'page';
@@ -48,7 +53,10 @@ class SemanticsController extends Controller
         $typeContent = $request->type_content ? $request->type_content : 'all';
 
         $user = Auth::user();
-        if (Job::where('user_id', $user->id)->where('status_id', 2)->count() > 0) {
+
+        $userId =  $user->id ?? (int)$request->userId;
+
+        if (Job::where('user_id', $userId)->where('status_id', 2)->count() > 0) {
             return response()->json([
                 'message' => 'Erreur',
                 'label' => 'Vous ne pouvez pas exécuter plusieurs traitement simultanément.',
@@ -61,27 +69,27 @@ class SemanticsController extends Controller
 
         switch($this->type->slug) {
             case 'suggest':
-                $params = ['keyword' => $keyword, 'userId' => $user->id];
+                $params = ['keyword' => $keyword, 'userId' => $userId];
                 $uuid = $this->launchJobSuggest($params);
                 break;
             case 'site':
-                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent, 'userId' => $user->id];
+                $params = ['url' => $url, 'totalCrawlLimit' => $totalCrawlLimit, 'typeContent' => $typeContent, 'userId' => $userId];
                 $uuid = $this->launchJobSite($params);
                 break;
             case 'web':
-                $params = ['keyword' => $keyword, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => $user->id];
+                $params = ['keyword' => $keyword, 'isNews' => $isNews, 'typeContent' => $typeContent, 'userId' => $userId];
                 $uuid = $this->launchJobWeb($params);
                 break;
             case 'custom':
                 $filepath = $request->filepath ? $request->filepath : null;
                 $filename = $request->filename ? $request->filename : '';
                 $separator = $request->separator ? $request->separator : ';';
-                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator, 'userId' => $user->id];
+                $params = ['filepath' => $filepath, 'filename' => $filename, 'separator' => $separator, 'userId' => $userId];
                 $uuid = $this->launchJobCustom($params);
                 break;
             case 'page':
             default:
-                $params = ['url' => $url, 'typeContent' => $typeContent, 'userId' => $user->id];
+                $params = ['url' => $url, 'typeContent' => $typeContent, 'userId' => $userId];
                 $uuid = $this->launchJobPage($params);
                 break;
         }
@@ -123,8 +131,8 @@ class SemanticsController extends Controller
 
     private function launchJobPage($params)
     {
+        $job = Job::hasJob($params, (int)$params['userId'], $this->type->id);
 
-        $job = Job::hasJob($params, 1, $this->type->id);
         if ($job) {
             $this->destroy($job->uuid);
         }
@@ -140,7 +148,7 @@ class SemanticsController extends Controller
 
     private function launchJobSite($params)
     {
-        $job = Job::hasJob($params, 1, $this->type->id);
+        $job = Job::hasJob($params, $params['userId'], $this->type->id);
         if ($job) {
             $this->destroy($job->uuid);
         }
@@ -154,7 +162,7 @@ class SemanticsController extends Controller
 
     private function launchJobWeb($params)
     {
-        $job = Job::hasJob($params, 1, $this->type->id);
+        $job = Job::hasJob($params, $params['userId'], $this->type->id);
         if ($job) {
             $this->destroy($job->uuid);
         }
@@ -168,7 +176,7 @@ class SemanticsController extends Controller
 
     private function launchJobSuggest($params)
     {
-        $job = Job::hasJob($params, 1, $this->type->id);
+        $job = Job::hasJob($params, $params['userId'], $this->type->id);
         if ($job) {
             $this->destroySuggest($job->uuid);
         }
@@ -182,7 +190,7 @@ class SemanticsController extends Controller
 
     private function launchJobCustom($params)
     {
-        $job = Job::hasJob($params, 1, $this->type->id);
+        $job = Job::hasJob($params, $params['userId'], $this->type->id);
         if ($job) {
             $this->destroySuggest($job->uuid);
         }

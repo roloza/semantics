@@ -77,11 +77,12 @@ class Job extends Model
         $query->where('type_id', $typeId);
 
         $jobs = $query->get();
+
         foreach($jobs as $job) {
             $sameJob = true;
             foreach($job->parameters as $parameter) {
                 if (!isset($params[$parameter->name])) continue;
-                if ($params[$parameter->name] !== $parameter->value) {
+                if ($params[$parameter->name] != $parameter->value) {
                     $sameJob = false;
                 }
             }

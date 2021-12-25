@@ -1,6 +1,7 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+@import 'library/toastr.min.css';
 @import 'theme.css';
 @import 'custom.css';
 @import 'article.css';

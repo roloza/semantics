@@ -1,6 +1,5 @@
+// Menu
 const sideMenuToggle = document.querySelectorAll('.side-menu-parent');
-
-console.log(sideMenuToggle);
 
 if (sideMenuToggle != null) {
 	sideMenuToggle.forEach(function (element) {
@@ -23,3 +22,5 @@ var toggleMenu = function (element) {
 		}
 	}
 }
+// END Menu
+
