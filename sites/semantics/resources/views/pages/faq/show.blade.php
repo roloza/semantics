@@ -36,7 +36,7 @@
         <div class="intro-y col-span-12 lg:col-span-8 xl:col-span-9">
             <div class="intro-y box lg:mt-5">
                 <div class="flex items-center p-5 border-b border-gray-200 dark:border-dark-5">
-                    <h2 class="font-medium text-base mr-auto">{{ $faq->name }}</h2>
+                    <h1 class="font-medium text-base mr-auto">{{ $faq->name }}</h1>
                 </div>
                 <div class="p-5">
                     {!! $faq->content !!}
