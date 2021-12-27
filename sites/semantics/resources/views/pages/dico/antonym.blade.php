@@ -30,11 +30,18 @@
                         Mais c'est quoi un antonyme ?
                     </h2>
                     <div class="text-gray-600 text-justify mt-4">
-                    <p>
-                        Un antonyme est un terme ou une liste de termes dont le sens est contraire à celui d'un autre. Il est un mot de sens opposé à celui d’un autre.
-                        Notre dictionnaire antonyme vous permettra de trouver un mot qui a le sens contraire de celui que vous avez tapé dans la barre de recherche.
-                    </p>
+                        <p>Deux items lexicaux sont en relation d'antonymie si on peut exhiber une symétrie de leurs traits sémantiques par rapport à un axe. Les mots en relation d'antonymie sont appelés antonymes ou couramment contraires. La symétrie peut se décliner de différentes manières, selon la nature de son support.</p>
+                        <p class="mt-4">On distingue plusieurs supports qui sont autant de types d'antonymie :</p>
+                        <ul class="list-disc list-inside mt-4">
+                            <li class="mt-2"><strong>antonymie complémentaire</strong> : <small>concerne l'application ou la non-application d'une propriété ( 'applicable' / 'non-applicable' , 'présence' / 'absence' ) : par exemple, 'informe' est antonyme de tout ce qui a une forme, de même que 'insipide' , 'incolore' , 'inodore' , etc. de tout ce qui pourrait avoir saveur, couleur, odeur, …</small></li>
+                            <li  class="mt-2"><strong>antonymie scalaire</strong> : <small>concerne une propriété affectant une valeur étalonnable (valeur élevée, valeur faible) : par exemple, 'chaud' , 'froid' sont des valeurs symétriques de température</small></li>
+                            <li  class="mt-2"><strong>antonymie duale</strong> : <small>l'existence d'une propriété ou d'un élément considérés comme symétriques par l'usage (par exemple 'soleil' 'lune' , ou par des propriétés naturelles ou physiques des objets considérés</small></li>
+                        </ul>
                     </div>
+                </div>
+
+                <div class="mt-4 flex ">
+                    <a target="_blank" class="btn btn-link ml-auto" href="https://fr.wikipedia.org/wiki/Antonymie"><i class="fab fa-wikipedia-w"></i></a>
                 </div>
             </div>
         </div>

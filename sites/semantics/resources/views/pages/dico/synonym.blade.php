@@ -30,15 +30,12 @@
                         Mais c'est quoi un synonyme ?
                     </h2>
                     <div class="text-gray-600 text-justify mt-4">
-                    <p>
-                        Un synonyme est un terme ou une liste de termes dont la signification est semblable à celui d'un autre. <br>
-                        Il est utilisé pour dire la même chose qu’un autre afin d’éviter une répétition. <br>
-                        Il a la même signification qu’un autre mot ou quasi semblable. <br>
-                    </p>
-                    <p>
-                    Vous souhaitez maintenir l’attention de votre lecteur, venir enrichir votre vocabulaire, varier vos expressions, ou encore préciser vos idées ? Venez parcourir ce dictionnaire synonyme en ligne, très clair et facile d’utilisation. Il vous proposera toute une liste de mots semblables à celui que vous recherchez et vous évitera de faire des répétitions dans une phrase sans changer votre texte !
-                    </p>
-                
+                    <p>La synonymie est un rapport de similarité sémantique entre des mots ou des expressions d'une même langue. La similarité sémantique indique qu'ils ont des significations très semblables. Des termes liés par synonymie sont des synonymes.</p>
+                    <p class="mt-4">Il existe des bases de données de synonymes, présentées comme des dictionnaires, librement téléchargeables. On en trouve aussi vendues ou consultables sous la forme de livres, de logiciels, ou de sites web, ou de jeux.</p>
+
+                    </div>
+                    <div class="mt-4 flex ">
+                        <a target="_blank" class="btn btn-link ml-auto" href="https://fr.wikipedia.org/wiki/Synonymie"><i class="fab fa-wikipedia-w"></i></a>
                     </div>
                 </div>
                 
