@@ -15,7 +15,7 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faq = Faq::firstOrFail();
+        $faq = Faq::where('active', 1)->firstOrFail();
         return redirect(route('faq.show', $faq->slug));
     }
 
@@ -29,7 +29,7 @@ class FaqController extends Controller
      */
     public function show($slug)
     {
-        $faq = Faq::where('slug', $slug)->firstOrFail();
+        $faq = Faq::where('slug', $slug)->where('active', 1)->firstOrFail();
 
         $breadcrumb = [['title' => 'Faq', 'link' => route('faq.index')], ['title' => $faq->name]];
         View::share('breadcrumb', $breadcrumb);

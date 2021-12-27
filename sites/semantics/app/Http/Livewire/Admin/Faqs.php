@@ -123,6 +123,7 @@ class Faqs extends Component
                 'icon' => $validatedData['icon'],
                 'position' => $validatedData['position'],
                 'active' => $validatedData['active'],
+                'content' => $validatedData['content'],
             ]);
             session()->flash('message', 'Faq mise à jour avec succès');
         } catch (\Exception $e) {
