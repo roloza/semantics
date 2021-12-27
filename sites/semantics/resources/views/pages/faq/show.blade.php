@@ -23,8 +23,8 @@
         <div class="intro-y col-span-12 lg:col-span-4 xl:col-span-3">
             <div class="box mt-5">
                 <div class="p-5">
-                    @foreach($faqNavs as $faqNav)
-                        <a class="flex items-center text-theme-1 dark:text-theme-10 font-medium" href="{{ route('faq.show', $faqNav->slug) }}">{{ $faqNav->name }}</a>
+                    @foreach($faqNavs as $i => $faqNav)
+                        <a class="flex items-center text-theme-4 font-medium {{$i > 0 ? 'mt-5': ''}}" href="{{ route('faq.show', $faqNav->slug) }}">{{ $faqNav->name }}</a>
                     @endforeach
 
                 </div>
