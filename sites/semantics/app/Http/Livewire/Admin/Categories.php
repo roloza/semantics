@@ -100,7 +100,7 @@ class Categories extends Component
                 'name' => $validatedData['name'],
                 'slug' => Str::slug($validatedData['name'])
             ]);
-            session()->flash('message', 'Catégorie ajoutée');
+            session()->flash('message', 'Catégorie mise à jour avec succès');
         } catch (\Exception $e) {
             session()->flash('message', 'Erreur: ' . $e->getMessage());
         }

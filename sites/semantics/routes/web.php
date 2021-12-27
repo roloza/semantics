@@ -22,6 +22,7 @@ Route::get('/article/{slug}', \App\Http\Controllers\PostController::class . '@sh
 
 // Faq
 Route::get('/faq', \App\Http\Controllers\FaqController::class . '@index')->name('faq.index');
+Route::get('/faq/{slug}', \App\Http\Controllers\FaqController::class . '@show')->name('faq.show');
 
 // Démos
 Route::get('/demos', \App\Http\Controllers\PageController::class . '@demos')->name('demos');

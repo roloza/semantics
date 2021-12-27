@@ -194,6 +194,18 @@
                         </li>
 
                         <li>
+                            <a href="{{ route('admin.faqs.index') }}"
+                               class="side-menu {{ request()->routeIs('admin.faqs*') ? 'side-menu--active' : '' }}">
+                                <div class="side-menu__icon">
+                                    <i class="far fa-file"></i>
+                                </div>
+                                <div class="side-menu__title">
+                                    Faqs
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
                             <a href="{{ route('admin.images.index') }}"
                                class="side-menu {{ request()->routeIs('admin.images*') ? 'side-menu--active' : '' }}">
                                 <div class="side-menu__icon">

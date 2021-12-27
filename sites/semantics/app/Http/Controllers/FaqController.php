@@ -15,75 +15,29 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $breadcrumb = [['title' => 'Faq']];
-        View::share('breadcrumb', $breadcrumb);
-
-        return view('pages.faq.index');
+        $faq = Faq::firstOrFail();
+        return redirect(route('faq.show', $faq->slug));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Faq  $faq
+     * @param $slug
      * @return \Illuminate\Http\Response
      */
-    public function show(Faq $faq)
+    public function show($slug)
     {
-        //
+        $faq = Faq::where('slug', $slug)->firstOrFail();
+
+        $breadcrumb = [['title' => 'Faq', 'link' => route('faq.index')], ['title' => $faq->name]];
+        View::share('breadcrumb', $breadcrumb);
+
+        $faqNavs = Faq::select('name', 'slug')->where('active', 1)->orderBy('position', 'ASC')->get();
+
+        return view('pages.faq.show', ['faq' => $faq, 'faqNavs' => $faqNavs]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Faq  $faq
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Faq $faq)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Faq  $faq
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Faq $faq)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Faq  $faq
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Faq $faq)
-    {
-        //
-    }
 }
