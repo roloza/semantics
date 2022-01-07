@@ -4,7 +4,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class partials.widget-categories extends Component
+class WidgetCategories extends Component
 {
     /**
      * Create a new component instance.
