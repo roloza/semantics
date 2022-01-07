@@ -12,7 +12,7 @@
                     <i class="fas fa-home"></i>
                 </div>
                 <div class="side-menu__title">
-                    Accueil
+                    {{ __('Accueil') }}
                 </div>
             </a>
         </li>
@@ -24,22 +24,22 @@
                     <i class="fas fa-list"></i>
                 </div>
                 <div class="side-menu__title">
-                    Mes analyses
+                    {{ __('Mes analyses') }}
                 </div>
             </a>
         </li>
 
-        <li>
-            <a href="{{ route('demos') }}"
-               class="side-menu side-menu-parent {{  request()->routeIs('demos') ? 'side-menu--active  side-menu--open' : '' }}">
-                <div class="side-menu__icon">
-                    <i class="far fa-lemon"></i>
-                </div>
-                <div class="side-menu__title">
-                    {{ __('Démos') }}
-                </div>
-            </a>
-        </li>
+{{--        <li>--}}
+{{--            <a href="{{ route('demos') }}"--}}
+{{--               class="side-menu side-menu-parent {{  request()->routeIs('demos') ? 'side-menu--active  side-menu--open' : '' }}">--}}
+{{--                <div class="side-menu__icon">--}}
+{{--                    <i class="far fa-lemon"></i>--}}
+{{--                </div>--}}
+{{--                <div class="side-menu__title">--}}
+{{--                    {{ __('Démos') }}--}}
+{{--                </div>--}}
+{{--            </a>--}}
+{{--        </li>--}}
 
         <div class="side-nav__devider my-6"></div>
 
@@ -50,7 +50,7 @@
                     <i class="fas fa-search"></i>
                 </div>
                 <div class="side-menu__title">
-                    Analyser
+                    {{ __('Analyser') }}
                     <div class="side-menu__sub-icon">
                         <i class="fas fa-chevron-down"></i>
                     </div>
@@ -113,7 +113,7 @@
                     <i class="fas fa-hat-wizard"></i>
                 </div>
                 <div class="side-menu__title">
-                    Trouver des Suggestions
+                    {{ __('Trouver des Suggestions') }}
                 </div>
             </a>
         </li>
@@ -124,7 +124,7 @@
                     <i class="fas fa-pen"></i>
                 </div>
                 <div class="side-menu__title">
-                    Dico Synonymes
+                    {{ __('Dico Synonymes') }}
                 </div>
             </a>
         </li>
@@ -135,7 +135,7 @@
                     <i class="fas fa-pen-alt"></i>
                 </div>
                 <div class="side-menu__title">
-                    Dico Antonymes
+                    {{ __('Dico Antonymes') }}
                 </div>
             </a>
         </li>
@@ -147,21 +147,21 @@
                     <i class="far fa-newspaper"></i>
                 </div>
                 <div class="side-menu__title">
-                    Articles
+                    {{ __('Articles') }}
                 </div>
             </a>
         </li>
-        <li>
-            <a href="{{ route('faq.index') }}"
-               class="side-menu {{ request()->routeIs('faq.*') ? 'side-menu--active' : '' }}">
-                <div class="side-menu__icon">
-                    <i class="far fa-question-circle"></i>
-                </div>
-                <div class="side-menu__title">
-                    FAQ
-                </div>
-            </a>
-        </li>
+{{--        <li>--}}
+{{--            <a href="{{ route('faq.index') }}"--}}
+{{--               class="side-menu {{ request()->routeIs('faq.*') ? 'side-menu--active' : '' }}">--}}
+{{--                <div class="side-menu__icon">--}}
+{{--                    <i class="far fa-question-circle"></i>--}}
+{{--                </div>--}}
+{{--                <div class="side-menu__title">--}}
+{{--                    {{ __('FAQ') }}--}}
+{{--                </div>--}}
+{{--            </a>--}}
+{{--        </li>--}}
 
         @auth
             @if(Auth::user()->profile_id === 1)
@@ -188,7 +188,7 @@
                                     <i class="far fa-file"></i>
                                 </div>
                                 <div class="side-menu__title">
-                                    Articles
+                                    {{ __('Articles') }}
                                 </div>
                             </a>
                         </li>
@@ -200,7 +200,7 @@
                                     <i class="far fa-file"></i>
                                 </div>
                                 <div class="side-menu__title">
-                                    Faqs
+                                    {{ __('FAQ') }}
                                 </div>
                             </a>
                         </li>

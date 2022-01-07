@@ -10,3 +10,4 @@ require('@fortawesome/fontawesome-free/js/all.js');
 // require('./theme');
 require('./custom');
 require('./home-analyse-page');
+require('./article');

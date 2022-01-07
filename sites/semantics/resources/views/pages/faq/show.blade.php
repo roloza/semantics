@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('title')
-    Faq
+    {{ $faq->name }}
 @endsection
 
 @section('description')
@@ -13,7 +13,7 @@
 
 @section('content')
     <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-        <h2 class="text-lg font-medium mr-auto">Faq</h2>
+        <h2 class="text-lg font-medium mr-auto">Question / Réponse</h2>
     </div>
 
     {{-- Faq --}}

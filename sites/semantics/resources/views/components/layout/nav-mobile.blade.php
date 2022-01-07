@@ -34,7 +34,7 @@
             <x-responsive-nav-link :href="route('dictionnaire.synonyms')" :active="request()->routeIs('analyse.synonyms')">{{ __('Dico Synonymes') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('dictionnaire.antonyms')" :active="request()->routeIs('analyse.antonyms')">{{ __('Dico Antonymes') }}</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">{{ __('Articles') }}</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.*')">{{ __('FAQ') }}</x-responsive-nav-link>
+{{--            <x-responsive-nav-link :href="route('faq.index')" :active="request()->routeIs('faq.*')">{{ __('FAQ') }}</x-responsive-nav-link>--}}
         </div>
 
         {{-- Back-office : Authentifié + Administrateur --}}

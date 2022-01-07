@@ -1,16 +1,10 @@
 @extends('layout')
 
-@section('title')
-    Syntex Factory
-@endsection
+@section('title', 'Sémantique Seo')
 
-@section('description')
-    Analyse la sémantique de vos contenus web
-@endsection
+@section('description', 'L\'analyse la sémantique de vos contenus web au service sur Seo')
 
-@section('keywords')
-    analyse sémantique, mots-clés, descripteurs, analyse de texte, expressions
-@endsection
+@section('keywords', 'analyse sémantique, mots-clés, descripteurs, analyse de texte, expressions, seo, audit seo')
 
 @section('content')
     <div class="grid grid-cols-12 gap-6 mt-5">

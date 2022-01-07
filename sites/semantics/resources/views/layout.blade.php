@@ -33,7 +33,7 @@
 
 <!-- BEGIN: JS Assets-->
     @livewireScripts
-    <script src="{{ mix('js/app.js') }}"></script>
+     <script src="{{ mix('js/app.js') }}"></script>
 @yield('script')
 <!-- END: JS Assets-->
 
