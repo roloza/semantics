@@ -9,13 +9,27 @@ use Illuminate\Support\Facades\View;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index($slug = null)
     {
+
         $breadcrumb = [['title' => 'Tous les articles']];
         View::share('breadcrumb', $breadcrumb);
-        $posts = Post::notDraft()->online()->orderBy('created_at', 'DESC')->paginate(12);
 
-        return view('pages.blog.index', ['posts' => $posts]);
+        $category = null;
+        $query = new Post();
+        if ($slug !== null) {
+            $category = Category::where('slug', $slug)->first();
+            if ($category !== null) {
+                $query->where('category_id', $category->id);
+            }
+        }
+        $posts = $query->notDraft()->online()->orderBy('created_at', 'DESC')->paginate(12);
+        $categories = Category::get();
+        return view('pages.blog.index', [
+            'posts' => $posts,
+            'categories' => $categories,
+            'category' => $category
+        ]);
     }
 
     public function show($slug)

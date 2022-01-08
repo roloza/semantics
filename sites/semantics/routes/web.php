@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', \App\Http\Controllers\PageController::class . '@accueil')->name('accueil');
 
 // Blog
-Route::get('/articles', \App\Http\Controllers\PostController::class . '@index')->name('blog.index');
+Route::get('/articles/{slug?}', \App\Http\Controllers\PostController::class . '@index')->name('blog.index');
 Route::get('/article/{slug}', \App\Http\Controllers\PostController::class . '@show')->name('blog.show');
 
 // Faq

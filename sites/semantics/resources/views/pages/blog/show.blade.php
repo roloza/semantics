@@ -15,7 +15,7 @@
                 <div class="intro-y text-gray-700 dark:text-gray-600 mt-3 text-xs sm:text-sm">
                     {{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y')}}<span class="mx-1">•</span>
                     @if ($post->category)
-                        <a class="text-theme-1 dark:text-theme-10" href="">{{ $post->category->name }}</a> <span class="mx-1">•</span>
+                        <a class="text-theme-1 dark:text-theme-10" href="{{ route('blog.index', ['slug' => $post->category->slug]) }}">{{ $post->category->name }}</a> <span class="mx-1">•</span>
                     @endif
                     Temps de lecture : {{ $readingTime }}
                 </div>

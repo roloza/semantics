@@ -7,7 +7,7 @@
             <a href="" class="font-medium">{{ $post->author }}</a>
             <div class="flex text-gray-600 truncate text-xs mt-0.5">
                 @if ($post->category)
-                    <a class="text-theme-1 dark:text-theme-10" href="">{{ $post->category->name }}</a> <span class="mx-1">•</span>
+                    <a class="text-theme-1 dark:text-theme-10" href="{{ route('blog.index', ['slug' => $post->category->slug]) }}">{{ $post->category->name }}</a> <span class="mx-1">•</span>
                 @endif
                 {{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y')}}
             </div>
