@@ -31,6 +31,7 @@
         </div>
     </div>
 
+    @include('cookie-consent::index')
 <!-- BEGIN: JS Assets-->
     @livewireScripts
      <script src="{{ mix('js/app.js') }}"></script>

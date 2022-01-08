@@ -76,7 +76,7 @@
     font-weight: bold;
 }
 
-.fixed {
+#summary-container.fixed {
     position:fixed;
     top: 20px;
 }

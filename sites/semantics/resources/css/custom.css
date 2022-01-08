@@ -49,3 +49,7 @@
 .logo a img, .logo a span {
     margin: auto;
 }
+
+.cookie-consent {
+    z-index: 10000;
+}
