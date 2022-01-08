@@ -27,6 +27,9 @@ Route::get('/faq/{slug}', \App\Http\Controllers\FaqController::class . '@show')-
 // Démos
 Route::get('/demos', \App\Http\Controllers\PageController::class . '@demos')->name('demos');
 
+// Sitemap
+Route::get('/sitemap.xml', \App\Http\Controllers\PageController::class . '@sitemap');
+
 // Affichage images
 Route::get('image/{filename}', \App\Http\Controllers\ImageController::class . '@displayImage')->name('image.displayImage');
 

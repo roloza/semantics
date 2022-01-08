@@ -1,2 +1,4 @@
+Sitemap: http://semantico.duckdns.org/sitemap.xml
+
 User-agent: *
 Disallow:

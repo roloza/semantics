@@ -7,6 +7,10 @@ use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
+
 
 class PageController extends Controller
 {
@@ -68,6 +72,31 @@ class PageController extends Controller
     public function demos()
     {
         return view('pages.demos');
+    }
+
+    /*
+     * Page sitemap.xml
+     * https://github.com/spatie/laravel-sitemap
+     */
+    public function sitemap()
+    {
+        $sitemap = Sitemap::create();
+
+        $routes = ['accueil', 'blog.index',/*'faq.index', 'demos', */'dictionnaire.synonyms', 'dictionnaire.antonyms'];
+        foreach ($routes as $route) {
+            $sitemap->add(Url::create(route($route))
+                ->setLastModificationDate(Carbon::yesterday())
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+                ->setPriority(0.1));
+        }
+        $posts = Post::notDraft()->online()->orderBy('created_at', 'DESC')->get();
+        foreach ($posts as $post) {
+            $sitemap->add(Url::create(route('blog.show', ['slug' => $post->slug]))
+                ->setLastModificationDate(Carbon::yesterday())
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+                ->setPriority(0.1));
+        }
+        return $sitemap;
     }
 
 
