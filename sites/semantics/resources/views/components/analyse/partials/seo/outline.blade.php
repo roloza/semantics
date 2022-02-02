@@ -11,12 +11,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($audit->outline as $outline)
-                <tr class="intro-x">
-                    <td class="outline-{{$outline['tag']}}"><strong>{{ $outline['tag']}}</strong></td>
-                    <td>{{ $outline['content']}}</td>
-                </tr>
-                @endforeach
+                @if (isset($audit->structure['outline']))
+                    @foreach ($audit->structure['outline'] as $outline)
+                    <tr class="intro-x">
+                        <td class="outline-{{$outline['tag']}}"><strong>{{ $outline['tag']}}</strong></td>
+                        <td>{{ $outline['content']}}</td>
+                    </tr>
+                    @endforeach
+                @endif
 
                 </tbody>
             </table>

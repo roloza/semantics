@@ -12,23 +12,24 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    <?php $cpt = 0 ?>
-                    @foreach ($audit->images as $image)
-                        <tr @if($cpt % 2 === 0)class="bg-gray-200 dark:bg-dark-1" @endif>
-                            <td class="border-b dark:border-dark-5">{{ $image['url'] }}</td>
-                            <td class="border-b dark:border-dark-5">{{ $image['alt'] }}</td>
-                            <td class="border-b dark:border-dark-5 whitespace-nowrap">
-                                @if ( $image['width'] !== null && $image['height'] !== null)
-                                    {{ $image['width'] }}x{{ $image['height'] }}
-                                @else
-                                {{ $image['width'] }}
-                                {{ $image['height'] }}
-                                @endif
-                            </td>
-                        </tr>
-                        <?php $cpt++ ?>
-                    @endforeach
+                    @if (isset($audit->structure['images']))
+                        <?php $cpt = 0 ?>
+                        @foreach ($audit->structure['images'] as $image)
+                            <tr @if($cpt % 2 === 0)class="bg-gray-200 dark:bg-dark-1" @endif>
+                                <td class="border-b dark:border-dark-5">{{ $image['url'] }}</td>
+                                <td class="border-b dark:border-dark-5">{{ $image['alt'] }}</td>
+                                <td class="border-b dark:border-dark-5 whitespace-nowrap">
+                                    @if ( $image['width'] !== null && $image['height'] !== null)
+                                        {{ $image['width'] }}x{{ $image['height'] }}
+                                    @else
+                                    {{ $image['width'] }}
+                                    {{ $image['height'] }}
+                                    @endif
+                                </td>
+                            </tr>
+                            <?php $cpt++ ?>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

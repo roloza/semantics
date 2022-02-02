@@ -11,11 +11,7 @@ class SyntexAuditIncl extends Model
 {
     use HasFactory;
 
-
     protected $table = 'syntex_audit_incls';
-    // protected $collection = 'syntex_audit_incls';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',

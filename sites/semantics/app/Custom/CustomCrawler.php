@@ -82,7 +82,7 @@ class CustomCrawler extends CrawlObserver
 
         // Insertion structure HTML de la page
         try {
-            SeoAuditStructure::insertUpdate(array_merge(['uuid' => $this->uuid, 'url_id' => $newUrl->id], $htmlParser->run()));
+            SeoAuditStructure::firstOrCreate(array_merge(['uuid' => $this->uuid, 'url_id' => $newUrl->id], ['structure' => $htmlParser->run()]));
         } catch (\Exception $e) {
             Log::error('SeoAuditStructure : ' . $e->getMessage());
         }

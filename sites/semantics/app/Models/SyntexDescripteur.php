@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
-// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,9 +12,6 @@ class SyntexDescripteur extends Model
     use \Awobaz\Compoships\Compoships;
 
     protected $table = 'syntex_descripteurs';
-    // protected $collection = 'syntex_descripteurs';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',

@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Log;
-use Jenssegers\Mongodb\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 
 class SeoAuditStructure extends Model
 {
 
-    protected $collection = 'seo_audit_structure';
-    protected $connection = 'mongodb';
+    use HasFactory;
 
-    protected $primaryKey = 'uuid';
+    protected $table = 'audit_seo';
 
-    public static function insertUpdate($data)
-    {
-        try  {
-            Self::where('url_id', $data['url_id'])->update($data, ['upsert' => true]);
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-        }
-    }
+    protected $fillable = [
+        'uuid',
+        'url_id',
+        'structure',
+    ];
 
+    protected $casts = [
+        'structure' => 'array'
+    ];
 }

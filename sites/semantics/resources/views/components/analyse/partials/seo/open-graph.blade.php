@@ -12,14 +12,16 @@
                 </thead>
                 <tbody>
 
-                    <?php $cpt = 0 ?>
-                    @foreach ($audit->openGraph as $name => $value)
-                        <tr @if($cpt % 2 === 0)class="bg-gray-200 dark:bg-dark-1" @endif>
-                            <td class="border-b dark:border-dark-5">{{ $name}}</td>
-                            <td class="border-b dark:border-dark-5">{{ $value }}</td>
-                        </tr>
-                        <?php $cpt++ ?>
-                    @endforeach
+                    @if (isset($audit->structure['openGraph']))
+                        <?php $cpt = 0 ?>
+                        @foreach ($audit->structure['openGraph'] as $name => $value)
+                            <tr @if($cpt % 2 === 0)class="bg-gray-200 dark:bg-dark-1" @endif>
+                                <td class="border-b dark:border-dark-5">{{ $name}}</td>
+                                <td class="border-b dark:border-dark-5">{{ $value }}</td>
+                            </tr>
+                            <?php $cpt++ ?>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

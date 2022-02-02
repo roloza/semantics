@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
-// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 class Url extends Model
@@ -12,9 +11,6 @@ class Url extends Model
     use \Awobaz\Compoships\Compoships;
 
     protected $table = 'urls';
-    // protected $collection = 'urls';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',

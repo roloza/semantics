@@ -18,17 +18,19 @@
                 <tbody>
 
                     <?php $cpt = 0 ?>
-                    @foreach ($audit->links as $link)
-                        <tr @if($cpt % 2 === 0)class="bg-gray-200 dark:bg-dark-1" @endif>
-                            <td class="border-b dark:border-dark-5">{{ $link['url'] }}</td>
-                            <td class="border-b dark:border-dark-5">{{ $link['count'] }}</td>
-                            <td class="border-b dark:border-dark-5">{{ $link['text'] }}</td>
-                            <td class="border-b dark:border-dark-5">{{ $link['title'] }}</td>
-                            <td class="border-b dark:border-dark-5">{{ $link['target'] }}</td>
-                            <td class="border-b dark:border-dark-5">{{ $link['rel'] }}</td>
-                        </tr>
-                        <?php $cpt++ ?>
-                    @endforeach
+                    @if (isset($audit->structure['links']))
+                        @foreach ($audit->structure['links'] as $link)
+                            <tr @if($cpt % 2 === 0)class="bg-gray-200 dark:bg-dark-1" @endif>
+                                <td class="border-b dark:border-dark-5">{{ $link['url'] }}</td>
+                                <td class="border-b dark:border-dark-5">{{ $link['count'] }}</td>
+                                <td class="border-b dark:border-dark-5">{{ $link['text'] }}</td>
+                                <td class="border-b dark:border-dark-5">{{ $link['title'] }}</td>
+                                <td class="border-b dark:border-dark-5">{{ $link['target'] }}</td>
+                                <td class="border-b dark:border-dark-5">{{ $link['rel'] }}</td>
+                            </tr>
+                            <?php $cpt++ ?>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>

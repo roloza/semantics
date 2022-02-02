@@ -3,18 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
-// use Jenssegers\Mongodb\Eloquent\Model;
-// use Jenssegers\Mongodb\Eloquent\HybridRelations;
 use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    // use HybridRelations;
 
     protected $table = 'jobs';
-    // protected $collection = 'jobs';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     public $timestamps = true;
 

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\Log;
-// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,11 +10,7 @@ class SyntexAuditListe extends Model
 {
     use HasFactory;
 
-
     protected $table = 'syntex_audit_listes';
-    // protected $collection = 'syntex_audit_listes';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',

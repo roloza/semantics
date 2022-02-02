@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Custom\Tools\StopWords;
 use Illuminate\Support\Facades\Log;
-// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,9 +13,6 @@ class SyntexRtListe extends Model
     use \Awobaz\Compoships\Compoships;
 
     protected $table = 'syntex_rt_listes';
-    // protected $collection = 'syntex_rt_listes';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',

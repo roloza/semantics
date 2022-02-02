@@ -49,8 +49,8 @@ class AuditValidation
         $value = '-';
         $message = '';
         $error = false;
-        if ($this->audit->headers != null)  {
-            $value = $this->audit->headers['lang'] ?? '-';
+        if (isset($this->audit['headers']) && $this->audit['headers'] != null)  {
+            $value = $this->audit['headers']['lang'] ?? '-';
             if ($value === '-') {
                 $error = true;
             }
@@ -76,8 +76,8 @@ class AuditValidation
         $value = '-';
         $message = '';
         $error = false;
-        if ($this->audit->headers != null)  {
-            $value = $this->audit->headers['encodage'] ?? '-';
+        if (isset($this->audit['headers']) && $this->audit['headers'] != null)  {
+            $value = $this->audit['headers']['encodage'] ?? '-';
             if ($value === '-') {
                 $error = true;
             }
@@ -101,7 +101,7 @@ class AuditValidation
 
     private function validateTitle()
     {
-        $length = strlen($this->audit->title);
+        $length = isset($this->audit['title'])  ? strlen($this->audit['title']) : 0;
         $message = '(' . $length . ' caractères) - Essayez de proposer une balise title au minimum de 40-45 caractères, et au maximum de 65-70 caractères';
         $errorLvl = 2;
         if ($length > 70 || $length < 40) {
@@ -113,7 +113,7 @@ class AuditValidation
         }
         $this->score += ($errorLvl * 5);
         return [
-            'value' => $this->audit->title ?? '-',
+            'value' => $this->audit['title'] ?? '-',
             'message' => $message,
             'errorLvl' => $errorLvl,
         ];
@@ -123,7 +123,7 @@ class AuditValidation
     {
         $errorLvl = 2;
         $message = '';
-        $length = strlen($this->audit->description);
+        $length = isset($this->audit['description']) ? strlen($this->audit['description']) : 0;
         if ($length === 0) {
             $message = 'Balise description manquante';
             $errorLvl = 0;
@@ -139,7 +139,7 @@ class AuditValidation
 
         $this->score += ($errorLvl * 5);
         return [
-            'value' => $this->audit->description ?? '-',
+            'value' => $this->audit['description'] ?? '-',
             'message' => $message,
             'errorLvl' => $errorLvl
         ];
@@ -149,14 +149,14 @@ class AuditValidation
     {
         $errorLvl = 2;
         $message = '';
-        if ($this->audit->canonical === null) {
+        if (!isset($this->audit['canonical']) || $this->audit['canonical'] === null) {
             $message = 'La balise canonical est absente. Elle n\'est pas obligatoire, mais permet d\'éviter les contenus dupliqués';
             $errorLvl = 0;
         }
 
         $this->score += ($errorLvl * 5);
         return [
-            'value' => $this->audit->canonical ?? '-',
+            'value' => $this->audit['canonical'] ?? '-',
             'message' => $message,
             'errorLvl' => $errorLvl
         ];
@@ -166,18 +166,18 @@ class AuditValidation
     {
         $errorLvl = 2;
         $message = '';
-        if (isset($this->audit->headings['h1']) && current($this->audit->headings['h1']) == '') {
+        if (isset($this->audit['headings']['h1']) && current($this->audit['headings']['h1']) == '') {
             $message = 'La balise H1 est absente. Elle est très importante pour votre référencement';
             $errorLvl = 0;
         }
-        else if (isset($this->audit->headings['h1']) && count($this->audit->headings['h1']) > 1) {
+        else if (isset($this->audit['headings']['h1']) && count($this->audit['headings']['h1']) > 1) {
             $message = 'La balise H1 est dupliquée';
             $errorLvl = 0;
         }
 
         $this->score += ($errorLvl * 5);
         return [
-            'value' => isset($this->audit->headings['h1']) ? current($this->audit->headings['h1']) : '-',
+            'value' => isset($this->audit['headings']['h1']) ? current($this->audit['headings']['h1']) : '-',
             'message' => $message,
             'errorLvl' => $errorLvl
         ];
@@ -188,12 +188,12 @@ class AuditValidation
         $errorLvl = 2;
         $message = '';
         $count = 0;
-
-        foreach($this->audit->headings as $tag =>  $headings)
-        {
-            if($tag === 'h1') continue;
-            foreach($headings as $heading) {
-                $count++;
+        if (isset($this->audit['headings'])) {
+            foreach ($this->audit['headings'] as $tag => $headings) {
+                if ($tag === 'h1') continue;
+                foreach ($headings as $heading) {
+                    $count++;
+                }
             }
         }
         if ($count === 0 ) {
@@ -219,18 +219,18 @@ class AuditValidation
         $message = '';
 
         $value = 'OK. Les balises Title et H1 sont différentes';
-        if (isset($this->audit->headings['h1']) && current($this->audit->headings['h1']) == '') {
+        if (isset($this->audit['headings']['h1']) && current($this->audit['headings']['h1']) == '') {
             $value = 'Non OK';
             $message = 'H1 vide. Comparaison impossible';
             $errorLvl = 0;
         }
-        else if(strlen($this->audit->title) === 0) {
+        else if(isset($this->audit['title']) && strlen($this->audit['title']) === 0) {
             $value = 'Non OK';
             $message = 'Title vide. Comparaison impossible';
             $errorLvl = 0;
         }
 
-        else if(trim($this->audit->title) ===  trim(current($this->audit->headings['h1']))) {
+        else if(isset($this->audit['title']) && trim($this->audit['title']) ===  trim(current($this->audit['headings']['h1']))) {
             $value = 'Non OK';
             $message = 'Title et H1 identiques';
             $errorLvl = 0;
@@ -249,10 +249,12 @@ class AuditValidation
     {
 
         $errorLvl = 2;
-        $value = count($this->audit->openGraph);
+        $value = isset($this->audit['openGraph']) ? count($this->audit['openGraph']) : 0;
         $messageArray = [];
-        foreach ($this->audit->openGraph as $balise => $content) {
-            $messageArray[] = $balise;
+        if (isset($this->audit['openGraph'])) {
+            foreach ($this->audit['openGraph'] as $balise => $content) {
+                $messageArray[] = $balise;
+            }
         }
         if (count($messageArray) > 0)  {
             $message = '(' . (implode(', ', $messageArray)) . ')';
@@ -271,10 +273,12 @@ class AuditValidation
     private function validateTwitterCard()
     {
         $errorLvl = 2;
-        $value = count($this->audit->twitterCard);
+        $value = isset($this->audit['twitterCard']) ? count($this->audit['twitterCard']) : 0;
         $messageArray = [];
-        foreach ($this->audit->twitterCard as $balise => $content) {
-            $messageArray[] = $balise;
+        if (isset($this->audit['twitterCard'])) {
+            foreach ($this->audit['twitterCard'] as $balise => $content) {
+                $messageArray[] = $balise;
+            }
         }
         if (count($messageArray) > 0)  {
             $message = '(' . (implode(', ', $messageArray)) . ')';
@@ -294,11 +298,13 @@ class AuditValidation
     {
         $errorLvl = 2;
         $total = 0;
-        $totalUnique = count($this->audit->links);
-        foreach ($this->audit->links as $link) {
-            $total += $link['count'];
+        $totalUnique = isset($this->audit['links']) ? count($this->audit['links']) : 0;
+        if (isset($this->audit['links'])) {
+            foreach ($this->audit['links'] as $link) {
+                $total += $link['count'];
+            }
         }
-        $pct = (int)(($totalUnique * 100) / $total);
+        $pct = $total > 0 ? (int)(($totalUnique * 100) / $total) : 0;
 
         $message = '';
         $value = $total . ' liens dont ' . $totalUnique . ' uniques (' . $pct .'%).';
@@ -318,8 +324,8 @@ class AuditValidation
     {
         $errorLvl = 2;
         $value = 0;
-        if ($this->audit->text != null)  {
-            $value = (int)$this->audit->text['wordsCount'];
+        if (isset($this->audit['text']) && $this->audit['text'] != null)  {
+            $value = (int)$this->audit['text']['wordsCount'];
         }
         $message = '';
 
@@ -343,13 +349,13 @@ class AuditValidation
 
         $wordsCount = 0;
         $value = 0;
-        if ($this->audit->text != null)  {
-            $wordsCount = (int)$this->audit->text['wordsCount'];
+        if (isset($this->audit['text']) && $this->audit['text'] != null)  {
+            $wordsCount = (int)$this->audit['text']['wordsCount'];
         }
-        if ($this->audit->text != null)  {
-            $value = (int)$this->audit->text['wordsUseFullCount'];
+        if (isset($this->audit['text']) && $this->audit['text'] != null)  {
+            $value = (int)$this->audit['text']['wordsUseFullCount'];
         }
-        $pct = (int)(($value * 100) / $wordsCount);
+        $pct = $wordsCount > 0 ? (int)(($value * 100) / $wordsCount) : 0;
         $message = $pct . '% des mots sont pertinents';
 
         if ($pct < 50) {
@@ -373,8 +379,8 @@ class AuditValidation
         $message = 'Nombre de phrases trouvées dans votre contenu';
         $value = 0;
 
-        if ($this->audit->text != null)  {
-            $value = (int)$this->audit->text['phrasesCount'];
+        if (isset($this->audit['text']) && $this->audit['text'] != null)  {
+            $value = (int)$this->audit['text']['phrasesCount'];
         }
 
         if ($value < 20) {

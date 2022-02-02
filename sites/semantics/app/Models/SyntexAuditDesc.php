@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Models\Url;
-// use Jenssegers\Mongodb\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
-// use Jenssegers\Mongodb\Eloquent\HybridRelations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,12 +11,8 @@ class SyntexAuditDesc extends Model
 {
     use HasFactory;
     use \Awobaz\Compoships\Compoships;
-    // use HybridRelations;
 
     protected $table = 'syntex_audit_descs';
-    // protected $collection = 'syntex_audit_descs';
-    // protected $connection = 'mongodb';
-    // protected $primaryKey = 'uuid';
 
     protected $fillable = [
         'uuid',
